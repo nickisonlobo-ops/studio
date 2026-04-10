@@ -23,7 +23,10 @@ RUN npm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
+RUN apk add --no-cache libc6-compat
+
 ENV NODE_ENV=production
+ENV NUXT_TELEMETRY_DISABLED=1
 ENV HOST=0.0.0.0
 ENV PORT=3000
 ENV NITRO_HOST=0.0.0.0
@@ -37,8 +40,5 @@ ENV NUXT_PUBLIC_SUPABASE_KEY=${NUXT_PUBLIC_SUPABASE_KEY}
 COPY --from=build /app/.output ./.output
 
 EXPOSE 3000
-
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-	CMD wget -qO- http://127.0.0.1:3000/ || exit 1
 
 CMD ["node", ".output/server/index.mjs"]
