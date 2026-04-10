@@ -520,10 +520,12 @@ function fecharModalFolha() {
 async function lancarFolha() {
   if (!folhaMes.value || funcionariosComSalario.value.length === 0) return
 
-  const [ano, mes] = folhaMes.value.split('-').map(Number)
+  const parts = folhaMes.value.split('-').map(Number)
+  const ano = parts[0]!
+  const mes = parts[1]!
   // vencimento = dia 5 do mês seguinte
   const vencimento = new Date(ano, mes, 5)
-  const vencimentoStr = vencimento.toISOString().split('T')[0]
+  const vencimentoStr = vencimento.toISOString().split('T')[0]!
   const mesFormatado = new Date(ano, mes - 1).toLocaleString('pt-BR', { month: 'long', year: 'numeric' })
 
   lanandoFolha.value = true
