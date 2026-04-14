@@ -1,19 +1,19 @@
 <template>
   <div class="min-h-full bg-gray-50/60 p-3 sm:p-8" @click="statusDropdownId = null">
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• CABEÃ‡ALHO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
       <!-- Gradiente principal -->
       <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-green-700 to-green-500" />
       <!-- Camada de textura -->
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(251,146,60,0.18),transparent_60%)]" />
-      <!-- CÃ­rculos decorativos -->
+      <!-- Círculos decorativos -->
       <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-white/[0.04] pointer-events-none" />
       <div class="absolute -bottom-20 left-1/4 w-96 h-96 rounded-full bg-white/[0.03] pointer-events-none" />
       <div class="absolute top-4 right-1/3 w-40 h-40 rounded-full bg-orange-400/10 pointer-events-none" />
 
       <div class="relative px-4 sm:px-8 pt-5 sm:pt-7 pb-5 sm:pb-7">
-        <!-- Linha superior: identidade + aÃ§Ãµes -->
+        <!-- Linha superior: identidade + ações -->
         <div class="flex flex-wrap items-start justify-between gap-3 sm:gap-6">
           <div class="flex items-center gap-3 sm:gap-5">
             <div class="flex items-center justify-center w-10 sm:w-14 h-10 sm:h-14 rounded-2xl bg-white/[0.12] backdrop-blur-sm border border-white/20 shadow-lg">
@@ -96,14 +96,14 @@
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FILTROS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� FILTROS �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Transition name="slide-fade">
       <div v-show="filtrosAbertos" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
         <!-- Header do painel -->
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
           <div class="flex items-center gap-2.5">
             <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
-            <span class="text-sm font-bold text-gray-700">Filtros avanÃ§ados</span>
+            <span class="text-sm font-bold text-gray-700">Filtros avançados</span>
             <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-orange-100 text-orange-600 text-xs font-bold">
               {{ filtrosAtivos }} ativo(s)
             </span>
@@ -128,7 +128,7 @@
                 <input
                   v-model="filtros.busca"
                   type="text"
-                  placeholder="DescriÃ§Ã£o, categoria ou observaÃ§Ã£o..."
+                  placeholder="Descrição, categoria ou observação..."
                   class="w-full rounded-xl border border-gray-200 pl-10 pr-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-gray-50/50 transition-shadow"
                 />
               </div>
@@ -138,14 +138,14 @@
               <input v-model="filtros.vencimentoDe" type="date" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-shadow" />
             </div>
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Vencimento atÃ©</label>
+              <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Vencimento até</label>
               <input v-model="filtros.vencimentoAte" type="date" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-shadow" />
             </div>
           </div>
 
-          <!-- Atalhos de perÃ­odo -->
+          <!-- Atalhos de período -->
           <div class="flex flex-col gap-2">
-            <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Atalhos de perÃ­odo</label>
+            <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Atalhos de período</label>
             <div class="flex flex-wrap gap-2">
               <button
                 v-for="preset in presetsDePeriodo"
@@ -165,11 +165,11 @@
           <!-- Linha 2: valor + categoria + forma -->
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Valor mÃ­nimo</label>
+              <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Valor mínimo</label>
               <input v-model="filtros.valorMin" type="number" min="0" placeholder="R$ 0,00" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-shadow" />
             </div>
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Valor mÃ¡ximo</label>
+              <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Valor máximo</label>
               <input v-model="filtros.valorMax" type="number" min="0" placeholder="Sem limite" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-shadow" />
             </div>
             <div class="flex flex-col gap-1.5">
@@ -215,26 +215,26 @@
       </div>
     </Transition>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• LOADING â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� LOADING �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-if="loading" class="flex flex-col items-center justify-center gap-4 py-32">
       <span class="inline-block w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
       <span class="text-sm text-gray-400 font-medium">Carregando contas...</span>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• ERRO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� ERRO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else-if="error" class="flex items-center gap-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-2xl px-6 py-4">
       <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 8v4m0 4h.01"/></svg>
       {{ error }}
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• TABELA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� TABELA �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else class="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden">
       <!-- Barra acima da tabela -->
       <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/50">
         <span class="text-sm font-semibold text-gray-600">
           <span class="text-green-700 font-black">{{ contasFiltradas.length }}</span>
           resultado(s)
-          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> â€” filtros aplicados</span>
+          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> - filtros aplicados</span>
         </span>
         <span class="text-xs text-gray-400">Ordenado por vencimento</span>
       </div>
@@ -244,7 +244,7 @@
           <thead>
             <tr class="bg-gray-50 border-b border-gray-100">
               <th class="text-left px-7 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">#</th>
-              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">DescriÃ§Ã£o</th>
+              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Descrição</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Valor</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Status</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Vencimento</th>
@@ -253,9 +253,9 @@
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Forma Pgto</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Func. ID</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Periodicidade</th>
-              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">ObservaÃ§Ã£o</th>
+              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Observação</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Criado em</th>
-              <th class="px-7 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50">AÃ§Ãµes</th>
+              <th class="px-7 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50">Ações</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
@@ -325,17 +325,17 @@
               </td>
               <td class="px-5 py-4">
                 <span v-if="conta.data_pagamento" class="font-medium text-emerald-600 tabular-nums">{{ formatDate(conta.data_pagamento) }}</span>
-                <span v-else class="text-gray-300 font-medium">â€”</span>
+                <span v-else class="text-gray-300 font-medium">-</span>
               </td>
               <td class="px-5 py-4">
                 <span v-if="conta.categoria" class="inline-block text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100 rounded-lg px-2.5 py-1">{{ conta.categoria }}</span>
-                <span v-else class="text-gray-300">â€”</span>
+                <span v-else class="text-gray-300">-</span>
               </td>
               <td class="px-5 py-4">
                 <span v-if="conta.forma_pagamento" class="inline-block text-xs font-semibold bg-gray-100 text-gray-600 rounded-lg px-2.5 py-1">{{ conta.forma_pagamento }}</span>
-                <span v-else class="text-gray-300">â€”</span>
+                <span v-else class="text-gray-300">-</span>
               </td>
-              <td class="px-5 py-4 text-gray-500 font-medium">{{ conta.funcionario_id ?? 'â€”' }}</td>
+              <td class="px-5 py-4 text-gray-500 font-medium">{{ conta.funcionario_id ?? '-' }}</td>
               <td class="px-5 py-4">
                 <span class="inline-block text-xs font-semibold capitalize"
                   :class="conta.periodicidade === 'mensal' ? 'bg-purple-50 text-purple-700 border border-purple-100 rounded-lg px-2.5 py-1' : 'text-gray-400'"
@@ -344,7 +344,7 @@
                 </span>
               </td>
               <td class="px-5 py-4">
-                <span class="text-gray-400 text-xs max-w-[150px] block truncate" :title="conta.observacao ?? ''">{{ conta.observacao ?? 'â€”' }}</span>
+                <span class="text-gray-400 text-xs max-w-[150px] block truncate" :title="conta.observacao ?? ''">{{ conta.observacao ?? '-' }}</span>
               </td>
               <td class="px-5 py-4 text-gray-400 text-xs tabular-nums">{{ formatDateTime(conta.created_at) }}</td>
               <td class="px-7 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-green-50/60 transition-colors">
@@ -373,7 +373,7 @@
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL ADICIONAR / EDITAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL ADICIONAR / EDITAR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -396,7 +396,7 @@
             </div>
 
             <form class="flex flex-col gap-5 px-8 py-7 overflow-y-auto max-h-[70vh]" @submit.prevent="adicionando ? salvarAdicao() : salvarEdicao()">
-              <AppInput v-model="form.descricao" label="DescriÃ§Ã£o" placeholder="Ex: Aluguel do espaÃ§o" :error="formErrors.descricao" required />
+              <AppInput v-model="form.descricao" label="Descrição" placeholder="Ex: Aluguel do espaço" :error="formErrors.descricao" required />
               <div class="grid grid-cols-2 gap-4">
                 <AppInput v-model="form.valor" label="Valor (R$)" type="number" placeholder="1500.00" :error="formErrors.valor" required />
                 <div class="flex flex-col gap-1.5">
@@ -418,7 +418,7 @@
                 <AppInput v-model="form.forma_pagamento" label="Forma de Pagamento" placeholder="Ex: PIX" />
               </div>
               <div class="grid grid-cols-2 gap-4">
-                <AppInput v-model="form.funcionario_id" label="ID do FuncionÃ¡rio" type="number" placeholder="Opcional" />
+                <AppInput v-model="form.funcionario_id" label="ID do Funcionário" type="number" placeholder="Opcional" />
                 <div class="flex flex-col gap-1.5">
                   <label class="text-sm font-semibold text-gray-700">Periodicidade</label>
                   <select v-model="form.periodicidade" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
@@ -427,7 +427,7 @@
                   </select>
                 </div>
               </div>
-              <AppInput v-model="form.observacao" label="ObservaÃ§Ã£o" placeholder="InformaÃ§Ãµes adicionais" />
+              <AppInput v-model="form.observacao" label="Observação" placeholder="Informações adicionais" />
 
               <p v-if="modalError" class="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
                 {{ modalError }}
@@ -438,7 +438,7 @@
                   Cancelar
                 </button>
                 <AppButton variant="primary" size="md" type="submit" :loading="saving" class="flex-1">
-                  {{ adicionando ? 'Adicionar' : 'Salvar alteraÃ§Ãµes' }}
+                  {{ adicionando ? 'Adicionar' : 'Salvar alterações' }}
                 </AppButton>
               </div>
             </form>
@@ -447,7 +447,7 @@
       </Transition>
     </Teleport>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL EXCLUIR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL EXCLUIR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -463,7 +463,7 @@
               <h2 class="text-xl font-bold text-gray-800">Excluir conta?</h2>
               <p class="text-sm text-gray-500 mt-2 leading-relaxed">
                 Tem certeza que deseja excluir <br /><strong class="text-gray-800">{{ excluindo.descricao }}</strong>?<br />
-                <span class="text-red-500 text-xs font-semibold">Essa aÃ§Ã£o nÃ£o pode ser desfeita.</span>
+                <span class="text-red-500 text-xs font-semibold">Essa ação não pode ser desfeita.</span>
               </p>
             </div>
             <p v-if="deleteError" class="text-sm text-red-600 bg-red-50 border-t border-b border-red-200 px-8 py-3 text-center">
@@ -594,7 +594,7 @@ const contasFiltradas = computed(() => {
   })
 })
 
-// Limpa o preset ativo se o usuÃ¡rio editar as datas manualmente
+// Limpa o preset ativo se o usuário editar as datas manualmente
 watch(() => filtros.vencimentoDe, () => { if (filtros.presetAtivo) filtros.presetAtivo = '' })
 watch(() => filtros.vencimentoAte, () => { if (filtros.presetAtivo) filtros.presetAtivo = '' })
 
@@ -633,7 +633,7 @@ const presetsDePeriodo = [
   { label: 'Hoje',        days: 0  },
   { label: 'Esta semana', days: 6  },
   { label: 'Quinzenal',   days: 14 },
-  { label: 'Este mÃªs',    days: 29 },
+  { label: 'Este mês',    days: 29 },
 ]
 
 function aplicarPreset(preset: { label: string; days: number }) {
@@ -673,7 +673,7 @@ function limparFiltros() {
 
 const columns = [
   { key: 'id',               label: '#' },
-  { key: 'descricao',        label: 'DescriÃ§Ã£o' },
+  { key: 'descricao',        label: 'Descrição' },
   { key: 'valor',            label: 'Valor' },
   { key: 'status',           label: 'Status' },
   { key: 'data_vencimento',  label: 'Vencimento' },
@@ -682,7 +682,7 @@ const columns = [
   { key: 'forma_pagamento',  label: 'Forma Pgto' },
   { key: 'funcionario_id',   label: 'Func. ID' },
   { key: 'periodicidade',    label: 'Periodicidade' },
-  { key: 'observacao',       label: 'ObservaÃ§Ã£o' },
+  { key: 'observacao',       label: 'Observação' },
   { key: 'created_at',       label: 'Criado em' },
 ]
 
@@ -726,7 +726,7 @@ function formatDate(date: string): string {
 }
 
 function formatDateTime(dt: string | null): string {
-  if (!dt) return 'â€”'
+  if (!dt) return '-'
   return new Date(dt).toLocaleDateString('pt-BR')
 }
 
@@ -778,9 +778,9 @@ function validarForm(): boolean {
   formErrors.descricao = ''
   formErrors.valor = ''
   formErrors.data_vencimento = ''
-  if (!form.descricao.trim()) { formErrors.descricao = 'A descriÃ§Ã£o Ã© obrigatÃ³ria.'; return false }
-  if (!form.valor) { formErrors.valor = 'O valor Ã© obrigatÃ³rio.'; return false }
-  if (!form.data_vencimento) { formErrors.data_vencimento = 'O vencimento Ã© obrigatÃ³rio.'; return false }
+  if (!form.descricao.trim()) { formErrors.descricao = 'A descrição é obrigatória.'; return false }
+  if (!form.valor) { formErrors.valor = 'O valor é obrigatório.'; return false }
+  if (!form.data_vencimento) { formErrors.data_vencimento = 'O vencimento é obrigatório.'; return false }
   return true
 }
 

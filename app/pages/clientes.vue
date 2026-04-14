@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• CABEÃ‡ALHO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
       <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-green-700 to-green-500" />
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(251,146,60,0.18),transparent_60%)]" />
@@ -83,7 +83,7 @@
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FILTRO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� FILTRO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Transition name="slide-fade">
       <div v-show="filtroAberto" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
@@ -131,25 +131,25 @@
       </div>
     </Transition>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• LOADING â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� LOADING �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-if="loading" class="flex flex-col items-center justify-center gap-4 py-32">
       <span class="inline-block w-12 h-12 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" />
       <span class="text-sm text-gray-400 font-medium">Carregando clientes...</span>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• ERRO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� ERRO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else-if="error" class="flex items-center gap-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-2xl px-6 py-4">
       <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 8v4m0 4h.01"/></svg>
       {{ error }}
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• TABELA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� TABELA �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else class="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden">
       <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/50">
         <span class="text-sm font-semibold text-gray-600">
           <span class="text-violet-700 font-black">{{ clientesFiltrados.length }}</span>
           resultado(s)
-          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> â€” filtros aplicados</span>
+          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> �?" filtros aplicados</span>
         </span>
         <span class="text-xs text-gray-400">Ordenado por nome</span>
       </div>
@@ -165,7 +165,7 @@
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">E-mail</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Cidade / Estado</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Status</th>
-              <th class="px-7 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50">AÃ§Ãµes</th>
+              <th class="px-7 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50">Ações</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
@@ -198,17 +198,17 @@
               </td>
               <td class="px-5 py-4">
                 <span v-if="cli.cpf_cnpj" class="font-mono text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded-lg">{{ cli.cpf_cnpj }}</span>
-                <span v-else class="text-gray-300">â€”</span>
+                <span v-else class="text-gray-300">-</span>
               </td>
-              <td class="px-5 py-4 text-gray-500 font-medium">{{ cli.telefone ?? 'â€”' }}</td>
+              <td class="px-5 py-4 text-gray-500 font-medium">{{ cli.telefone ?? '-' }}</td>
               <td class="px-5 py-4 text-gray-500 font-medium">
-                <span class="max-w-[180px] block truncate">{{ cli.email ?? 'â€”' }}</span>
+                <span class="max-w-[180px] block truncate">{{ cli.email ?? '-' }}</span>
               </td>
               <td class="px-5 py-4">
                 <span v-if="cli.cidade || cli.estado" class="text-gray-600 font-medium">
                   {{ [cli.cidade, cli.estado].filter(Boolean).join(' / ') }}
                 </span>
-                <span v-else class="text-gray-300">â€”</span>
+                <span v-else class="text-gray-300">-</span>
               </td>
               <td class="px-5 py-4">
                 <span
@@ -245,7 +245,7 @@
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL ADICIONAR / EDITAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL ADICIONAR / EDITAR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -269,7 +269,7 @@
             <form class="flex flex-col gap-5 px-8 py-7 overflow-y-auto max-h-[70vh]" @submit.prevent="adicionando ? salvarAdicao() : salvarEdicao()">
               <!-- Nome + CPF/CNPJ -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <AppInput v-model="form.nome" label="Nome *" placeholder="Ex: JoÃ£o da Silva" :error="formErrors.nome" required />
+                <AppInput v-model="form.nome" label="Nome *" placeholder="Ex: João da Silva" :error="formErrors.nome" required />
                 <AppInput v-model="form.cpf_cnpj" label="CPF / CNPJ" placeholder="Ex: 000.000.000-00" :error="formErrors.cpf_cnpj" />
               </div>
               <!-- Telefone + E-mail -->
@@ -277,12 +277,12 @@
                 <AppInput v-model="form.telefone" label="Telefone" placeholder="Ex: (11) 99999-9999" />
                 <AppInput v-model="form.email" label="E-mail" type="email" placeholder="Ex: joao@email.com" :error="formErrors.email" />
               </div>
-              <!-- EndereÃ§o + NÃºmero -->
+              <!-- Endereço + Número -->
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="sm:col-span-2">
-                  <AppInput v-model="form.endereco" label="EndereÃ§o" placeholder="Ex: Rua das Flores" />
+                  <AppInput v-model="form.endereco" label="Endereço" placeholder="Ex: Rua das Flores" />
                 </div>
-                <AppInput v-model="form.numero" label="NÃºmero" placeholder="Ex: 123" />
+                <AppInput v-model="form.numero" label="Número" placeholder="Ex: 123" />
               </div>
               <!-- Bairro + CEP -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -291,7 +291,7 @@
               </div>
               <!-- Cidade + Estado -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <AppInput v-model="form.cidade" label="Cidade" placeholder="Ex: SÃ£o Paulo" />
+                <AppInput v-model="form.cidade" label="Cidade" placeholder="Ex: São Paulo" />
                 <div class="flex flex-col gap-1.5">
                   <label class="text-sm font-semibold text-gray-700">Estado</label>
                   <select v-model="form.estado" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500">
@@ -300,13 +300,13 @@
                   </select>
                 </div>
               </div>
-              <!-- ObservaÃ§Ã£o -->
+              <!-- Observação -->
               <div class="flex flex-col gap-1.5">
-                <label class="text-sm font-semibold text-gray-700">ObservaÃ§Ã£o</label>
+                <label class="text-sm font-semibold text-gray-700">Observação</label>
                 <textarea
                   v-model="form.observacao"
                   rows="2"
-                  placeholder="InformaÃ§Ãµes adicionais..."
+                  placeholder="Informações adicionais..."
                   class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 resize-none"
                 />
               </div>
@@ -333,7 +333,7 @@
                   Cancelar
                 </button>
                 <AppButton variant="primary" size="md" type="submit" :loading="saving" class="flex-1">
-                  {{ adicionando ? 'Adicionar' : 'Salvar alteraÃ§Ãµes' }}
+                  {{ adicionando ? 'Adicionar' : 'Salvar alterações' }}
                 </AppButton>
               </div>
             </form>
@@ -342,7 +342,7 @@
       </Transition>
     </Teleport>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL EXCLUIR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL EXCLUIR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -358,7 +358,7 @@
               <h2 class="text-xl font-bold text-gray-800">Excluir cliente?</h2>
               <p class="text-sm text-gray-500 mt-2 leading-relaxed">
                 Tem certeza que deseja excluir <br /><strong class="text-gray-800">{{ excluindo.nome }}</strong>?<br />
-                <span class="text-red-500 text-xs font-semibold">Essa aÃ§Ã£o nÃ£o pode ser desfeita.</span>
+                <span class="text-red-500 text-xs font-semibold">Essa ação não pode ser desfeita.</span>
               </p>
             </div>
             <p v-if="deleteError" class="text-sm text-red-600 bg-red-50 border-t border-b border-red-200 px-8 py-3 text-center">{{ deleteError }}</p>
@@ -446,7 +446,7 @@ const ufs = [
   'PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO',
 ]
 
-// â”€â”€ Stats â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Stats �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 const clientesAtivos = computed(() =>
   clientes.value.filter(c => c.ativo !== false).length
 )
@@ -458,7 +458,7 @@ const cidadesUnicas = computed(() => {
   return Array.from(set).sort()
 })
 
-// â”€â”€ Filtros â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Filtros �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 const filtrosAtivos = computed(() => {
   let c = 0
   if (filtros.busca) c++
@@ -491,14 +491,14 @@ function limparFiltros() {
   filtros.ativo = ''
 }
 
-// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Helpers �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 function initials(nome: string): string {
   const parts = nome.trim().split(' ').filter(Boolean)
   if (parts.length >= 2) return ((parts[0]?.[0] ?? '') + (parts[1]?.[0] ?? '')).toUpperCase()
   return (nome[0] ?? '?').toUpperCase()
 }
 
-// â”€â”€ CRUD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? CRUD �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 onMounted(fetchClientes)
 
 async function fetchClientes() {
@@ -566,7 +566,7 @@ function buildPayload() {
 function validateForm(): boolean {
   formErrors.nome = ''; formErrors.cpf_cnpj = ''; formErrors.email = ''
   let ok = true
-  if (!form.nome.trim()) { formErrors.nome = 'O nome Ã© obrigatÃ³rio.'; ok = false }
+  if (!form.nome.trim()) { formErrors.nome = 'O nome é obrigatório.'; ok = false }
   return ok
 }
 
@@ -583,9 +583,9 @@ async function salvarEdicao() {
   saving.value = false
   if (updateError) {
     modalError.value = updateError.message.includes('clientes_cpf_cnpj_key')
-      ? 'Este CPF/CNPJ jÃ¡ estÃ¡ cadastrado.'
+      ? 'Este CPF/CNPJ já está cadastrado.'
       : updateError.message.includes('clientes_email_key')
-        ? 'Este e-mail jÃ¡ estÃ¡ cadastrado.'
+        ? 'Este e-mail já está cadastrado.'
         : updateError.message
     return
   }
@@ -606,9 +606,9 @@ async function salvarAdicao() {
   saving.value = false
   if (insertError) {
     modalError.value = insertError.message.includes('clientes_cpf_cnpj_key')
-      ? 'Este CPF/CNPJ jÃ¡ estÃ¡ cadastrado.'
+      ? 'Este CPF/CNPJ já está cadastrado.'
       : insertError.message.includes('clientes_email_key')
-        ? 'Este e-mail jÃ¡ estÃ¡ cadastrado.'
+        ? 'Este e-mail já está cadastrado.'
         : insertError.message
     return
   }
