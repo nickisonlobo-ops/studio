@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• CABEÃ‡ALHO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
       <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-green-700 to-green-500" />
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.18),transparent_60%)]" />
@@ -19,7 +19,7 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold text-green-300 uppercase tracking-widest">GestÃ£o</span>
+                <span class="text-xs font-semibold text-green-300 uppercase tracking-widest">Gestão</span>
                 <span class="w-1 h-1 rounded-full bg-green-400/50" />
                 <span class="text-xs text-green-300/70 hidden sm:inline">PetFlow</span>
               </div>
@@ -43,14 +43,14 @@
               <span class="hidden sm:inline">Filtros</span>
               <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-white text-green-600 text-xs font-black ring-2 ring-green-300">{{ filtrosAtivos }}</span>
             </button>
-            <!-- toggle InstÃ¢ncias / Modelos -->
+            <!-- toggle Instâncias / Modelos -->
             <div class="flex rounded-xl overflow-hidden border border-white/20">
               <button
                 type="button"
                 class="px-3 py-2 text-xs font-bold transition-colors"
                 :class="viewMode === 'instancias' ? 'bg-white text-green-800' : 'text-white hover:bg-white/20'"
                 @click="viewMode = 'instancias'"
-              >InstÃ¢ncias</button>
+              >Instâncias</button>
               <button
                 type="button"
                 class="px-3 py-2 text-xs font-bold transition-colors"
@@ -58,7 +58,7 @@
                 @click="viewMode = 'modelos'"
               >Modelos</button>
             </div>
-            <!-- Gerar Hoje (sÃ³ admin) -->
+            <!-- Gerar Hoje (só admin) -->
             <button
               v-if="viewMode === 'modelos'"
               type="button"
@@ -96,7 +96,7 @@
               <span class="text-xs font-semibold text-amber-200 uppercase tracking-widest">Pendentes</span>
             </div>
             <span class="text-xl font-black text-amber-100 leading-tight">{{ countByStatus('pendente') }}</span>
-            <span class="text-xs text-amber-300/50">aguardando inÃ­cio</span>
+            <span class="text-xs text-amber-300/50">aguardando início</span>
           </div>
           <div class="flex flex-col gap-1 bg-blue-400/10 rounded-2xl px-5 py-4 border border-blue-300/20 hover:bg-blue-400/15 transition-colors">
             <div class="flex items-center gap-1.5">
@@ -104,12 +104,12 @@
               <span class="text-xs font-semibold text-blue-200 uppercase tracking-widest">Em Andamento</span>
             </div>
             <span class="text-xl font-black text-blue-100 leading-tight">{{ countByStatus('em_andamento') }}</span>
-            <span class="text-xs text-blue-300/50">em execuÃ§Ã£o</span>
+            <span class="text-xs text-blue-300/50">em execução</span>
           </div>
           <div class="flex flex-col gap-1 bg-green-400/10 rounded-2xl px-5 py-4 border border-green-300/20 hover:bg-green-400/15 transition-colors">
             <div class="flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-green-400" />
-              <span class="text-xs font-semibold text-green-200 uppercase tracking-widest">ConcluÃ­das</span>
+              <span class="text-xs font-semibold text-green-200 uppercase tracking-widest">Concluídas</span>
             </div>
             <span class="text-xl font-black text-green-100 leading-tight">{{ countByStatus('concluida') }}</span>
             <span class="text-xs text-green-300/50">finalizadas</span>
@@ -118,7 +118,7 @@
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FILTRO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� FILTRO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Transition name="slide-fade">
       <div v-show="filtroAberto" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
@@ -135,11 +135,11 @@
             <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Busca</label>
             <div class="relative">
               <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
-              <input v-model="filtros.busca" type="text" placeholder="TÃ­tulo ou funcionÃ¡rio..." class="w-full rounded-xl border border-gray-200 pl-10 pr-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow" />
+              <input v-model="filtros.busca" type="text" placeholder="Título ou funcionário..." class="w-full rounded-xl border border-gray-200 pl-10 pr-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow" />
             </div>
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">FuncionÃ¡rio</label>
+            <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Funcionário</label>
             <select v-model="filtros.funcionarioId" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
               <option value="">Todos</option>
               <option v-for="f in funcionariosOpcoes" :key="f.id" :value="String(f.id)">{{ f.nome }}</option>
@@ -151,7 +151,7 @@
               <option value="">Todos</option>
               <option value="pendente">Pendente</option>
               <option value="em_andamento">Em Andamento</option>
-              <option value="concluida">ConcluÃ­da</option>
+              <option value="concluida">Concluída</option>
               <option value="cancelada">Cancelada</option>
             </select>
           </div>
@@ -160,7 +160,7 @@
             <select v-model="filtros.prioridade" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
               <option value="">Todas</option>
               <option value="baixa">Baixa</option>
-              <option value="media">MÃ©dia</option>
+              <option value="media">Média</option>
               <option value="alta">Alta</option>
               <option value="urgente">Urgente</option>
             </select>
@@ -169,7 +169,7 @@
             <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Periodicidade</label>
             <select v-model="filtros.periodicidade" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
               <option value="">Todas</option>
-              <option value="diaria">DiÃ¡ria</option>
+              <option value="diaria">Diária</option>
               <option value="quinzenal">Quinzenal</option>
               <option value="mensal">Mensal</option>
             </select>
@@ -178,26 +178,26 @@
       </div>
     </Transition>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• LOADING â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� LOADING �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-if="loading" class="flex flex-col items-center justify-center gap-4 py-32">
       <span class="inline-block w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
       <span class="text-sm text-gray-400 font-medium">Carregando atividades...</span>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• ERRO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� ERRO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else-if="error" class="flex items-center gap-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-2xl px-6 py-4">
       <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 8v4m0 4h.01"/></svg>
       {{ error }}
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• TABELA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� TABELA �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else class="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden">
       <!-- Banner Modelos -->
       <div v-if="viewMode === 'modelos'" class="flex items-center gap-3 px-7 py-3 bg-amber-50 border-b border-amber-100">
         <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg>
         <p class="text-xs font-semibold text-amber-700">
-          Modelos sÃ£o atividades <strong>sem data definida</strong> usadas como base para geraÃ§Ã£o automÃ¡tica.
-          Ao clicar em <strong>Gerar Hoje</strong>, instÃ¢ncias com a data de hoje sÃ£o criadas para cada modelo conforme a periodicidade.
+          Modelos são atividades <strong>sem data definida</strong> usadas como base para geração automática.
+          Ao clicar em <strong>Gerar Hoje</strong>, instâncias com a data de hoje são criadas para cada modelo conforme a periodicidade.
         </p>
         <span v-if="geracaoMsg" class="ml-auto text-xs font-bold text-green-700 bg-green-100 px-3 py-1 rounded-full shrink-0">{{ geracaoMsg }}</span>
       </div>
@@ -206,7 +206,7 @@
         <span class="text-sm font-semibold text-gray-600">
           <span class="text-indigo-600 font-black">{{ atividadesFiltradas.length }}</span>
           {{ viewMode === 'modelos' ? ' modelo(s)' : ' resultado(s)' }}
-          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> â€” filtros aplicados</span>
+          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> �?" filtros aplicados</span>
         </span>
         <span class="text-xs text-gray-400">{{ viewMode === 'modelos' ? 'Recorrentes' : 'Ordenado por data' }}</span>
       </div>
@@ -216,13 +216,13 @@
           <thead>
             <tr class="bg-gray-50 border-b border-gray-100">
               <th class="text-left px-6 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest w-12">#</th>
-              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">FuncionÃ¡rio</th>
-              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">TÃ­tulo / DescriÃ§Ã£o</th>
+              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Funcionário</th>
+              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Título / Descrição</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Periodicidade</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Prioridade</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Status</th>
-              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Data / HorÃ¡rio</th>
-              <th class="px-6 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50 w-24">AÃ§Ãµes</th>
+              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Data / Horário</th>
+              <th class="px-6 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50 w-24">Ações</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
@@ -249,20 +249,20 @@
                 </span>
               </td>
 
-              <!-- FuncionÃ¡rio -->
+              <!-- Funcionário -->
               <td class="px-5 py-4">
                 <div class="flex items-center gap-2.5">
                   <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white font-black text-xs shrink-0 shadow-sm shadow-green-200 select-none">
                     {{ (at.funcionarios?.nome ?? '?')[0]?.toUpperCase() }}
                   </div>
                   <div class="flex flex-col min-w-0">
-                    <span class="font-semibold text-gray-800 max-w-[140px] block truncate whitespace-nowrap">{{ at.funcionarios?.nome ?? 'â€”' }}</span>
+                    <span class="font-semibold text-gray-800 max-w-[140px] block truncate whitespace-nowrap">{{ at.funcionarios?.nome ?? '�?"' }}</span>
                     <span v-if="at.funcionarios?.cargo" class="text-xs text-gray-400 truncate">{{ at.funcionarios.cargo }}</span>
                   </div>
                 </div>
               </td>
 
-              <!-- TÃ­tulo / DescriÃ§Ã£o -->
+              <!-- Título / Descrição -->
               <td class="px-5 py-4">
                 <div class="flex flex-col gap-0.5">
                   <span class="font-bold text-gray-800 max-w-[260px] block truncate">{{ at.titulo }}</span>
@@ -293,7 +293,7 @@
                 </span>
               </td>
 
-              <!-- Data / HorÃ¡rio -->
+              <!-- Data / Horário -->
               <td class="px-5 py-4">
                 <div class="flex flex-col gap-0.5 text-xs text-gray-500 font-medium whitespace-nowrap">
                   <span v-if="at.data_atividade">{{ formatDate(at.data_atividade) }}</span>
@@ -302,12 +302,12 @@
                     Recorrente
                   </span>
                   <span v-if="at.hora_inicio || at.hora_fim" class="text-gray-400">
-                    {{ at.hora_inicio ?? 'â€”' }}{{ at.hora_fim ? ` â†’ ${at.hora_fim}` : '' }}
+                    {{ at.hora_inicio ?? '�?"' }}{{ at.hora_fim ? ` �?' ${at.hora_fim}` : '' }}
                   </span>
                 </div>
               </td>
 
-              <!-- AÃ§Ãµes -->
+              <!-- Ações -->
               <td class="px-6 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-indigo-50/30 transition-colors">
                 <div class="flex items-center justify-end gap-1">
                   <button type="button" class="w-8 h-8 flex items-center justify-center rounded-xl text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100 transition-colors" title="Editar" @click="editAtividade(at)">
@@ -324,7 +324,7 @@
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL ADICIONAR / EDITAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL ADICIONAR / EDITAR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -348,26 +348,26 @@
             </div>
 
             <form class="flex flex-col gap-5 px-8 py-7 overflow-y-auto max-h-[75vh]" @submit.prevent="adicionando ? salvarAdicao() : salvarEdicao()">
-              <!-- FuncionÃ¡rio -->
+              <!-- Funcionário -->
               <div class="flex flex-col gap-1.5">
-                <label class="text-sm font-semibold text-gray-700">FuncionÃ¡rio *</label>
+                <label class="text-sm font-semibold text-gray-700">Funcionário *</label>
                 <select v-model="form.funcionario_id" required class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" :class="formErrors.funcionario_id ? 'border-red-400 ring-1 ring-red-400' : ''">
-                  <option :value="null">Selecione o funcionÃ¡rio</option>
-                  <option v-for="f in funcionariosOpcoes" :key="f.id" :value="f.id">{{ f.nome }}{{ f.cargo ? ` â€” ${f.cargo}` : '' }}</option>
+                  <option :value="null">Selecione o funcionário</option>
+                  <option v-for="f in funcionariosOpcoes" :key="f.id" :value="f.id">{{ f.nome }}{{ f.cargo ? ` �?" ${f.cargo}` : '' }}</option>
                 </select>
                 <p v-if="formErrors.funcionario_id" class="text-xs text-red-500 font-medium">{{ formErrors.funcionario_id }}</p>
               </div>
 
-              <!-- TÃ­tulo -->
+              <!-- Título -->
               <div class="flex flex-col gap-1.5">
-                <label class="text-sm font-semibold text-gray-700">TÃ­tulo *</label>
-                <input v-model="form.titulo" type="text" required maxlength="200" placeholder="Ex: AlimentaÃ§Ã£o dos animais da manhÃ£" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" :class="formErrors.titulo ? 'border-red-400 ring-1 ring-red-400' : ''" />
+                <label class="text-sm font-semibold text-gray-700">Título *</label>
+                <input v-model="form.titulo" type="text" required maxlength="200" placeholder="Ex: Alimentação dos animais da manhã" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" :class="formErrors.titulo ? 'border-red-400 ring-1 ring-red-400' : ''" />
                 <p v-if="formErrors.titulo" class="text-xs text-red-500 font-medium">{{ formErrors.titulo }}</p>
               </div>
 
-              <!-- DescriÃ§Ã£o -->
+              <!-- Descrição -->
               <div class="flex flex-col gap-1.5">
-                <label class="text-sm font-semibold text-gray-700">DescriÃ§Ã£o</label>
+                <label class="text-sm font-semibold text-gray-700">Descrição</label>
                 <textarea v-model="form.descricao" rows="2" placeholder="Detalhes da atividade..." class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none" />
               </div>
 
@@ -376,7 +376,7 @@
                 <label class="text-sm font-semibold text-gray-700">Periodicidade</label>
                 <div class="flex gap-2">
                   <button
-                    v-for="op in [{ label: 'DiÃ¡ria', value: 'diaria' }, { label: 'Quinzenal', value: 'quinzenal' }, { label: 'Mensal', value: 'mensal' }]"
+                    v-for="op in [{ label: 'Diária', value: 'diaria' }, { label: 'Quinzenal', value: 'quinzenal' }, { label: 'Mensal', value: 'mensal' }]"
                     :key="op.value"
                     type="button"
                     class="flex-1 text-xs font-bold py-2.5 rounded-xl border transition-colors"
@@ -396,7 +396,7 @@
                   <label class="text-sm font-semibold text-gray-700">Prioridade</label>
                   <select v-model="form.prioridade" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="baixa">Baixa</option>
-                    <option value="media">MÃ©dia</option>
+                    <option value="media">Média</option>
                     <option value="alta">Alta</option>
                     <option value="urgente">Urgente</option>
                   </select>
@@ -406,7 +406,7 @@
                   <select v-model="form.status" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="pendente">Pendente</option>
                     <option value="em_andamento">Em Andamento</option>
-                    <option value="concluida">ConcluÃ­da</option>
+                    <option value="concluida">Concluída</option>
                     <option value="cancelada">Cancelada</option>
                   </select>
                 </div>
@@ -421,10 +421,10 @@
                 <input v-model="form.data_atividade" type="date" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
               </div>
 
-              <!-- Hora inÃ­cio + fim -->
+              <!-- Hora início + fim -->
               <div class="grid grid-cols-2 gap-4">
                 <div class="flex flex-col gap-1.5">
-                  <label class="text-sm font-semibold text-gray-700">Hora InÃ­cio</label>
+                  <label class="text-sm font-semibold text-gray-700">Hora Início</label>
                   <input v-model="form.hora_inicio" type="time" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
                 </div>
                 <div class="flex flex-col gap-1.5">
@@ -433,10 +433,10 @@
                 </div>
               </div>
 
-              <!-- ObservaÃ§Ã£o -->
+              <!-- Observação -->
               <div class="flex flex-col gap-1.5">
-                <label class="text-sm font-semibold text-gray-700">ObservaÃ§Ã£o</label>
-                <textarea v-model="form.observacao" rows="2" placeholder="ObservaÃ§Ãµes adicionais..." class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none" />
+                <label class="text-sm font-semibold text-gray-700">Observação</label>
+                <textarea v-model="form.observacao" rows="2" placeholder="Observações adicionais..." class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none" />
               </div>
 
               <p v-if="modalError" class="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{{ modalError }}</p>
@@ -446,7 +446,7 @@
                   Cancelar
                 </button>
                 <AppButton variant="primary" size="md" type="submit" :loading="saving" class="flex-1">
-                  {{ adicionando ? 'Criar Atividade' : 'Salvar AlteraÃ§Ãµes' }}
+                  {{ adicionando ? 'Criar Atividade' : 'Salvar Alterações' }}
                 </AppButton>
               </div>
             </form>
@@ -455,7 +455,7 @@
       </Transition>
     </Teleport>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL EXCLUIR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL EXCLUIR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -472,7 +472,7 @@
               <p class="text-sm text-gray-500 mt-2 leading-relaxed">
                 <strong class="text-gray-800">{{ excluindo.titulo }}</strong><br />
                 de <strong class="text-gray-800">{{ excluindo.funcionarios?.nome }}</strong>.<br />
-                <span class="text-red-500 text-xs font-semibold">Essa aÃ§Ã£o nÃ£o pode ser desfeita.</span>
+                <span class="text-red-500 text-xs font-semibold">Essa ação não pode ser desfeita.</span>
               </p>
             </div>
             <p v-if="deleteError" class="text-sm text-red-600 bg-red-50 border-t border-b border-red-200 px-8 py-3 text-center">{{ deleteError }}</p>
@@ -557,12 +557,12 @@ const form = reactive({
 })
 const formErrors = reactive({ funcionario_id: '', titulo: '' })
 
-// â”€â”€ Stats â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Stats �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 function countByStatus(s: string) {
   return atividades.value.filter(a => a.status === s).length
 }
 
-// â”€â”€ Filtros â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Filtros �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 const filtrosAtivos = computed(() => {
   let c = 0
   if (filtros.busca) c++
@@ -575,7 +575,7 @@ const filtrosAtivos = computed(() => {
 
 const atividadesFiltradas = computed(() => {
   return atividades.value.filter(a => {
-    // Filtro por modo de visualizaÃ§Ã£o
+    // Filtro por modo de visualização
     if (viewMode.value === 'modelos'    && a.data_atividade !== null) return false
     if (viewMode.value === 'instancias' && a.data_atividade === null) return false
 
@@ -599,9 +599,9 @@ function limparFiltros() {
   filtros.busca = ''; filtros.funcionarioId = ''; filtros.status = ''; filtros.prioridade = ''; filtros.periodicidade = ''
 }
 
-// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Helpers �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 function formatDate(iso: string | null): string {
-  if (!iso) return 'â€”'
+  if (!iso) return '�?"'
   const [y, m, d] = iso.split('-')
   return `${d}/${m}/${y}`
 }
@@ -609,9 +609,9 @@ function formatDate(iso: string | null): string {
 function statusLabel(s: string | null): string {
   if (s === 'pendente')     return 'Pendente'
   if (s === 'em_andamento') return 'Em Andamento'
-  if (s === 'concluida')    return 'ConcluÃ­da'
+  if (s === 'concluida')    return 'Concluída'
   if (s === 'cancelada')    return 'Cancelada'
-  return s ?? 'â€”'
+  return s ?? '�?"'
 }
 function statusBadgeClass(s: string | null): string {
   if (s === 'pendente')     return 'bg-amber-100 text-amber-700'
@@ -630,10 +630,10 @@ function statusDotClass(s: string | null): string {
 
 function prioridadeLabel(p: string | null): string {
   if (p === 'baixa')   return 'Baixa'
-  if (p === 'media')   return 'MÃ©dia'
+  if (p === 'media')   return 'Média'
   if (p === 'alta')    return 'Alta'
   if (p === 'urgente') return 'Urgente'
-  return p ?? 'â€”'
+  return p ?? '�?"'
 }
 function prioridadeBadgeClass(p: string | null): string {
   if (p === 'baixa')   return 'bg-gray-100 text-gray-600'
@@ -651,10 +651,10 @@ function prioridadeDotClass(p: string | null): string {
 }
 
 function periodicidadeLabel(p: string | null): string {
-  if (p === 'diaria')    return 'DiÃ¡ria'
+  if (p === 'diaria')    return 'Diária'
   if (p === 'quinzenal') return 'Quinzenal'
   if (p === 'mensal')    return 'Mensal'
-  return p ?? 'â€”'
+  return p ?? '�?"'
 }
 function periodicidadeBadgeClass(p: string | null): string {
   if (p === 'diaria')    return 'bg-violet-100 text-violet-700'
@@ -663,7 +663,7 @@ function periodicidadeBadgeClass(p: string | null): string {
   return 'bg-gray-100 text-gray-500'
 }
 
-// â”€â”€ CRUD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? CRUD �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 onMounted(async () => {
   await Promise.all([fetchAtividades(), fetchFuncionarios()])
 })
@@ -720,14 +720,14 @@ async function gerarHoje() {
   if (resultado.erro) {
     geracaoMsg.value = `Erro: ${resultado.erro}`
   } else if (resultado.geradas === 0) {
-    geracaoMsg.value = 'Nenhuma nova tarefa (jÃ¡ geradas ou sem modelos para hoje)'
+    geracaoMsg.value = 'Nenhuma nova tarefa (já geradas ou sem modelos para hoje)'
   } else {
     geracaoMsg.value = `${resultado.geradas} tarefa(s) gerada(s) com sucesso!`
-    // Marca local para evitar re-geraÃ§Ã£o
+    // Marca local para evitar re-geração
     localStorage.setItem(chaveGeracaoHoje(), String(resultado.geradas))
     await fetchAtividades()
   }
-  // Limpa a mensagem apÃ³s 5 s
+  // Limpa a mensagem após 5 s
   setTimeout(() => { geracaoMsg.value = '' }, 5000)
 }
 
@@ -755,8 +755,8 @@ function editAtividade(at: Atividade) {
 function validateForm(): boolean {
   formErrors.funcionario_id = ''; formErrors.titulo = ''
   let ok = true
-  if (!form.funcionario_id) { formErrors.funcionario_id = 'Selecione o funcionÃ¡rio.'; ok = false }
-  if (!form.titulo.trim())  { formErrors.titulo = 'O tÃ­tulo Ã© obrigatÃ³rio.'; ok = false }
+  if (!form.funcionario_id) { formErrors.funcionario_id = 'Selecione o funcionário.'; ok = false }
+  if (!form.titulo.trim())  { formErrors.titulo = 'O título é obrigatório.'; ok = false }
   return ok
 }
 

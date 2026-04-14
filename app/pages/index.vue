@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â• VISÃƒO FUNCIONÃRIO â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.� VIS�fO FUNCIONÁRIO �.��.��.��.��.��.��.��.��.��.��.� -->
     <template v-if="!adminLoading && !isAdmin">
-      <!-- CabeÃ§alho funcionÃ¡rio -->
+      <!-- Cabeçalho funcionário -->
       <div class="relative rounded-3xl overflow-hidden mb-7 shadow-xl">
         <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-green-700 to-green-500" />
         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.18),transparent_60%)]" />
@@ -21,7 +21,7 @@
               <div>
                 <p class="text-xs font-bold text-green-300 uppercase tracking-widest">PetFlow</p>
                 <h1 class="text-2xl font-black text-white leading-tight">
-                  {{ funcionarioLogado ? `OlÃ¡, ${primeiroNome(funcionarioLogado.nome)}!` : 'Minhas Atividades' }}
+                  {{ funcionarioLogado ? `Olá, ${primeiroNome(funcionarioLogado.nome)}!` : 'Minhas Atividades' }}
                 </h1>
                 <p class="text-sm text-green-100/80 mt-0.5">{{ dataHoje }}</p>
               </div>
@@ -29,7 +29,7 @@
             <div v-if="funcionarioLogado" class="flex flex-wrap gap-2">
               <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-white/10 border border-white/15 text-white px-3 py-1.5 rounded-xl">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg>
-                {{ funcionarioLogado.cargo ?? 'FuncionÃ¡rio' }}
+                {{ funcionarioLogado.cargo ?? 'Funcionário' }}
               </span>
               <span class="inline-flex items-center gap-1 text-xs font-bold bg-white/10 border border-white/15 text-white px-3 py-1.5 rounded-xl">
                 <span class="w-2 h-2 rounded-full bg-green-400" />
@@ -38,7 +38,7 @@
             </div>
           </div>
 
-          <!-- Stats rÃ¡pidos -->
+          <!-- Stats rápidos -->
           <div v-if="funcionarioLogado && !loadingAtividades" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
             <div class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
               <span class="text-[10px] font-bold text-amber-300 uppercase tracking-widest">Pendentes</span>
@@ -49,7 +49,7 @@
               <span class="text-xl font-black text-white">{{ countAtivStatus('em_andamento') }}</span>
             </div>
             <div class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
-              <span class="text-[10px] font-bold text-green-300 uppercase tracking-widest">ConcluÃ­das</span>
+              <span class="text-[10px] font-bold text-green-300 uppercase tracking-widest">Concluídas</span>
               <span class="text-xl font-black text-white">{{ countAtivStatus('concluida') }}</span>
             </div>
             <div class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
@@ -60,14 +60,14 @@
         </div>
       </div>
 
-      <!-- Sem funcionÃ¡rio vinculado -->
+      <!-- Sem funcionário vinculado -->
       <div v-if="!loadingAtividades && !funcionarioLogado" class="flex flex-col items-center justify-center py-24 gap-4">
         <div class="w-16 h-16 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center">
           <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
         </div>
         <div class="text-center">
-          <p class="text-base font-bold text-gray-700">Nenhum funcionÃ¡rio vinculado</p>
-          <p class="text-sm text-gray-400 mt-1">PeÃ§a ao administrador para cadastrar seu e-mail na ficha de funcionÃ¡rio.</p>
+          <p class="text-base font-bold text-gray-700">Nenhum funcionário vinculado</p>
+          <p class="text-sm text-gray-400 mt-1">Peça ao administrador para cadastrar seu e-mail na ficha de funcionário.</p>
         </div>
       </div>
 
@@ -113,7 +113,7 @@
           <svg class="w-14 h-14 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.25" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
           </svg>
-          <span class="text-base font-semibold text-gray-400">Nenhuma atividade para este perÃ­odo</span>
+          <span class="text-base font-semibold text-gray-400">Nenhuma atividade para este período</span>
         </div>
 
         <template v-else>
@@ -127,13 +127,13 @@
               ? 'border-blue-300 ring-2 ring-blue-100'
               : at.prioridade === 'urgente' ? 'border-red-200' : 'border-gray-100'"
           >
-            <!-- Borda topo: barra animada se em andamento, cor de prioridade caso contrÃ¡rio -->
+            <!-- Borda topo: barra animada se em andamento, cor de prioridade caso contrário -->
             <div v-if="at.status === 'em_andamento'" class="h-1 w-full bg-blue-100 overflow-hidden">
               <div class="h-full bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 animate-[progress_2s_ease-in-out_infinite]" style="background-size:200% 100%" />
             </div>
             <div v-else class="h-1" :class="prioridadeAccent(at.prioridade)" />
 
-            <!-- CabeÃ§alho premium do tÃ­tulo -->
+            <!-- Cabeçalho premium do título -->
             <div class="relative px-5 pt-4 pb-3 bg-gradient-to-r from-green-950 via-green-800 to-green-700 overflow-hidden">
               <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.12),transparent_65%)]" />
               <div class="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/5" />
@@ -171,13 +171,13 @@
                 </div>
                 <div v-if="at.hora_inicio" class="flex items-center gap-1 text-xs text-gray-400">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75v5.25l3 1.5"/></svg>
-                  {{ at.hora_inicio }}{{ at.hora_fim ? ` â€“ ${at.hora_fim}` : '' }}
+                  {{ at.hora_inicio }}{{ at.hora_fim ? ` �?" ${at.hora_fim}` : '' }}
                 </div>
               </div>
 
               <p v-if="at.observacao" class="text-xs text-gray-400 italic border-t border-gray-50 pt-2">{{ at.observacao }}</p>
 
-              <!-- BotÃ£o alterar status -->
+              <!-- Botão alterar status -->
               <div class="flex gap-2 pt-1" v-if="at.status !== 'concluida' && at.status !== 'cancelada'">
                 <button
                   v-if="at.status === 'pendente'"
@@ -204,13 +204,13 @@
               </div>
               <div v-else-if="at.status === 'concluida'" class="flex items-center gap-1.5 text-xs font-bold text-green-600 pt-1">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                ConcluÃ­da
+                Concluída
               </div>
             </div>
           </div>
           </div>
 
-          <!-- Banner: tudo concluÃ­do nesta aba -->
+          <!-- Banner: tudo concluído nesta aba -->
           <div
             v-if="ativasTab(tabAtiva).length === 0 && concluidasTab(tabAtiva).length > 0"
             class="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 via-emerald-500 to-green-500 p-5 shadow-lg"
@@ -219,22 +219,22 @@
             <div class="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-white/10 pointer-events-none" />
             <div class="relative flex items-center gap-4">
               <div class="shrink-0 w-14 h-14 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-3xl select-none">
-                ðŸ†
+                �Y�?
               </div>
               <div>
-                <p class="text-base font-black text-white leading-tight">ParabÃ©ns, {{ funcionarioLogado ? primeiroNome(funcionarioLogado.nome) : 'campeÃ£o' }}!</p>
-                <p class="text-sm text-green-100/90 mt-0.5">Todas as tarefas desta aba foram concluÃ­das. Excelente trabalho! Continue assim! ðŸŒŸ</p>
+                <p class="text-base font-black text-white leading-tight">Parabéns, {{ funcionarioLogado ? primeiroNome(funcionarioLogado.nome) : 'campeão' }}!</p>
+                <p class="text-sm text-green-100/90 mt-0.5">Todas as tarefas desta aba foram concluídas. Excelente trabalho! Continue assim! 🎉</p>
               </div>
             </div>
           </div>
 
-          <!-- Divisor ConcluÃ­das -->
+          <!-- Divisor Concluídas -->
           <div v-if="concluidasTab(tabAtiva).length > 0" class="mt-8">
             <div class="flex items-center gap-3 mb-4">
               <div class="flex-1 h-px bg-gray-200" />
               <span class="inline-flex items-center gap-1.5 text-xs font-bold text-green-700 bg-green-50 border border-green-100 px-3 py-1 rounded-full">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                ConcluÃ­das ({{ concluidasTab(tabAtiva).length }})
+                Concluídas ({{ concluidasTab(tabAtiva).length }})
               </span>
               <div class="flex-1 h-px bg-gray-200" />
             </div>
@@ -244,7 +244,7 @@
                 :key="at.id"
                 class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
               >
-                <!-- Header concluÃ­da neutro -->
+                <!-- Header concluída neutro -->
                 <div class="px-5 pt-4 pb-3 bg-gray-50 border-b border-gray-100">
                   <div class="flex items-start justify-between gap-2">
                     <div class="flex items-start gap-2">
@@ -253,7 +253,7 @@
                     </div>
                     <span class="shrink-0 inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
                       <span class="w-1.5 h-1.5 rounded-full bg-green-500" />
-                      ConcluÃ­da
+                      Concluída
                     </span>
                   </div>
                   <p v-if="at.descricao" class="mt-1 text-xs text-gray-400 leading-relaxed line-clamp-2">{{ at.descricao }}</p>
@@ -274,7 +274,7 @@
       </template>
     </template>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â• VISÃƒO ADMIN â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.� VIS�fO ADMIN �.��.��.��.��.��.��.��.��.��.��.� -->
     <template v-if="!adminLoading && isAdmin">
 
       <!-- Header compacto -->
@@ -283,8 +283,8 @@
         <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-white/5 pointer-events-none" />
         <div class="relative px-6 sm:px-10 py-6 flex items-center justify-between gap-4">
           <div>
-            <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-green-300 mb-1">PetFlow Â· Painel Admin</p>
-            <h1 class="text-xl sm:text-3xl font-black text-white leading-tight">VisÃ£o Geral do NegÃ³cio</h1>
+            <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-green-300 mb-1">PetFlow · Painel Admin</p>
+            <h1 class="text-xl sm:text-3xl font-black text-white leading-tight">Visão Geral do Negócio</h1>
             <p class="text-sm text-green-100/70 mt-1">{{ dataHoje }}</p>
           </div>
           <div class="shrink-0 w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center">
@@ -295,7 +295,7 @@
         </div>
       </section>
 
-      <!-- â”€â”€ Financeiro â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <!-- �"?�"? Financeiro �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? -->
       <div class="mb-3 flex items-center gap-2 px-1">
         <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">Financeiro</span>
         <div class="flex-1 h-px bg-gray-200" />
@@ -309,23 +309,23 @@
             <div class="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
               <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
-            <span class="text-[10px] font-black uppercase tracking-widest text-green-100">Faturamento / MÃªs</span>
+            <span class="text-[10px] font-black uppercase tracking-widest text-green-100">Faturamento / Mês</span>
           </div>
           <p class="text-lg sm:text-2xl font-black text-white truncate">{{ resumoLoading ? '...' : formatCurrency(faturamentoMes) }}</p>
           <p class="text-[11px] text-green-100/70 mt-1">vendas confirmadas</p>
         </div>
 
-        <!-- Pedidos do mÃªs -->
+        <!-- Pedidos do mês -->
         <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 p-4 shadow-md">
           <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/10 pointer-events-none" />
           <div class="flex items-center gap-2 mb-3">
             <div class="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
               <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185z"/></svg>
             </div>
-            <span class="text-[10px] font-black uppercase tracking-widest text-orange-100">Pedidos / MÃªs</span>
+            <span class="text-[10px] font-black uppercase tracking-widest text-orange-100">Pedidos / Mês</span>
           </div>
           <p class="text-2xl font-black text-white">{{ resumoLoading ? '...' : vendasMes }}</p>
-          <p class="text-[11px] text-orange-100/70 mt-1">pedidos este mÃªs</p>
+          <p class="text-[11px] text-orange-100/70 mt-1">pedidos este mês</p>
         </div>
 
         <!-- Contas a pagar -->
@@ -362,11 +362,11 @@
             {{ resumoLoading ? '...' : contasVencidas }}
             <span v-if="contasVencidas > 0" class="inline-block w-2 h-2 rounded-full bg-white animate-ping" />
           </p>
-          <p class="text-[11px] text-white/70 mt-1">{{ contasVencidas > 0 ? 'atenÃ§Ã£o necessÃ¡ria' : 'tudo em dia âœ“' }}</p>
+          <p class="text-[11px] text-white/70 mt-1">{{ contasVencidas > 0 ? 'atenção necessária' : 'tudo em dia ✅' }}</p>
         </div>
       </div>
 
-      <!-- â”€â”€ Operacional â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <!-- �"?�"? Operacional �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? -->
       <div class="mb-3 flex items-center gap-2 px-1">
         <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">Operacional</span>
         <div class="flex-1 h-px bg-gray-200" />
@@ -403,7 +403,7 @@
             </div>
           </div>
           <p class="text-2xl font-black text-gray-800">{{ resumoLoading ? '...' : tarefasHoje }}</p>
-          <p class="text-[11px] text-gray-400">{{ resumoLoading ? '' : tarefasConcluidasHoje + ' concluÃ­das hoje' }}</p>
+          <p class="text-[11px] text-gray-400">{{ resumoLoading ? '' : tarefasConcluidasHoje + ' concluídas hoje' }}</p>
         </div>
 
         <div class="rounded-2xl bg-white border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
@@ -414,11 +414,11 @@
             </div>
           </div>
           <p class="text-2xl font-black text-gray-800">{{ resumoLoading ? '...' : tarefasPendentes }}</p>
-          <p class="text-[11px] text-gray-400">aguardando inÃ­cio</p>
+          <p class="text-[11px] text-gray-400">aguardando início</p>
         </div>
       </div>
 
-      <!-- â”€â”€ Atalhos compactos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <!-- �"?�"? Atalhos compactos �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? -->
       <div class="mb-3 flex items-center gap-2 px-1">
         <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">Atalhos</span>
         <div class="flex-1 h-px bg-gray-200" />
@@ -458,7 +458,7 @@ import AppNavIcon from '~/components/AppNavIcon.vue'
 const supabase = createSupabaseClient()
 const { isAdmin, adminLoading } = useAdmin()
 
-// â”€â”€ ADMIN: resumo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? ADMIN: resumo �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 const resumoLoading      = ref(true)
 const totalClientes      = ref(0)
 const clientesAtivos     = ref(0)
@@ -471,7 +471,7 @@ const tarefasHoje        = ref(0)
 const tarefasConcluidasHoje = ref(0)
 const tarefasPendentes   = ref(0)
 
-// â”€â”€ FUNCIONÃRIO: atividades â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? FUNCIONÁRIO: atividades �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 interface AtividadeFuncionario {
   id: number
   titulo: string
@@ -496,10 +496,10 @@ const tabs = [
   { label: 'Hoje',     value: 'hoje'     },
   { label: 'Semana',   value: 'semana'   },
   { label: 'Quinzena', value: 'quinzena' },
-  { label: 'MÃªs',      value: 'mes'      },
+  { label: 'Mês',      value: 'mes'      },
 ] as const
 
-// â”€â”€ Datas de referÃªncia â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Datas de referência �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 const hoje = new Date()
 hoje.setHours(0, 0, 0, 0)
 
@@ -530,7 +530,7 @@ function fimQuinzena(): Date {
   if (hoje.getDate() <= 15) {
     d.setDate(15)
   } else {
-    d.setMonth(d.getMonth() + 1, 0) // Ãºltimo dia do mÃªs
+    d.setMonth(d.getMonth() + 1, 0) // último dia do mês
   }
   return d
 }
@@ -549,14 +549,14 @@ function concluidasTab(tab: string): AtividadeFuncionario[] {
 }
 
 const frasesMotivacionais = [
-  'Cada tarefa concluÃ­da Ã© um passo rumo Ã  excelÃªncia!',
-  'Foco total, resultado certo. Vamos lÃ¡!',
-  'OrganizaÃ§Ã£o Ã© o segredo de quem vai longe!',
-  'Um animal bem cuidado comeÃ§a com uma tarefa realizada.',
-  'ConsistÃªncia supera talento todos os dias.',
-  'Hoje Ã© um Ã³timo dia para dar o seu melhor!',
-  'Pequenas aÃ§Ãµes, grandes resultados.',
-  'Produtividade Ã© fazer as coisas certas com dedicaÃ§Ã£o.',
+  'Cada tarefa concluída é um passo rumo à excelência!',
+  'Foco total, resultado certo. Vamos lá!',
+  'Organização é o segredo de quem vai longe!',
+  'Um animal bem cuidado começa com uma tarefa realizada.',
+  'Consistência supera talento todos os dias.',
+  'Hoje é um ótimo dia para dar o seu melhor!',
+  'Pequenas ações, grandes resultados.',
+  'Produtividade é fazer as coisas certas com dedicação.',
 ]
 const fraseAtual = computed(() => {
   const idx = new Date().getDate() % frasesMotivacionais.length
@@ -568,7 +568,7 @@ function atividadesPorTab(tab: string): AtividadeFuncionario[] {
   return minhasAtividades.value.filter(a => {
     const dataAtiv = a.data_atividade
     if (tab === 'hoje') {
-      // diÃ¡rias de hoje OU sem data definida com periodicidade diÃ¡ria
+      // diárias de hoje OU sem data definida com periodicidade diária
       if (a.periodicidade === 'diaria') {
         return !dataAtiv || dataAtiv === todaIso
       }
@@ -576,7 +576,7 @@ function atividadesPorTab(tab: string): AtividadeFuncionario[] {
     }
     if (tab === 'semana') {
       if (a.periodicidade !== 'diaria') return false
-      if (!dataAtiv) return true // recorrente diÃ¡ria sem data fixa
+      if (!dataAtiv) return true // recorrente diária sem data fixa
       return dataAtiv >= toISODate(inicioSemana()) && dataAtiv <= toISODate(fimSemana())
     }
     if (tab === 'quinzena') {
@@ -609,9 +609,9 @@ function formatarData(iso: string): string {
 function statusLabel(s: string | null) {
   if (s === 'pendente')     return 'Pendente'
   if (s === 'em_andamento') return 'Em Andamento'
-  if (s === 'concluida')    return 'ConcluÃ­da'
+  if (s === 'concluida')    return 'Concluída'
   if (s === 'cancelada')    return 'Cancelada'
-  return s ?? 'â€”'
+  return s ?? '�?"'
 }
 function statusBadgeClass(s: string | null) {
   if (s === 'pendente')     return 'bg-amber-100 text-amber-700'
@@ -629,10 +629,10 @@ function statusDotClass(s: string | null) {
 }
 function prioridadeLabel(p: string | null) {
   if (p === 'baixa')   return 'Baixa'
-  if (p === 'media')   return 'MÃ©dia'
+  if (p === 'media')   return 'Média'
   if (p === 'alta')    return 'Alta'
   if (p === 'urgente') return 'Urgente'
-  return p ?? 'â€”'
+  return p ?? '�?"'
 }
 function prioridadeBadgeClass(p: string | null) {
   if (p === 'baixa')   return 'bg-gray-100 text-gray-600'
@@ -649,10 +649,10 @@ function prioridadeAccent(p: string | null) {
   return 'bg-gray-200'
 }
 function periodicidadeLabel(p: string | null) {
-  if (p === 'diaria')    return 'DiÃ¡ria'
+  if (p === 'diaria')    return 'Diária'
   if (p === 'quinzenal') return 'Quinzenal'
   if (p === 'mensal')    return 'Mensal'
-  return p ?? 'â€”'
+  return p ?? '�?"'
 }
 function periodicidadeBadgeClass(p: string | null) {
   if (p === 'diaria')    return 'bg-violet-100 text-violet-700'
@@ -668,12 +668,12 @@ async function alterarStatus(at: AtividadeFuncionario, novoStatus: string) {
   atualizando.value = null
 }
 
-// â”€â”€ Fetch â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Fetch �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 onMounted(async () => {
   const { data: { session } } = await supabase.auth.getSession()
   const email = session?.user?.email
 
-  // FuncionÃ¡rio: buscar pelo email
+  // Funcionário: buscar pelo email
   if (email && email !== 'admin@zoocultura.com') {
     const { data: func } = await supabase
       .from('funcionarios')
@@ -751,7 +751,7 @@ const atalhos = [
     to: '/clientes',
     icon: 'identification',
     title: 'Clientes',
-    description: 'Gerencie cadastros, contatos e informaÃ§Ãµes de relacionamento.',
+    description: 'Gerencie cadastros, contatos e informações de relacionamento.',
     adminOnly: false,
     accent: 'bg-violet-500',
     iconBg: 'bg-violet-50 border-violet-100',
@@ -762,7 +762,7 @@ const atalhos = [
     to: '/vendas',
     icon: 'receipt',
     title: 'Vendas',
-    description: 'Registre vendas com itens e subtotais de forma rÃ¡pida e segura.',
+    description: 'Registre vendas com itens e subtotais de forma rápida e segura.',
     adminOnly: false,
     accent: 'bg-orange-500',
     iconBg: 'bg-orange-50 border-orange-100',
@@ -773,7 +773,7 @@ const atalhos = [
     to: '/produtos',
     icon: 'package',
     title: 'Produtos',
-    description: 'Acompanhe estoque, categorias, preÃ§os e status dos itens.',
+    description: 'Acompanhe estoque, categorias, preços e status dos itens.',
     adminOnly: false,
     accent: 'bg-blue-500',
     iconBg: 'bg-blue-50 border-blue-100',
@@ -783,7 +783,7 @@ const atalhos = [
   {
     to: '/funcionarios',
     icon: 'users',
-    title: 'FuncionÃ¡rios',
+    title: 'Funcionários',
     description: 'Organize dados da equipe e mantenha o controle operacional.',
     adminOnly: true,
     accent: 'bg-emerald-500',

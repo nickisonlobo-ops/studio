@@ -7,14 +7,14 @@ export interface ResultadoGeracao {
 }
 
 /**
- * Gera instÃ¢ncias de atividades a partir dos modelos (registros sem data_atividade).
+ * Gera instâncias de atividades a partir dos modelos (registros sem data_atividade).
  *
  * Regras de periodicidade:
- *  - diaria    â†’ gera toda vez que chamado (dia de hoje)
- *  - quinzenal â†’ gera nos dias 1 e 16 do mÃªs
- *  - mensal    â†’ gera no dia 1 do mÃªs
+ *  - diaria    �?' gera toda vez que chamado (dia de hoje)
+ *  - quinzenal �?' gera nos dias 1 e 16 do mês
+ *  - mensal    �?' gera no dia 1 do mês
  *
- * DeduplicaÃ§Ã£o: nÃ£o cria se jÃ¡ existe registro com o mesmo
+ * Deduplicação: não cria se já existe registro com o mesmo
  * funcionario_id + titulo + data_atividade para hoje.
  */
 export async function gerarTarefasDiarias(): Promise<ResultadoGeracao> {
@@ -32,7 +32,7 @@ export async function gerarTarefasDiarias(): Promise<ResultadoGeracao> {
   if (fetchErr) return { geradas: 0, ignoradas: 0, erro: fetchErr.message }
   if (!modelos || modelos.length === 0) return { geradas: 0, ignoradas: 0, erro: null }
 
-  // Verifica o que jÃ¡ existe hoje (evita duplicatas)
+  // Verifica o que já existe hoje (evita duplicatas)
   const { data: existentes } = await supabase
     .from('atividades_funcionarios')
     .select('funcionario_id, titulo')
@@ -86,7 +86,7 @@ export async function gerarTarefasDiarias(): Promise<ResultadoGeracao> {
   return { geradas: inserir.length, ignoradas, erro: null }
 }
 
-/** Chave do localStorage para controle de geraÃ§Ã£o diÃ¡ria */
+/** Chave do localStorage para controle de geração diária */
 export function chaveGeracaoHoje(): string {
   return `ztasks_gerado_${new Date().toISOString().slice(0, 10)}`
 }

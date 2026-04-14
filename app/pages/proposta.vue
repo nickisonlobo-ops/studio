@@ -17,7 +17,7 @@
         </div>
 
         <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-          <a href="#beneficios" class="hover:text-green-700 transition-colors">BenefÃ­cios</a>
+          <a href="#beneficios" class="hover:text-green-700 transition-colors">Benefícios</a>
           <a href="#sistema" class="hover:text-green-700 transition-colors">Sistema</a>
           <a href="#assessoria" class="hover:text-green-700 transition-colors">Assessoria</a>
           <a href="#marketing" class="hover:text-green-700 transition-colors">Marketing</a>
@@ -47,16 +47,16 @@
         <div class="flex flex-col items-start gap-6">
           <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest">
             <span class="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-            Sistema + EstratÃ©gia + Crescimento
+            Sistema + Estratégia + Crescimento
           </span>
 
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.03] tracking-tight">
-            Transforme sua casa de raÃ§Ã£o em uma
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 to-orange-500">mÃ¡quina de vendas</span>
+            Transforme sua casa de ração em uma
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 to-orange-500">máquina de vendas</span>
           </h1>
 
           <p class="text-base sm:text-lg text-green-100/90 max-w-xl leading-relaxed">
-            Mais clientes, mais controle e mais lucro. NÃ³s organizamos sua operaÃ§Ã£o, estruturamos seu crescimento e
+            Mais clientes, mais controle e mais lucro. Nós organizamos sua operação, estruturamos seu crescimento e
             ajudamos sua loja a vender mais todos os meses.
           </p>
 
@@ -92,7 +92,7 @@
 
         <div class="hidden lg:flex flex-col gap-5">
           <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-6 shadow-2xl">
-            <p class="text-[10px] font-black text-green-200 uppercase tracking-[0.2em] mb-4">VisÃ£o do NegÃ³cio</p>
+            <p class="text-[10px] font-black text-green-200 uppercase tracking-[0.2em] mb-4">Visão do Negócio</p>
             <div class="grid grid-cols-2 gap-4">
               <div v-for="stat in heroStats" :key="stat.label" class="bg-white/10 rounded-2xl px-4 py-4 border border-white/10">
                 <p class="text-[10px] font-black uppercase tracking-[0.15em]" :class="stat.color">{{ stat.label }}</p>
@@ -105,15 +105,15 @@
           <div class="grid grid-cols-3 gap-4">
             <div class="rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 p-4 text-center">
               <p class="text-2xl font-black text-white">+ Controle</p>
-              <p class="text-xs text-green-100/70 mt-1">da operaÃ§Ã£o</p>
+              <p class="text-xs text-green-100/70 mt-1">da operação</p>
             </div>
             <div class="rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 p-4 text-center">
               <p class="text-2xl font-black text-white">+ Vendas</p>
-              <p class="text-xs text-green-100/70 mt-1">com estratÃ©gia</p>
+              <p class="text-xs text-green-100/70 mt-1">com estratégia</p>
             </div>
             <div class="rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 p-4 text-center">
               <p class="text-2xl font-black text-white">+ Lucro</p>
-              <p class="text-xs text-green-100/70 mt-1">com visÃ£o clara</p>
+              <p class="text-xs text-green-100/70 mt-1">com visão clara</p>
             </div>
           </div>
         </div>
@@ -132,12 +132,12 @@
         <div class="text-center mb-14">
           <span class="text-xs font-black text-orange-500 uppercase tracking-widest">Resultado real</span>
           <h2 class="mt-2 text-3xl sm:text-4xl font-black text-gray-900">
-            VocÃª para de apagar incÃªndio e comeÃ§a a
-            <span class="text-green-700">crescer com direÃ§Ã£o</span>
+            Você para de apagar incêndio e começa a
+            <span class="text-green-700">crescer com direção</span>
           </h2>
           <p class="mt-4 text-gray-500 max-w-3xl mx-auto">
-            A PetFlow une sistema, organizaÃ§Ã£o, suporte e estratÃ©gia para transformar a rotina da sua loja em um
-            negÃ³cio mais leve, controlado e lucrativo.
+            A PetFlow une sistema, organização, suporte e estratégia para transformar a rotina da sua loja em um
+            negócio mais leve, controlado e lucrativo.
           </p>
         </div>
 
@@ -163,7 +163,7 @@
         <div class="text-center mb-14">
           <span class="text-xs font-black text-orange-500 uppercase tracking-widest">Sua realidade hoje</span>
           <h2 class="mt-2 text-3xl sm:text-4xl font-black text-gray-900">
-            Se vocÃª trabalha muito e o dinheiro nÃ£o sobra,
+            Se você trabalha muito e o dinheiro não sobra,
             <br class="hidden sm:block" />
             o problema pode estar aqui:
           </h2>
@@ -188,9 +188,9 @@
         </div>
 
         <div class="mt-12 rounded-3xl bg-gradient-to-r from-green-700 to-green-900 p-8 text-center text-white shadow-xl">
-          <p class="text-xl font-black">A boa notÃ­cia Ã© que isso tem soluÃ§Ã£o.</p>
+          <p class="text-xl font-black">A boa notícia é que isso tem solução.</p>
           <p class="text-green-200 text-sm mt-2 max-w-2xl mx-auto">
-            Com a estrutura certa, sua loja pode vender melhor, trabalhar com menos bagunÃ§a e crescer de forma mais previsÃ­vel.
+            Com a estrutura certa, sua loja pode vender melhor, trabalhar com menos bagunça e crescer de forma mais previsível.
           </p>
         </div>
       </div>
@@ -200,10 +200,10 @@
     <section id="sistema" class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-14">
-          <span class="text-xs font-black text-green-600 uppercase tracking-widest">MÃ³dulo 1</span>
+          <span class="text-xs font-black text-green-600 uppercase tracking-widest">Módulo 1</span>
           <h2 class="mt-2 text-3xl sm:text-4xl font-black text-gray-900">Sistema PetFlow</h2>
           <p class="mt-4 text-gray-500 max-w-3xl mx-auto">
-            VocÃª passa a ter controle total da sua loja em tempo real, mesmo sem estar presente. Tudo centralizado em um sÃ³ lugar.
+            Você passa a ter controle total da sua loja em tempo real, mesmo sem estar presente. Tudo centralizado em um só lugar.
           </p>
         </div>
 
@@ -236,14 +236,14 @@
             <div class="relative z-10">
               <p class="text-2xl font-black text-white">Acesso 100% na nuvem</p>
               <p class="text-green-200 text-sm mt-2 max-w-xl">
-                Sem instalaÃ§Ã£o complicada. Funciona no celular, no tablet e no computador. Sua equipe acessa com rapidez e praticidade.
+                Sem instalação complicada. Funciona no celular, no tablet e no computador. Sua equipe acessa com rapidez e praticidade.
               </p>
             </div>
             <a
               href="#contato"
               class="relative z-10 inline-flex items-center gap-2 bg-white text-green-700 font-black text-sm px-6 py-3 rounded-2xl shadow hover:bg-green-50 transition-colors"
             >
-              Solicitar demonstraÃ§Ã£o
+              Solicitar demonstração
             </a>
           </div>
         </div>
@@ -255,12 +255,12 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="grid lg:grid-cols-2 gap-14 items-center">
           <div>
-            <span class="text-xs font-black text-blue-600 uppercase tracking-widest">MÃ³dulo 2</span>
+            <span class="text-xs font-black text-blue-600 uppercase tracking-widest">Módulo 2</span>
             <h2 class="mt-2 text-3xl sm:text-4xl font-black text-gray-900 leading-tight">
               Assessoria Empresarial
             </h2>
             <p class="mt-4 text-gray-600 leading-relaxed max-w-xl">
-              A gente entra no seu negÃ³cio, identifica onde vocÃª estÃ¡ perdendo dinheiro e mostra o que precisa ser ajustado para crescer com mais seguranÃ§a.
+              A gente entra no seu negócio, identifica onde você está perdendo dinheiro e mostra o que precisa ser ajustado para crescer com mais segurança.
             </p>
 
             <div class="mt-8 flex flex-col gap-4">
@@ -282,7 +282,7 @@
 
           <div class="flex flex-col gap-5">
             <div class="rounded-3xl p-7 text-white shadow-xl" style="background: linear-gradient(135deg,#254d8e,#0a1c39)">
-              <p class="text-xs font-black uppercase tracking-widest text-blue-300 mb-4">O que vocÃª recebe</p>
+              <p class="text-xs font-black uppercase tracking-widest text-blue-300 mb-4">O que você recebe</p>
               <ul class="flex flex-col gap-3">
                 <li v-for="item in assessoriaReceive" :key="item" class="flex items-start gap-3 text-sm font-semibold">
                   <svg class="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -308,10 +308,10 @@
     <section id="marketing" class="py-20 bg-gradient-to-br from-orange-50 via-white to-orange-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-14">
-          <span class="text-xs font-black text-orange-500 uppercase tracking-widest">MÃ³dulo 3</span>
+          <span class="text-xs font-black text-orange-500 uppercase tracking-widest">Módulo 3</span>
           <h2 class="mt-2 text-3xl sm:text-4xl font-black text-gray-900">Assessoria de Marketing</h2>
           <p class="mt-4 text-gray-600 max-w-3xl mx-auto">
-            Enquanto vocÃª cuida da loja, nÃ³s cuidamos de trazer clientes atÃ© vocÃª com presenÃ§a digital, conteÃºdo e campanhas mais estratÃ©gicas.
+            Enquanto você cuida da loja, nós cuidamos de trazer clientes até você com presença digital, conteúdo e campanhas mais estratégicas.
           </p>
         </div>
 
@@ -331,9 +331,9 @@
 
         <div class="rounded-3xl bg-white border border-orange-100 shadow-sm p-7 sm:p-10">
           <div class="mb-6">
-            <p class="text-xl font-black text-gray-900 mb-1">O que Ã© entregue com estratÃ©gia</p>
+            <p class="text-xl font-black text-gray-900 mb-1">O que é entregue com estratégia</p>
             <p class="text-sm text-gray-500 leading-relaxed max-w-2xl">
-              NÃ£o Ã© sÃ³ postar por postar. Cada aÃ§Ã£o Ã© pensada para aumentar sua visibilidade, gerar confianÃ§a e trazer mais movimento para a loja.
+              Não é só postar por postar. Cada ação é pensada para aumentar sua visibilidade, gerar confiança e trazer mais movimento para a loja.
             </p>
           </div>
 
@@ -356,7 +356,7 @@
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-14">
           <span class="text-xs font-black text-green-600 uppercase tracking-widest">Processo</span>
-          <h2 class="mt-2 text-3xl sm:text-4xl font-black text-gray-900">Como comeÃ§amos</h2>
+          <h2 class="mt-2 text-3xl sm:text-4xl font-black text-gray-900">Como começamos</h2>
         </div>
 
         <div class="relative">
@@ -388,7 +388,7 @@
           <span class="text-xs font-black text-green-600 uppercase tracking-widest">Investimento</span>
           <h2 class="mt-2 text-3xl sm:text-4xl font-black text-gray-900">Escolha o melhor plano para crescer</h2>
           <p class="mt-4 text-gray-500 max-w-2xl mx-auto">
-            Os planos foram desenhados para acompanhar a evoluÃ§Ã£o da sua loja, do controle bÃ¡sico atÃ© a expansÃ£o com marketing e estratÃ©gia.
+            Os planos foram desenhados para acompanhar a evolução da sua loja, do controle básico até a expansão com marketing e estratégia.
           </p>
         </div>
 
@@ -403,7 +403,7 @@
           >
             <div v-if="plano.featured" class="absolute -top-3.5 inset-x-0 flex justify-center">
               <span class="bg-orange-500 text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest shadow">
-                Melhor custo-benefÃ­cio
+                Melhor custo-benefício
               </span>
             </div>
 
@@ -426,7 +426,7 @@
                   <span class="text-5xl font-black leading-none" :class="plano.featured ? 'text-white' : 'text-gray-900'">
                     {{ plano.price }}
                   </span>
-                  <span class="text-sm font-semibold pb-1" :class="plano.featured ? 'text-green-300' : 'text-gray-400'">/mÃªs</span>
+                  <span class="text-sm font-semibold pb-1" :class="plano.featured ? 'text-green-300' : 'text-gray-400'">/mês</span>
                 </div>
                 <p class="text-xs mt-2" :class="plano.featured ? 'text-green-200/80' : 'text-gray-400'">
                   {{ plano.implantacao }}
@@ -472,7 +472,7 @@
         </div>
 
         <p class="text-center text-xs text-gray-400 mt-8">
-          * Valores sujeitos a reajuste. Consulte condiÃ§Ãµes especiais para contrato anual.
+          * Valores sujeitos a reajuste. Consulte condições especiais para contrato anual.
         </p>
       </div>
     </section>
@@ -543,7 +543,7 @@
     <section class="py-20 bg-white">
       <div class="max-w-4xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-12">
-          <span class="text-xs font-black text-green-600 uppercase tracking-widest">DÃºvidas frequentes</span>
+          <span class="text-xs font-black text-green-600 uppercase tracking-widest">Dúvidas frequentes</span>
           <h2 class="mt-2 text-3xl font-black text-gray-900">Perguntas frequentes</h2>
         </div>
 
@@ -585,14 +585,14 @@
 
       <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-12">
-          <span class="text-xs font-black text-orange-300 uppercase tracking-widest">PrÃ³ximo passo</span>
+          <span class="text-xs font-black text-orange-300 uppercase tracking-widest">Próximo passo</span>
           <h2 class="mt-2 text-3xl sm:text-4xl font-black text-white leading-tight">
-            Se vocÃª quer parar de operar no escuro
+            Se você quer parar de operar no escuro
             <br class="hidden sm:block" />
-            e comeÃ§ar a crescer de verdade, esse Ã© o prÃ³ximo passo.
+            e começar a crescer de verdade, esse é o próximo passo.
           </h2>
           <p class="mt-4 text-green-100/80 max-w-2xl mx-auto">
-            Preencha o formulÃ¡rio e nossa equipe entrarÃ¡ em contato para entender o seu cenÃ¡rio e apresentar a melhor estrutura para sua loja.
+            Preencha o formulário e nossa equipe entrará em contato para entender o seu cenário e apresentar a melhor estrutura para sua loja.
           </p>
         </div>
 
@@ -664,7 +664,7 @@
               <textarea
                 v-model="form.mensagem"
                 rows="4"
-                placeholder="Conte um pouco sobre sua loja e o que vocÃª quer melhorar..."
+                placeholder="Conte um pouco sobre sua loja e o que você quer melhorar..."
                 class="border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition resize-none"
               />
             </div>
@@ -691,7 +691,7 @@
             <svg class="w-6 h-6 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <p class="text-sm text-green-700 font-semibold">Recebemos sua solicitaÃ§Ã£o. Entraremos em contato em breve.</p>
+            <p class="text-sm text-green-700 font-semibold">Recebemos sua solicitação. Entraremos em contato em breve.</p>
           </div>
         </div>
 
@@ -725,8 +725,8 @@
           <span class="text-white font-black">PetFlow</span>
         </div>
 
-        <p class="text-xs text-center">Â© {{ new Date().getFullYear() }} PetFlow. Todos os direitos reservados.</p>
-        <p class="text-xs">Sistema Â· Assessoria Â· Marketing</p>
+        <p class="text-xs text-center">© {{ new Date().getFullYear() }} PetFlow. Todos os direitos reservados.</p>
+        <p class="text-xs">Sistema · Assessoria · Marketing</p>
       </div>
     </footer>
   </div>
@@ -749,14 +749,14 @@ const form = reactive({
 })
 
 const heroBadges = [
-  'ImplantaÃ§Ã£o assistida',
+  'Implantação assistida',
   'Suporte humanizado',
-  'AtualizaÃ§Ãµes incluÃ­das',
-  'EstratÃ©gia para crescer',
+  'Atualizações incluídas',
+  'Estratégia para crescer',
 ]
 
 const heroStats = [
-  { label: 'Vendas', value: 'R$ 42k', sub: 'mÃªs atual', color: 'text-green-300' },
+  { label: 'Vendas', value: 'R$ 42k', sub: 'mês atual', color: 'text-green-300' },
   { label: 'Clientes', value: '318', sub: 'ativos', color: 'text-blue-300' },
   { label: 'Estoque', value: '1.2k', sub: 'itens', color: 'text-purple-300' },
   { label: 'Rotina', value: '97%', sub: 'organizada', color: 'text-orange-300' },
@@ -795,21 +795,21 @@ const icons = {
 const benefits = [
   {
     title: 'Mais controle no dia a dia',
-    desc: 'Saiba o que entra, o que sai, o que vende e onde estÃ£o os gargalos da operaÃ§Ã£o.',
+    desc: 'Saiba o que entra, o que sai, o que vende e onde estão os gargalos da operação.',
     iconBg: 'bg-green-50',
     iconColor: 'text-green-600',
     icon: icons.chart,
   },
   {
     title: 'Mais clareza para decidir',
-    desc: 'Pare de trabalhar no achismo e comece a tomar decisÃµes com dados e visÃ£o real do negÃ³cio.',
+    desc: 'Pare de trabalhar no achismo e comece a tomar decisões com dados e visão real do negócio.',
     iconBg: 'bg-blue-50',
     iconColor: 'text-blue-600',
     icon: icons.eye,
   },
   {
-    title: 'Mais forÃ§a para crescer',
-    desc: 'Sistema, estratÃ©gia e marketing juntos para sua loja vender mais com estrutura.',
+    title: 'Mais força para crescer',
+    desc: 'Sistema, estratégia e marketing juntos para sua loja vender mais com estrutura.',
     iconBg: 'bg-orange-50',
     iconColor: 'text-orange-500',
     icon: icons.rocket,
@@ -819,41 +819,41 @@ const benefits = [
 const problemas = [
   {
     title: 'Falta de controle financeiro',
-    desc: 'VocÃª trabalha o mÃªs inteiro e no final nÃ£o sabe exatamente quanto sobrou de lucro.',
+    desc: 'Você trabalha o mês inteiro e no final não sabe exatamente quanto sobrou de lucro.',
   },
   {
     title: 'Estoque desorganizado',
-    desc: 'Produto parado de um lado e falta do outro, gerando prejuÃ­zo e venda perdida.',
+    desc: 'Produto parado de um lado e falta do outro, gerando prejuízo e venda perdida.',
   },
   {
-    title: 'Clientes nÃ£o fidelizam',
-    desc: 'Sem histÃ³rico e sem relacionamento, seu cliente compra hoje e some amanhÃ£.',
+    title: 'Clientes não fidelizam',
+    desc: 'Sem histórico e sem relacionamento, seu cliente compra hoje e some amanhã.',
   },
   {
-    title: 'Equipe sem direÃ§Ã£o',
-    desc: 'FuncionÃ¡rios fazem o bÃ¡sico, mas a operaÃ§Ã£o continua bagunÃ§ada e travada.',
+    title: 'Equipe sem direção',
+    desc: 'Funcionários fazem o básico, mas a operação continua bagunçada e travada.',
   },
   {
-    title: 'Pouca presenÃ§a digital',
-    desc: 'Sua concorrÃªncia aparece, anuncia e vende mais, enquanto sua loja fica invisÃ­vel.',
+    title: 'Pouca presença digital',
+    desc: 'Sua concorrência aparece, anuncia e vende mais, enquanto sua loja fica invisível.',
   },
   {
-    title: 'DecisÃµes no escuro',
-    desc: 'Sem relatÃ³rios claros, vocÃª toma decisÃµes importantes sem confianÃ§a.',
+    title: 'Decisões no escuro',
+    desc: 'Sem relatórios claros, você toma decisões importantes sem confiança.',
   },
 ]
 
 const modulos = [
   {
-    title: 'GestÃ£o de Clientes',
-    desc: 'Cadastro organizado, histÃ³rico de relacionamento e visÃ£o completa de cada cliente.',
+    title: 'Gestão de Clientes',
+    desc: 'Cadastro organizado, histórico de relacionamento e visão completa de cada cliente.',
     iconBg: 'bg-blue-50',
     iconColor: 'text-blue-600',
     icon: icons.users,
     features: [
       'Cadastro completo de clientes',
-      'HistÃ³rico de compras e relacionamento',
-      'Lembretes e oportunidades de fidelizaÃ§Ã£o',
+      'Histórico de compras e relacionamento',
+      'Lembretes e oportunidades de fidelização',
     ],
   },
   {
@@ -864,12 +864,12 @@ const modulos = [
     icon: icons.box,
     features: [
       'Cadastro de produtos e categorias',
-      'Controle de estoque mÃ­nimo',
-      'VisÃ£o mais clara do giro dos itens',
+      'Controle de estoque mínimo',
+      'Visão mais clara do giro dos itens',
     ],
   },
   {
-    title: 'GestÃ£o de Vendas',
+    title: 'Gestão de Vendas',
     desc: 'Acompanhe faturamento, fluxo comercial e desempenho da loja com mais clareza.',
     iconBg: 'bg-green-50',
     iconColor: 'text-green-600',
@@ -877,140 +877,140 @@ const modulos = [
     features: [
       'Registro de vendas simplificado',
       'Acompanhamento do faturamento',
-      'VisÃ£o rÃ¡pida de desempenho',
+      'Visão rápida de desempenho',
     ],
   },
   {
     title: 'Financeiro',
-    desc: 'Saiba o que entra, o que sai e onde estÃ£o os pontos de desperdÃ­cio.',
+    desc: 'Saiba o que entra, o que sai e onde estão os pontos de desperdício.',
     iconBg: 'bg-orange-50',
     iconColor: 'text-orange-500',
     icon: icons.finance,
     features: [
-      'Controle de entradas e saÃ­das',
-      'RelatÃ³rios financeiros bÃ¡sicos',
+      'Controle de entradas e saídas',
+      'Relatórios financeiros básicos',
       'Mais clareza sobre margem e resultado',
     ],
   },
   {
     title: 'Equipe e Rotina',
-    desc: 'Mais alinhamento para a operaÃ§Ã£o fluir com menos retrabalho.',
+    desc: 'Mais alinhamento para a operação fluir com menos retrabalho.',
     iconBg: 'bg-rose-50',
     iconColor: 'text-rose-600',
     icon: icons.team,
     features: [
-      'OrganizaÃ§Ã£o de tarefas',
+      'Organização de tarefas',
       'Mais controle operacional',
-      'Rotina mais leve e previsÃ­vel',
+      'Rotina mais leve e previsível',
     ],
   },
   {
-    title: 'RelatÃ³rios e Indicadores',
-    desc: 'Entenda o negÃ³cio com nÃºmeros e indicadores simples de acompanhar.',
+    title: 'Relatórios e Indicadores',
+    desc: 'Entenda o negócio com números e indicadores simples de acompanhar.',
     iconBg: 'bg-emerald-50',
     iconColor: 'text-emerald-600',
     icon: icons.analytics,
     features: [
-      'RelatÃ³rios visuais',
-      'Indicadores para decisÃ£o',
-      'Acompanhamento da evoluÃ§Ã£o da loja',
+      'Relatórios visuais',
+      'Indicadores para decisão',
+      'Acompanhamento da evolução da loja',
     ],
   },
 ]
 
 const assessoriaServicos = [
   {
-    title: 'DiagnÃ³stico do NegÃ³cio',
-    desc: 'Entendemos sua operaÃ§Ã£o e identificamos os pontos que mais travam resultado e lucro.',
+    title: 'Diagnóstico do Negócio',
+    desc: 'Entendemos sua operação e identificamos os pontos que mais travam resultado e lucro.',
     icon: icons.search,
   },
   {
     title: 'Plano de Crescimento',
-    desc: 'Organizamos prioridades, metas e aÃ§Ãµes prÃ¡ticas para sua loja sair do improviso.',
+    desc: 'Organizamos prioridades, metas e ações práticas para sua loja sair do improviso.',
     icon: icons.target,
   },
   {
-    title: 'OtimizaÃ§Ã£o de Processos',
-    desc: 'Melhoramos a rotina da operaÃ§Ã£o para reduzir desperdÃ­cios, retrabalho e lentidÃ£o.',
+    title: 'Otimização de Processos',
+    desc: 'Melhoramos a rotina da operação para reduzir desperdícios, retrabalho e lentidão.',
     icon: icons.gear,
   },
   {
-    title: 'Acompanhamento EstratÃ©gico',
-    desc: 'VocÃª nÃ£o fica sozinho. Seguimos ajustando a rota com reuniÃµes e visÃ£o de crescimento.',
+    title: 'Acompanhamento Estratégico',
+    desc: 'Você não fica sozinho. Seguimos ajustando a rota com reuniões e visão de crescimento.',
     icon: icons.handshake,
   },
 ]
 
 const assessoriaReceive = [
-  'ReuniÃ£o estratÃ©gica mensal',
-  'DiagnÃ³stico do cenÃ¡rio atual',
-  'Plano de crescimento prÃ¡tico',
-  'Ajustes de processos e operaÃ§Ã£o',
-  'OrientaÃ§Ã£o para vendas, equipe e gestÃ£o',
-  'Acompanhamento contÃ­nuo com suporte',
+  'Reunião estratégica mensal',
+  'Diagnóstico do cenário atual',
+  'Plano de crescimento prático',
+  'Ajustes de processos e operação',
+  'Orientação para vendas, equipe e gestão',
+  'Acompanhamento contínuo com suporte',
 ]
 
 const assessoriaMetrics = [
   { value: '+ Clareza', label: 'para decidir melhor', color: 'text-blue-700' },
   { value: '+ Lucro', label: 'com mais controle', color: 'text-green-700' },
-  { value: '- Retrabalho', label: 'na operaÃ§Ã£o', color: 'text-orange-500' },
-  { value: '+ DireÃ§Ã£o', label: 'para crescer', color: 'text-purple-700' },
+  { value: '- Retrabalho', label: 'na operação', color: 'text-orange-500' },
+  { value: '+ Direção', label: 'para crescer', color: 'text-purple-700' },
 ]
 
 const marketingServicos = [
   {
     title: 'Posicionamento Digital',
-    desc: 'Sua loja passa a ser vista com mais profissionalismo e mais forÃ§a no mercado local.',
+    desc: 'Sua loja passa a ser vista com mais profissionalismo e mais força no mercado local.',
     icon: icons.megaphone,
   },
   {
-    title: 'ConteÃºdo EstratÃ©gico',
-    desc: 'Postagens, artes e presenÃ§a que geram confianÃ§a, lembranÃ§a e conexÃ£o com seu pÃºblico.',
+    title: 'Conteúdo Estratégico',
+    desc: 'Postagens, artes e presença que geram confiança, lembrança e conexão com seu público.',
     icon: icons.content,
   },
   {
     title: 'Campanhas Pagas',
-    desc: 'AnÃºncios direcionados para atrair mais movimento e oportunidades de venda.',
+    desc: 'Anúncios direcionados para atrair mais movimento e oportunidades de venda.',
     icon: icons.ads,
   },
   {
     title: 'Fortalecimento da Marca',
-    desc: 'Sua comunicaÃ§Ã£o deixa de ser amadora e passa a transmitir valor e credibilidade.',
+    desc: 'Sua comunicação deixa de ser amadora e passa a transmitir valor e credibilidade.',
     icon: icons.brand,
   },
 ]
 
 const marketingEntregas = [
-  'Planejamento de conteÃºdo mensal',
-  'CriaÃ§Ã£o de posts e artes estratÃ©gicas',
-  'Stories com foco em presenÃ§a e engajamento',
-  'GestÃ£o de campanhas pagas',
-  'AnÃ¡lise de concorrÃªncia local',
-  'Acompanhamento de mÃ©tricas',
-  'OtimizaÃ§Ã£o contÃ­nua do perfil',
-  'Ajustes de posicionamento e comunicaÃ§Ã£o',
+  'Planejamento de conteúdo mensal',
+  'Criação de posts e artes estratégicas',
+  'Stories com foco em presença e engajamento',
+  'Gestão de campanhas pagas',
+  'Análise de concorrência local',
+  'Acompanhamento de métricas',
+  'Otimização contínua do perfil',
+  'Ajustes de posicionamento e comunicação',
 ]
 
 const etapas = [
   {
-    title: 'DiagnÃ³stico',
-    desc: 'Entendemos o momento da sua loja, suas dores e onde estÃ£o os maiores gargalos.',
+    title: 'Diagnóstico',
+    desc: 'Entendemos o momento da sua loja, suas dores e onde estão os maiores gargalos.',
     bg: 'bg-green-600',
     iconColor: 'text-white',
     numColor: 'text-green-600 border-green-200',
     icon: icons.searchBig,
   },
   {
-    title: 'ImplantaÃ§Ã£o',
-    desc: 'Configuramos a estrutura inicial e organizamos a base para comeÃ§ar do jeito certo.',
+    title: 'Implantação',
+    desc: 'Configuramos a estrutura inicial e organizamos a base para começar do jeito certo.',
     bg: 'bg-orange-500',
     iconColor: 'text-white',
     numColor: 'text-orange-500 border-orange-200',
     icon: icons.monitor,
   },
   {
-    title: 'EstratÃ©gia',
-    desc: 'Definimos prioridades, ajustes e aÃ§Ãµes prÃ¡ticas para o negÃ³cio avanÃ§ar com direÃ§Ã£o.',
+    title: 'Estratégia',
+    desc: 'Definimos prioridades, ajustes e ações práticas para o negócio avançar com direção.',
     bg: 'bg-blue-600',
     iconColor: 'text-white',
     numColor: 'text-blue-600 border-blue-200',
@@ -1018,7 +1018,7 @@ const etapas = [
   },
   {
     title: 'Acompanhamento',
-    desc: 'Seguimos junto com suporte, revisÃ£o de resultados e melhorias contÃ­nuas.',
+    desc: 'Seguimos junto com suporte, revisão de resultados e melhorias contínuas.',
     bg: 'bg-purple-600',
     iconColor: 'text-white',
     numColor: 'text-purple-600 border-purple-200',
@@ -1028,59 +1028,59 @@ const etapas = [
 
 const planos = [
   {
-    label: 'Para comeÃ§ar',
+    label: 'Para começar',
     name: 'Base',
     desc: 'Organize sua loja e pare de perder dinheiro no dia a dia.',
     price: '597',
-    implantacao: 'ImplantaÃ§Ã£o Ãºnica R$ 1.997',
+    implantacao: 'Implantação única R$ 1.997',
     retorno: 'Potencial de retorno: mais controle e base pronta para crescer',
     featured: false,
     cta: 'Quero organizar minha loja',
     includes: [
       { text: 'Sistema PetFlow completo', active: true },
-      { text: 'AtÃ© 3 usuÃ¡rios', active: true },
-      { text: 'Todos os 6 mÃ³dulos', active: true },
+      { text: 'Até 3 usuários', active: true },
+      { text: 'Todos os 6 módulos', active: true },
       { text: 'Suporte via e-mail', active: true },
       { text: 'Assessoria empresarial', active: false },
-      { text: 'ReuniÃ£o estratÃ©gica mensal', active: false },
+      { text: 'Reunião estratégica mensal', active: false },
       { text: 'Assessoria de marketing', active: false },
     ],
   },
   {
     label: 'Mais escolhido',
     name: 'Crescimento',
-    desc: 'Estrutura + estratÃ©gia para fazer sua loja crescer de verdade.',
+    desc: 'Estrutura + estratégia para fazer sua loja crescer de verdade.',
     price: '1.497',
-    implantacao: 'ImplantaÃ§Ã£o Ãºnica R$ 2.297',
-    retorno: 'Potencial de retorno: mais organizaÃ§Ã£o, vendas e margem',
+    implantacao: 'Implantação única R$ 2.297',
+    retorno: 'Potencial de retorno: mais organização, vendas e margem',
     featured: true,
-    cta: 'Quero crescer com estratÃ©gia',
+    cta: 'Quero crescer com estratégia',
     includes: [
       { text: 'Sistema PetFlow completo', active: true },
-      { text: 'UsuÃ¡rios ilimitados', active: true },
-      { text: 'Todos os 6 mÃ³dulos', active: true },
+      { text: 'Usuários ilimitados', active: true },
+      { text: 'Todos os 6 módulos', active: true },
       { text: 'Suporte via WhatsApp', active: true },
       { text: 'Assessoria empresarial', active: true },
-      { text: 'ReuniÃ£o estratÃ©gica mensal', active: true },
+      { text: 'Reunião estratégica mensal', active: true },
       { text: 'Assessoria de marketing', active: false },
     ],
   },
   {
-    label: 'SoluÃ§Ã£o completa',
-    name: 'DominaÃ§Ã£o',
-    desc: 'Transforme sua loja em referÃªncia e lidere o mercado local.',
+    label: 'Solução completa',
+    name: 'Dominação',
+    desc: 'Transforme sua loja em referência e lidere o mercado local.',
     price: '2.297',
-    implantacao: 'ImplantaÃ§Ã£o Ãºnica R$ 3.997',
-    retorno: 'Potencial de retorno: crescimento mais forte com presenÃ§a e estratÃ©gia',
+    implantacao: 'Implantação única R$ 3.997',
+    retorno: 'Potencial de retorno: crescimento mais forte com presença e estratégia',
     featured: false,
     cta: 'Quero dominar meu mercado',
     includes: [
       { text: 'Sistema PetFlow completo', active: true },
-      { text: 'UsuÃ¡rios ilimitados', active: true },
-      { text: 'Todos os 6 mÃ³dulos', active: true },
-      { text: 'Suporte prioritÃ¡rio', active: true },
+      { text: 'Usuários ilimitados', active: true },
+      { text: 'Todos os 6 módulos', active: true },
+      { text: 'Suporte prioritário', active: true },
       { text: 'Assessoria empresarial', active: true },
-      { text: 'ReuniÃ£o estratÃ©gica mensal', active: true },
+      { text: 'Reunião estratégica mensal', active: true },
       { text: 'Assessoria de marketing', active: true },
     ],
   },
@@ -1088,15 +1088,15 @@ const planos = [
 
 const diferenciais = [
   {
-    title: 'Tudo em uma soluÃ§Ã£o sÃ³',
-    desc: 'VocÃª nÃ£o precisa contratar vÃ¡rias ferramentas separadas para organizar e crescer.',
+    title: 'Tudo em uma solução só',
+    desc: 'Você não precisa contratar várias ferramentas separadas para organizar e crescer.',
     iconBg: 'bg-green-50',
     iconColor: 'text-green-600',
     icon: icons.layers,
   },
   {
-    title: 'VisÃ£o estratÃ©gica, nÃ£o sÃ³ sistema',
-    desc: 'AlÃ©m da plataforma, vocÃª recebe orientaÃ§Ã£o para melhorar a operaÃ§Ã£o e o resultado.',
+    title: 'Visão estratégica, não só sistema',
+    desc: 'Além da plataforma, você recebe orientação para melhorar a operação e o resultado.',
     iconBg: 'bg-blue-50',
     iconColor: 'text-blue-600',
     icon: icons.compass,
@@ -1109,22 +1109,22 @@ const diferenciais = [
     icon: icons.growth,
   },
   {
-    title: 'Suporte prÃ³ximo',
-    desc: 'VocÃª fala com pessoas de verdade e tem apoio durante a implantaÃ§Ã£o e evoluÃ§Ã£o.',
+    title: 'Suporte próximo',
+    desc: 'Você fala com pessoas de verdade e tem apoio durante a implantação e evolução.',
     iconBg: 'bg-purple-50',
     iconColor: 'text-purple-600',
     icon: icons.support,
   },
   {
-    title: 'Mais percepÃ§Ã£o de valor',
-    desc: 'Sua loja passa a se apresentar melhor para o cliente, online e na operaÃ§Ã£o.',
+    title: 'Mais percepção de valor',
+    desc: 'Sua loja passa a se apresentar melhor para o cliente, online e na operação.',
     iconBg: 'bg-emerald-50',
     iconColor: 'text-emerald-600',
     icon: icons.spark,
   },
   {
     title: 'Estrutura para escalar',
-    desc: 'VocÃª cria uma base mais profissional para crescer sem aumentar a bagunÃ§a.',
+    desc: 'Você cria uma base mais profissional para crescer sem aumentar a bagunça.',
     iconBg: 'bg-rose-50',
     iconColor: 'text-rose-600',
     icon: icons.building,
@@ -1133,23 +1133,23 @@ const diferenciais = [
 
 const depoimentos = [
   {
-    text: 'Antes eu vivia no caos. Depois que organizamos a operaÃ§Ã£o, ficou muito mais claro onde estava o problema e o que precisava ser feito.',
+    text: 'Antes eu vivia no caos. Depois que organizamos a operação, ficou muito mais claro onde estava o problema e o que precisava ser feito.',
     name: 'Mariana Costa',
-    role: 'ProprietÃ¡ria',
+    role: 'Proprietária',
     initials: 'MC',
     avatarBg: 'bg-green-600',
   },
   {
-    text: 'A parte estratÃ©gica fez muita diferenÃ§a. ComeÃ§amos a enxergar melhor o negÃ³cio e a comunicaÃ§Ã£o ficou muito mais profissional.',
+    text: 'A parte estratégica fez muita diferença. Começamos a enxergar melhor o negócio e a comunicação ficou muito mais profissional.',
     name: 'Roberto Lima',
-    role: 'EmpresÃ¡rio do setor pet',
+    role: 'Empresário do setor pet',
     initials: 'RL',
     avatarBg: 'bg-blue-600',
   },
   {
-    text: 'O maior ganho foi parar de tomar decisÃ£o no escuro. Hoje tenho mais visÃ£o, mais controle e mais seguranÃ§a para crescer.',
+    text: 'O maior ganho foi parar de tomar decisão no escuro. Hoje tenho mais visão, mais controle e mais segurança para crescer.',
     name: 'Fernanda Souza',
-    role: 'SÃ³cia de loja pet',
+    role: 'Sócia de loja pet',
     initials: 'FS',
     avatarBg: 'bg-orange-500',
   },
@@ -1157,34 +1157,34 @@ const depoimentos = [
 
 const faqs = [
   {
-    q: 'Preciso ter conhecimento tÃ©cnico para usar o sistema?',
-    a: 'NÃ£o. A plataforma foi pensada para ser simples e prÃ¡tica. AlÃ©m disso, a implantaÃ§Ã£o Ã© assistida e sua equipe recebe orientaÃ§Ã£o para comeÃ§ar com seguranÃ§a.',
+    q: 'Preciso ter conhecimento técnico para usar o sistema?',
+    a: 'Não. A plataforma foi pensada para ser simples e prática. Além disso, a implantação é assistida e sua equipe recebe orientação para começar com segurança.',
   },
   {
     q: 'Funciona no celular?',
     a: 'Sim. O sistema funciona no celular, tablet e computador, permitindo acesso de qualquer lugar com internet.',
   },
   {
-    q: 'Posso contratar sÃ³ o sistema?',
-    a: 'Sim. O plano Base Ã© voltado para quem quer comeÃ§ar pela organizaÃ§Ã£o da operaÃ§Ã£o com o sistema.',
+    q: 'Posso contratar só o sistema?',
+    a: 'Sim. O plano Base é voltado para quem quer começar pela organização da operação com o sistema.',
   },
   {
-    q: 'A assessoria empresarial faz diferenÃ§a mesmo?',
-    a: 'Faz porque ela ajuda a transformar o sistema em resultado. VocÃª nÃ£o fica apenas com a ferramenta: recebe direÃ§Ã£o estratÃ©gica para melhorar o negÃ³cio.',
+    q: 'A assessoria empresarial faz diferença mesmo?',
+    a: 'Faz porque ela ajuda a transformar o sistema em resultado. Você não fica apenas com a ferramenta: recebe direção estratégica para melhorar o negócio.',
   },
   {
-    q: 'O marketing estÃ¡ incluÃ­do em qual plano?',
-    a: 'A assessoria de marketing estÃ¡ incluÃ­da no plano DominaÃ§Ã£o, pensado para quem quer crescer com mais forÃ§a e presenÃ§a no mercado local.',
+    q: 'O marketing está incluído em qual plano?',
+    a: 'A assessoria de marketing está incluída no plano Dominação, pensado para quem quer crescer com mais força e presença no mercado local.',
   },
   {
-    q: 'Quanto tempo leva para comeÃ§ar?',
-    a: 'Depois da contrataÃ§Ã£o, iniciamos o processo de implantaÃ§Ã£o e alinhamento para colocar sua operaÃ§Ã£o em movimento o quanto antes.',
+    q: 'Quanto tempo leva para começar?',
+    a: 'Depois da contratação, iniciamos o processo de implantação e alinhamento para colocar sua operação em movimento o quanto antes.',
   },
 ]
 
 const interesseOpts = [
   'Sistema',
-  'OrganizaÃ§Ã£o da loja',
+  'Organização da loja',
   'Assessoria empresarial',
   'Marketing',
   'Vender mais',

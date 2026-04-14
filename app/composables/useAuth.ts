@@ -47,7 +47,7 @@ export function useAuth() {
       return { ok: false, needsConfirmation: false }
     }
 
-    // Se nÃ£o hÃ¡ sessÃ£o, o Supabase requer confirmaÃ§Ã£o por e-mail
+    // Se não há sessão, o Supabase requer confirmação por e-mail
     const needsConfirmation = !data.session
     return { ok: true, needsConfirmation }
   }

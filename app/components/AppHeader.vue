@@ -6,9 +6,9 @@
       <span class="text-xl font-bold text-white">PetFlow</span>
     </div>
 
-    <!-- AÃ§Ãµes -->
+    <!-- Ações -->
     <div class="flex items-center gap-3">
-      <span class="text-sm text-orange-100 hidden sm:block">OlÃ¡, {{ displayName }}</span>
+      <span class="text-sm text-orange-100 hidden sm:block">Olá, {{ displayName }}</span>
       <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-orange-500 font-semibold text-sm select-none">
         {{ initials }}
       </div>

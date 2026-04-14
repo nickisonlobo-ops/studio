@@ -24,7 +24,7 @@
       </button>
     </div>
 
-    <!-- TÃ­tulo dinÃ¢mico -->
+    <!-- Título dinâmico -->
     <h1 class="text-2xl font-bold text-content text-center mb-6">
       {{ activeTab === 'login' ? 'Entre na sua conta' : 'Crie sua conta' }}
     </h1>
@@ -49,8 +49,8 @@
       >
         <template #trailing>
           <button type="button" class="text-content-muted hover:text-content transition-colors" @click="showPassword = !showPassword">
-            <span v-if="showPassword">ðŸ™ˆ</span>
-            <span v-else>ðŸ‘ï¸</span>
+            <span v-if="showPassword">�YT^</span>
+            <span v-else>�Y'�️</span>
           </button>
         </template>
       </AppInput>
@@ -90,8 +90,8 @@
       >
         <template #trailing>
           <button type="button" class="text-content-muted hover:text-content transition-colors" @click="showRegisterPassword = !showRegisterPassword">
-            <span v-if="showRegisterPassword">ðŸ™ˆ</span>
-            <span v-else>ðŸ‘ï¸</span>
+            <span v-if="showRegisterPassword">�YT^</span>
+            <span v-else>�Y'�️</span>
           </button>
         </template>
       </AppInput>
@@ -150,13 +150,13 @@ function validateLogin(): boolean {
   formErrors.password = ''
 
   if (!login.email) {
-    formErrors.email = 'O e-mail Ã© obrigatÃ³rio.'
+    formErrors.email = 'O e-mail é obrigatório.'
   } else if (!emailRegex.test(login.email)) {
-    formErrors.email = 'Informe um e-mail vÃ¡lido.'
+    formErrors.email = 'Informe um e-mail válido.'
   }
 
   if (!login.password) {
-    formErrors.password = 'A senha Ã© obrigatÃ³ria.'
+    formErrors.password = 'A senha é obrigatória.'
   }
 
   return !formErrors.email && !formErrors.password
@@ -169,25 +169,25 @@ function validateRegister(): boolean {
   registerErrors.confirmPassword = ''
 
   if (!register.name.trim()) {
-    registerErrors.name = 'O nome Ã© obrigatÃ³rio.'
+    registerErrors.name = 'O nome é obrigatório.'
   }
 
   if (!register.email) {
-    registerErrors.email = 'O e-mail Ã© obrigatÃ³rio.'
+    registerErrors.email = 'O e-mail é obrigatório.'
   } else if (!emailRegex.test(register.email)) {
-    registerErrors.email = 'Informe um e-mail vÃ¡lido.'
+    registerErrors.email = 'Informe um e-mail válido.'
   }
 
   if (!register.password) {
-    registerErrors.password = 'A senha Ã© obrigatÃ³ria.'
+    registerErrors.password = 'A senha é obrigatória.'
   } else if (register.password.length < 6) {
-    registerErrors.password = 'A senha deve ter no mÃ­nimo 6 caracteres.'
+    registerErrors.password = 'A senha deve ter no mínimo 6 caracteres.'
   }
 
   if (!register.confirmPassword) {
     registerErrors.confirmPassword = 'Confirme sua senha.'
   } else if (register.password !== register.confirmPassword) {
-    registerErrors.confirmPassword = 'As senhas nÃ£o coincidem.'
+    registerErrors.confirmPassword = 'As senhas não coincidem.'
   }
 
   return !registerErrors.name && !registerErrors.email && !registerErrors.password && !registerErrors.confirmPassword

@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• CABEÃ‡ALHO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
       <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-green-700 to-green-500" />
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(251,146,60,0.18),transparent_60%)]" />
@@ -67,7 +67,7 @@
               <span class="text-xs font-semibold text-green-200 uppercase tracking-widest">Ativos</span>
             </div>
             <span class="text-xl font-black text-green-100 leading-tight">{{ produtosAtivos }}</span>
-            <span class="text-xs text-green-300/50">em catÃ¡logo</span>
+            <span class="text-xs text-green-300/50">em catálogo</span>
           </div>
           <div class="flex flex-col gap-1 bg-red-400/10 rounded-2xl px-5 py-4 border border-red-300/20 hover:bg-red-400/15 transition-colors">
             <div class="flex items-center gap-1.5">
@@ -75,18 +75,18 @@
               <span class="text-xs font-semibold text-red-200 uppercase tracking-widest">Estoque Baixo</span>
             </div>
             <span class="text-xl font-black text-red-100 leading-tight">{{ estoqueBaixo }}</span>
-            <span class="text-xs text-red-300/50">abaixo do mÃ­nimo</span>
+            <span class="text-xs text-red-300/50">abaixo do mínimo</span>
           </div>
           <div class="flex flex-col gap-1 bg-orange-400/10 rounded-2xl px-5 py-4 border border-orange-300/20 hover:bg-orange-400/15 transition-colors">
             <span class="text-xs font-semibold text-orange-200 uppercase tracking-widest">Valor em Estoque</span>
             <span class="text-xl font-black text-orange-100 leading-tight">{{ formatCurrency(valorTotalEstoque) }}</span>
-            <span class="text-xs text-orange-300/50">preÃ§o de venda</span>
+            <span class="text-xs text-orange-300/50">preço de venda</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FILTRO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� FILTRO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Transition name="slide-fade">
       <div v-show="filtroAberto" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
@@ -103,7 +103,7 @@
             <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Busca</label>
             <div class="relative">
               <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/></svg>
-              <input v-model="filtros.busca" type="text" placeholder="Nome, SKU, marca ou cÃ³digo de barras..." class="w-full rounded-xl border border-gray-200 pl-10 pr-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow" />
+              <input v-model="filtros.busca" type="text" placeholder="Nome, SKU, marca ou código de barras..." class="w-full rounded-xl border border-gray-200 pl-10 pr-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow" />
             </div>
           </div>
           <div class="flex flex-col gap-1.5">
@@ -151,25 +151,25 @@
       </div>
     </Transition>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• LOADING â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� LOADING �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-if="loading" class="flex flex-col items-center justify-center gap-4 py-32">
       <span class="inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
       <span class="text-sm text-gray-400 font-medium">Carregando produtos...</span>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• ERRO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� ERRO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else-if="error" class="flex items-center gap-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-2xl px-6 py-4">
       <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 8v4m0 4h.01"/></svg>
       {{ error }}
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• TABELA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� TABELA �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else class="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden">
       <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/50">
         <span class="text-sm font-semibold text-gray-600">
           <span class="text-blue-700 font-black">{{ produtosFiltrados.length }}</span>
           resultado(s)
-          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> â€” filtros aplicados</span>
+          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> �?" filtros aplicados</span>
         </span>
         <span class="text-xs text-gray-400">Ordenado por nome</span>
       </div>
@@ -183,12 +183,12 @@
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">SKU</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Categoria</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Marca</th>
-              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">PreÃ§o Custo</th>
-              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">PreÃ§o Venda</th>
+              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Preço Custo</th>
+              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Preço Venda</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Estoque</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Unid.</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Status</th>
-              <th class="px-7 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50">AÃ§Ãµes</th>
+              <th class="px-7 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50">Ações</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
@@ -217,16 +217,16 @@
               </td>
               <td class="px-5 py-4">
                 <span v-if="prod.sku" class="font-mono text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded-lg">{{ prod.sku }}</span>
-                <span v-else class="text-gray-300">â€”</span>
+                <span v-else class="text-gray-300">�?"</span>
               </td>
               <td class="px-5 py-4">
                 <span v-if="prod.categoria" class="inline-block text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100 rounded-lg px-2.5 py-1">{{ prod.categoria }}</span>
-                <span v-else class="text-gray-300">â€”</span>
+                <span v-else class="text-gray-300">�?"</span>
               </td>
-              <td class="px-5 py-4 text-gray-500 font-medium">{{ prod.marca ?? 'â€”' }}</td>
+              <td class="px-5 py-4 text-gray-500 font-medium">{{ prod.marca ?? '�?"' }}</td>
               <td class="px-5 py-4">
                 <span v-if="prod.preco_custo != null" class="text-gray-500 font-medium tabular-nums">{{ formatCurrency(prod.preco_custo) }}</span>
-                <span v-else class="text-gray-300">â€”</span>
+                <span v-else class="text-gray-300">�?"</span>
               </td>
               <td class="px-5 py-4">
                 <span class="font-black text-gray-900 tabular-nums">{{ formatCurrency(prod.preco_venda) }}</span>
@@ -239,7 +239,7 @@
                   >
                     {{ prod.estoque_atual ?? 0 }}
                   </span>
-                  <span class="text-xs text-gray-400">/ mÃ­n {{ prod.estoque_minimo ?? 0 }}</span>
+                  <span class="text-xs text-gray-400">/ mín {{ prod.estoque_minimo ?? 0 }}</span>
                   <span v-if="(prod.estoque_atual ?? 0) <= (prod.estoque_minimo ?? 0)" class="inline-flex items-center gap-1 text-[10px] font-bold text-red-600 bg-red-50 border border-red-100 rounded-full px-2 py-0.5">
                     <span class="w-1.5 h-1.5 rounded-full bg-red-500" />
                     Baixo
@@ -286,7 +286,7 @@
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL ADICIONAR / EDITAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL ADICIONAR / EDITAR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -310,52 +310,52 @@
             <form class="flex flex-col gap-5 px-8 py-7 overflow-y-auto max-h-[70vh]" @submit.prevent="adicionando ? salvarAdicao() : salvarEdicao()">
               <!-- Linha 1: Nome + Marca -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <AppInput v-model="form.nome" label="Nome *" placeholder="Ex: RaÃ§Ã£o Premium Adulto 15kg" :error="formErrors.nome" required />
+                <AppInput v-model="form.nome" label="Nome *" placeholder="Ex: Ração Premium Adulto 15kg" :error="formErrors.nome" required />
                 <AppInput v-model="form.marca" label="Marca" placeholder="Ex: Royal Canin" />
               </div>
-              <!-- Linha 2: SKU + CÃ³digo de barras -->
+              <!-- Linha 2: SKU + Código de barras -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <AppInput v-model="form.sku" label="SKU" placeholder="Ex: RC-ADL-15" :error="formErrors.sku" />
-                <AppInput v-model="form.codigo_barras" label="CÃ³digo de Barras" placeholder="Ex: 7891000123456" />
+                <AppInput v-model="form.codigo_barras" label="Código de Barras" placeholder="Ex: 7891000123456" />
               </div>
               <!-- Linha 3: Categoria + Unidade -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <AppInput v-model="form.categoria" label="Categoria" placeholder="Ex: RaÃ§Ã£o, Petisco, AcessÃ³rio" />
+                <AppInput v-model="form.categoria" label="Categoria" placeholder="Ex: Ração, Petisco, Acessório" />
                 <div class="flex flex-col gap-1.5">
                   <label class="text-sm font-semibold text-gray-700">Unidade de Medida</label>
                   <select v-model="form.unidade_medida" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="un">un â€” Unidade</option>
-                    <option value="kg">kg â€” Quilograma</option>
-                    <option value="g">g â€” Grama</option>
-                    <option value="l">l â€” Litro</option>
-                    <option value="ml">ml â€” Mililitro</option>
-                    <option value="pct">pct â€” Pacote</option>
-                    <option value="sc">sc â€” Saco</option>
+                    <option value="un">un �?" Unidade</option>
+                    <option value="kg">kg �?" Quilograma</option>
+                    <option value="g">g �?" Grama</option>
+                    <option value="l">l �?" Litro</option>
+                    <option value="ml">ml �?" Mililitro</option>
+                    <option value="pct">pct �?" Pacote</option>
+                    <option value="sc">sc �?" Saco</option>
                   </select>
                 </div>
               </div>
-              <!-- Linha 4: Peso + DescriÃ§Ã£o -->
+              <!-- Linha 4: Peso + Descrição -->
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <AppInput v-model="form.peso" label="Peso (kg)" type="number" placeholder="Ex: 15.000" />
                 <div class="sm:col-span-2 flex flex-col gap-1.5">
-                  <label class="text-sm font-semibold text-gray-700">DescriÃ§Ã£o</label>
+                  <label class="text-sm font-semibold text-gray-700">Descrição</label>
                   <textarea
                     v-model="form.descricao"
                     rows="2"
-                    placeholder="DescriÃ§Ã£o breve do produto..."
+                    placeholder="Descrição breve do produto..."
                     class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                   />
                 </div>
               </div>
-              <!-- Linha 5: PreÃ§os -->
+              <!-- Linha 5: Preços -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <AppInput v-model="form.preco_custo" label="PreÃ§o de Custo (R$)" type="number" placeholder="0,00" />
-                <AppInput v-model="form.preco_venda" label="PreÃ§o de Venda (R$) *" type="number" placeholder="0,00" :error="formErrors.preco_venda" required />
+                <AppInput v-model="form.preco_custo" label="Preço de Custo (R$)" type="number" placeholder="0,00" />
+                <AppInput v-model="form.preco_venda" label="Preço de Venda (R$) *" type="number" placeholder="0,00" :error="formErrors.preco_venda" required />
               </div>
               <!-- Linha 6: Estoques -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <AppInput v-model="form.estoque_atual" label="Estoque Atual" type="number" placeholder="0" />
-                <AppInput v-model="form.estoque_minimo" label="Estoque MÃ­nimo" type="number" placeholder="0" />
+                <AppInput v-model="form.estoque_minimo" label="Estoque Mínimo" type="number" placeholder="0" />
               </div>
               <!-- Ativo -->
               <div class="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
@@ -369,7 +369,7 @@
                 </button>
                 <div>
                   <p class="text-sm font-semibold text-gray-700">Produto ativo</p>
-                  <p class="text-xs text-gray-400">{{ form.ativo ? 'VisÃ­vel e disponÃ­vel para venda' : 'Oculto do catÃ¡logo' }}</p>
+                  <p class="text-xs text-gray-400">{{ form.ativo ? 'Visível e disponível para venda' : 'Oculto do catálogo' }}</p>
                 </div>
               </div>
 
@@ -380,7 +380,7 @@
                   Cancelar
                 </button>
                 <AppButton variant="primary" size="md" type="submit" :loading="saving" class="flex-1">
-                  {{ adicionando ? 'Adicionar' : 'Salvar alteraÃ§Ãµes' }}
+                  {{ adicionando ? 'Adicionar' : 'Salvar alterações' }}
                 </AppButton>
               </div>
             </form>
@@ -389,7 +389,7 @@
       </Transition>
     </Teleport>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL EXCLUIR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL EXCLUIR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -405,7 +405,7 @@
               <h2 class="text-xl font-bold text-gray-800">Excluir produto?</h2>
               <p class="text-sm text-gray-500 mt-2 leading-relaxed">
                 Tem certeza que deseja excluir <br /><strong class="text-gray-800">{{ excluindo.nome }}</strong>?<br />
-                <span class="text-red-500 text-xs font-semibold">Essa aÃ§Ã£o nÃ£o pode ser desfeita.</span>
+                <span class="text-red-500 text-xs font-semibold">Essa ação não pode ser desfeita.</span>
               </p>
             </div>
             <p v-if="deleteError" class="text-sm text-red-600 bg-red-50 border-t border-b border-red-200 px-8 py-3 text-center">{{ deleteError }}</p>
@@ -495,7 +495,7 @@ const filtros = reactive({
   estoque: '',
 })
 
-// â”€â”€ Stats â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Stats �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 const produtosAtivos = computed(() =>
   produtos.value.filter(p => p.ativo !== false).length
 )
@@ -508,7 +508,7 @@ const valorTotalEstoque = computed(() =>
   produtos.value.reduce((sum, p) => sum + p.preco_venda * (p.estoque_atual ?? 0), 0)
 )
 
-// â”€â”€ Filtros â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Filtros �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 const categoriasUnicas = computed(() => {
   const set = new Set(produtos.value.map(p => p.categoria).filter(Boolean) as string[])
   return Array.from(set).sort()
@@ -550,7 +550,7 @@ function limparFiltros() {
   filtros.estoque = ''
 }
 
-// â”€â”€ CRUD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? CRUD �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 onMounted(fetchProdutos)
 
 async function fetchProdutos() {
@@ -625,8 +625,8 @@ function buildPayload() {
 function validateForm(): boolean {
   formErrors.nome = ''; formErrors.sku = ''; formErrors.preco_venda = ''
   let ok = true
-  if (!form.nome.trim()) { formErrors.nome = 'O nome Ã© obrigatÃ³rio.'; ok = false }
-  if (!form.preco_venda || Number(form.preco_venda) < 0) { formErrors.preco_venda = 'Informe um preÃ§o de venda vÃ¡lido.'; ok = false }
+  if (!form.nome.trim()) { formErrors.nome = 'O nome é obrigatório.'; ok = false }
+  if (!form.preco_venda || Number(form.preco_venda) < 0) { formErrors.preco_venda = 'Informe um preço de venda válido.'; ok = false }
   return ok
 }
 

@@ -1,4 +1,4 @@
-﻿<template>
+?<template>
   <div class="font-sans bg-white text-gray-900 overflow-x-hidden">
 
     <!-- NAVBAR -->
@@ -56,7 +56,7 @@
           </h1>
 
           <p class="text-[15px] sm:text-base text-green-100/80 max-w-lg leading-relaxed">
-            O PetFlow centraliza clientes, estoque, vendas, financeiro e equipe numa só plataforma — feita para <strong class="text-white font-semibold">casas de ração e mercados pet</strong>.
+            O PetFlow centraliza clientes, estoque, vendas, financeiro e equipe numa só plataforma - feita para <strong class="text-white font-semibold">casas de ração e mercados pet</strong>.
           </p>
 
           <div class="flex flex-wrap gap-3 mt-1">
@@ -97,7 +97,7 @@
                 </div>
                 <div>
                   <p class="text-[11px] font-black text-white">PetFlow</p>
-                  <p class="text-[9px] text-white/40">Casa de Ração do João · Dashboard</p>
+                  <p class="text-[9px] text-white/40">Casa de Ração do João – Dashboard</p>
                 </div>
               </div>
               <div class="flex items-center gap-1.5 bg-green-500/20 border border-green-400/30 px-2.5 py-1 rounded-full">
@@ -211,7 +211,7 @@
           <span class="text-xs font-black text-green-600 uppercase tracking-widest">O que está incluído</span>
           <h2 class="mt-2 text-3xl sm:text-4xl font-black text-gray-900">6 módulos completos</h2>
           <p class="mt-3 text-gray-500 max-w-2xl mx-auto">
-            Tudo que sua loja precisa para funcionar com organização e visibilidade — sem precisar de vários sistemas separados.
+            Tudo que sua loja precisa para funcionar com organização e visibilidade - sem precisar de vários sistemas separados.
           </p>
         </div>
 
@@ -294,7 +294,7 @@
                       <div class="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
                         <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Faturamento</p>
                         <p class="text-base font-black text-gray-800 mt-0.5">R$12,4k</p>
-                        <p class="text-[9px] text-green-600 font-semibold">↑ +8% hoje</p>
+                        <p class="text-[9px] text-green-600 font-semibold">? +8% hoje</p>
                       </div>
                       <div class="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
                         <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Vendas</p>
@@ -390,7 +390,7 @@
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-800">de qualquer lugar</span>
               </h2>
               <p class="mt-4 text-gray-500 leading-relaxed">
-                O PetFlow funciona perfeitamente no celular, tablet e computador. Sem aplicativo para instalar — só abrir o navegador e usar.
+                O PetFlow funciona perfeitamente no celular, tablet e computador. Sem aplicativo para instalar - ssó abrir o navegador e usar.
               </p>
             </div>
 
@@ -473,7 +473,7 @@
                   <span class="text-5xl font-black leading-none" :class="plano.featured ? 'text-white' : 'text-gray-900'">{{ plano.price }}</span>
                   <span class="text-sm font-semibold pb-1" :class="plano.featured ? 'text-green-300' : 'text-gray-400'">/mês</span>
                 </div>
-                <p class="text-xs mt-1" :class="plano.featured ? 'text-green-300/80' : 'text-gray-400'">+ R$ 497 de implantação única</p>
+                <p class="text-xs mt-1" :class="plano.featured ? 'text-green-300/80' : 'text-gray-400'">+ R$ 997 de implantação única</p>
               </div>
 
               <ul class="flex flex-col gap-2.5 flex-1">
@@ -503,7 +503,7 @@
           </div>
         </div>
 
-        <p class="text-center text-xs text-gray-400 mt-8">* Taxa de implantação única de R$ 297 — inclui configuração completa + treinamento da equipe.</p>
+        <p class="text-center text-xs text-gray-400 mt-8">* Taxa de implantação única de R$ 297 - inclui configuração completa + treinamento da equipe.</p>
       </div>
     </section>
 
@@ -709,7 +709,7 @@ const recentSales = [
 ]
 
 const problemas = [
-  { title: 'Estoque sem controle', desc: 'Produto faltando na hora errada ou parado sem giro — você perde venda e dinheiro.' },
+  { title: 'Estoque sem controle', desc: 'Produto faltando na hora errada ou parado sem giro - você perde venda e dinheiro.' },
   { title: 'Sem visão financeira', desc: 'Não sabe exatamente quanto entra, quanto sai e qual é o lucro real do mês.' },
   { title: 'Clientes sem histórico', desc: 'Sem cadastro organizado, você perde oportunidades de fidelizar e vender mais.' },
   { title: 'Equipe desalinhada', desc: 'Funcionários sem tarefas definidas, gerando retrabalho e baixa produtividade.' },
@@ -790,7 +790,7 @@ const modulos = [
 const mobileFeatures = [
   {
     title: 'Sem instalação',
-    desc: 'Acesse pelo navegador do celular ou computador — sem baixar nada.',
+    desc: 'Acesse pelo navegador do celular ou computador - sem baixar nada.',
     iconBg: 'bg-green-100', iconColor: 'text-green-600',
     icon: `<svg fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>`,
   },
@@ -857,7 +857,7 @@ const planos = [
     label: 'Mais vendido',
     name: 'Profissional',
     desc: 'Para lojas que querem crescer e ter controle total da operação.',
-    price: '297',
+    price: '397',
     featured: true,
     cta: 'Quero o Profissional',
     includes: [
@@ -873,7 +873,7 @@ const planos = [
     label: 'Escala e automação',
     name: 'Avançado',
     desc: 'Para quem quer gestão completa, escala e automação do negócio.',
-    price: '397',
+    price: '497',
     featured: false,
     cta: 'Quero o Avançado',
     includes: [
@@ -915,7 +915,7 @@ const diferenciais = [
   },
   {
     title: 'Acesso pelo celular',
-    desc: 'Use no smartphone, tablet ou computador — de qualquer lugar com internet.',
+    desc: 'Use no smartphone, tablet ou computador - de qualquer lugar com internet.',
     iconBg: 'bg-amber-50', iconColor: 'text-amber-600', icon: icons.phone,
   },
 ]

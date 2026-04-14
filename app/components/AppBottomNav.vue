@@ -23,10 +23,10 @@ defineOptions({ name: 'AppBottomNav' })
 const { isAdmin } = useAdmin()
 
 const allNavItems = [
-  { to: '/',             icon: 'home',    label: 'InÃ­cio',       adminOnly: false },
+  { to: '/',             icon: 'home',    label: 'Início',       adminOnly: false },
   { to: '/clientes',     icon: 'identification', label: 'Clientes',     adminOnly: false },
   { to: '/produtos',     icon: 'package',        label: 'Produtos',     adminOnly: false },
-  { to: '/funcionarios', icon: 'users',   label: 'FuncionÃ¡rios', adminOnly: true  },
+  { to: '/funcionarios', icon: 'users',   label: 'Funcionários', adminOnly: true  },
   { to: '/atividades',   icon: 'clipboard', label: 'Atividades',   adminOnly: true  },
   { to: '/contas-pagar', icon: 'wallet',  label: 'Contas',       adminOnly: true  },
   { to: '/vendas',       icon: 'receipt',        label: 'Vendas',       adminOnly: false },

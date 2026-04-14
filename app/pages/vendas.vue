@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• CABEÃ‡ALHO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
       <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-green-700 to-green-500" />
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(251,207,232,0.15),transparent_60%)]" />
@@ -44,7 +44,7 @@
             <button
               type="button"
               class="inline-flex items-center gap-2 text-sm font-semibold px-3 sm:px-5 py-2.5 rounded-xl bg-white/10 text-white hover:bg-white/20 border border-white/15 backdrop-blur-sm transition-all duration-200 hover:scale-[1.02]"
-              title="Exportar relatÃ³rio em PDF"
+              title="Exportar relatório em PDF"
               @click="exportarPDF"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
@@ -79,12 +79,12 @@
             <span class="text-xs text-green-300/50">total acumulado</span>
           </div>
           <div class="flex flex-col gap-1 bg-white/[0.07] rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/12 transition-colors">
-            <span class="text-xs font-semibold text-green-300 uppercase tracking-widest">Ticket MÃ©dio</span>
+            <span class="text-xs font-semibold text-green-300 uppercase tracking-widest">Ticket Médio</span>
             <span class="text-xl font-black text-white leading-tight truncate">{{ formatCurrency(ticketMedio) }}</span>
             <span class="text-xs text-green-200/60">por venda</span>
           </div>
           <div class="flex flex-col gap-1 bg-white/[0.07] rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/12 transition-colors">
-            <span class="text-xs font-semibold text-green-300 uppercase tracking-widest">Este MÃªs</span>
+            <span class="text-xs font-semibold text-green-300 uppercase tracking-widest">Este Mês</span>
             <span class="text-xl font-black text-white leading-tight">{{ vendasMes }}</span>
             <span class="text-xs text-green-200/60">venda(s)</span>
           </div>
@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FILTRO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� FILTRO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Transition name="slide-fade">
       <div v-show="filtroAberto" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
@@ -140,25 +140,25 @@
       </div>
     </Transition>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• LOADING â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� LOADING �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-if="loading" class="flex flex-col items-center justify-center gap-4 py-32">
       <span class="inline-block w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
       <span class="text-sm text-gray-400 font-medium">Carregando vendas...</span>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• ERRO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� ERRO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else-if="error" class="flex items-center gap-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-2xl px-6 py-4">
       <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 8v4m0 4h.01"/></svg>
       {{ error }}
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• TABELA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� TABELA �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else class="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden">
       <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/50">
         <span class="text-sm font-semibold text-gray-600">
           <span class="text-orange-600 font-black">{{ vendasFiltradas.length }}</span>
           resultado(s)
-          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> â€” filtros aplicados</span>
+          <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> �?" filtros aplicados</span>
         </span>
         <span class="text-xs text-gray-400">Ordenado por data</span>
       </div>
@@ -173,7 +173,7 @@
               <th class="text-right px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Subtotal</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Pagamento / Status</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest whitespace-nowrap">Data</th>
-              <th class="px-6 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50 w-24">AÃ§Ãµes</th>
+              <th class="px-6 py-4 text-right text-xs font-extrabold text-gray-400 uppercase tracking-widest sm:sticky sm:right-0 bg-gray-50 w-24">Ações</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
@@ -204,7 +204,7 @@
                   <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center text-white font-black text-xs shrink-0 shadow-sm shadow-violet-200 select-none">
                     {{ (venda.clientes?.nome ?? '?')[0]?.toUpperCase() }}
                   </div>
-                  <span class="font-semibold text-gray-800 max-w-[160px] block truncate whitespace-nowrap">{{ venda.clientes?.nome ?? 'â€”' }}</span>
+                  <span class="font-semibold text-gray-800 max-w-[160px] block truncate whitespace-nowrap">{{ venda.clientes?.nome ?? '�?"' }}</span>
                 </div>
               </td>
 
@@ -213,12 +213,12 @@
                 <div class="flex flex-col gap-1">
                   <template v-if="venda.vendas_itens && venda.vendas_itens.length > 0">
                     <div v-for="item in venda.vendas_itens.slice(0, 2)" :key="item.produto_id" class="flex items-center gap-1.5 min-w-0">
-                      <span class="font-semibold text-gray-800 max-w-[160px] truncate text-sm">{{ item.produtos_casa_racao?.nome ?? 'â€”' }}</span>
-                      <span class="text-xs text-gray-400 whitespace-nowrap shrink-0">{{ item.quantidade }}Ã— {{ formatCurrency(item.preco_unitario) }}</span>
+                      <span class="font-semibold text-gray-800 max-w-[160px] truncate text-sm">{{ item.produtos_casa_racao?.nome ?? '�?"' }}</span>
+                      <span class="text-xs text-gray-400 whitespace-nowrap shrink-0">{{ item.quantidade }}�- {{ formatCurrency(item.preco_unitario) }}</span>
                     </div>
                     <span v-if="venda.vendas_itens.length > 2" class="text-xs text-orange-500 font-semibold">+{{ venda.vendas_itens.length - 2 }} item(ns)</span>
                   </template>
-                  <span v-else class="text-sm text-gray-400">â€”</span>
+                  <span v-else class="text-sm text-gray-400">�?"</span>
                 </div>
               </td>
 
@@ -250,7 +250,7 @@
               <!-- Data -->
               <td class="px-5 py-4 text-xs text-gray-500 font-medium whitespace-nowrap">{{ formatDate(venda.data_venda) }}</td>
 
-              <!-- AÃ§Ãµes -->
+              <!-- Ações -->
               <td class="px-6 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-orange-50/30 transition-colors">
                 <div class="flex items-center justify-end gap-1">
                   <button type="button" class="w-8 h-8 flex items-center justify-center rounded-xl text-orange-500 hover:text-orange-700 hover:bg-orange-100 transition-colors" title="Editar" @click="editVenda(venda)">
@@ -267,7 +267,7 @@
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL ADICIONAR / EDITAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL ADICIONAR / EDITAR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -299,7 +299,7 @@
                 <p v-if="formErrors.cliente_id" class="text-xs text-red-500 font-medium">{{ formErrors.cliente_id }}</p>
               </div>
 
-              <!-- â”€â”€ ITENS DA VENDA â”€â”€ -->
+              <!-- �"?�"? ITENS DA VENDA �"?�"? -->
               <template v-if="adicionando || editando">
                 <div class="flex flex-col gap-3">
                   <div class="flex items-center justify-between">
@@ -386,7 +386,7 @@
                         <input v-model.number="novoItem.quantidade" type="number" min="1" step="1" class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500" />
                       </div>
                       <div class="w-28 flex flex-col gap-1.5">
-                        <label class="text-xs font-semibold text-gray-400 uppercase tracking-widest">PreÃ§o (R$)</label>
+                        <label class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Preço (R$)</label>
                         <input v-model.number="novoItem.preco_unitario" type="number" min="0" step="0.01" class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500" />
                       </div>
                       <button
@@ -414,7 +414,7 @@
                 <div class="flex flex-col gap-1.5">
                   <label class="text-sm font-semibold text-gray-700">Forma de Pagamento</label>
                   <select v-model="form.forma_pagamento" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
-                    <option value="">NÃ£o informado</option>
+                    <option value="">Não informado</option>
                     <option v-for="fp in formasPagamento" :key="fp" :value="fp">{{ fp }}</option>
                   </select>
                 </div>
@@ -434,10 +434,10 @@
                 <input v-model="form.data_venda" type="datetime-local" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" />
               </div>
 
-              <!-- ObservaÃ§Ã£o -->
+              <!-- Observação -->
               <div class="flex flex-col gap-1.5">
-                <label class="text-sm font-semibold text-gray-700">ObservaÃ§Ã£o</label>
-                <textarea v-model="form.observacao" rows="2" placeholder="InformaÃ§Ãµes adicionais..." class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none" />
+                <label class="text-sm font-semibold text-gray-700">Observação</label>
+                <textarea v-model="form.observacao" rows="2" placeholder="Informações adicionais..." class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none" />
               </div>
 
               <p v-if="modalError" class="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">{{ modalError }}</p>
@@ -447,7 +447,7 @@
                   Cancelar
                 </button>
                 <AppButton variant="primary" size="md" type="submit" :loading="saving" class="flex-1">
-                  {{ adicionando ? 'Registrar Venda' : 'Salvar alteraÃ§Ãµes' }}
+                  {{ adicionando ? 'Registrar Venda' : 'Salvar alterações' }}
                 </AppButton>
               </div>
             </form>
@@ -456,7 +456,7 @@
       </Transition>
     </Teleport>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MODAL EXCLUIR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� MODAL EXCLUIR �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -473,7 +473,7 @@
               <p class="text-sm text-gray-500 mt-2 leading-relaxed">
                 Venda <strong class="text-gray-800">#{{ excluindo.id }}</strong> de
                 <strong class="text-gray-800">{{ excluindo.clientes?.nome }}</strong>.<br />
-                <span class="text-red-500 text-xs font-semibold">Essa aÃ§Ã£o nÃ£o pode ser desfeita.</span>
+                <span class="text-red-500 text-xs font-semibold">Essa ação não pode ser desfeita.</span>
               </p>
             </div>
             <p v-if="deleteError" class="text-sm text-red-600 bg-red-50 border-t border-b border-red-200 px-8 py-3 text-center">{{ deleteError }}</p>
@@ -559,7 +559,7 @@ const categoriaSelecionada = ref('')
 const filtroAberto = ref(false)
 const filtros = reactive({ busca: '', status: '', formaPagamento: '' })
 
-const formasPagamento = ['Dinheiro', 'Pix', 'CartÃ£o de DÃ©bito', 'CartÃ£o de CrÃ©dito', 'Boleto', 'TransferÃªncia']
+const formasPagamento = ['Dinheiro', 'Pix', 'Cartão de Débito', 'Cartão de Crédito', 'Boleto', 'Transferência']
 
 const categoriasDisponiveis = computed(() => {
   const set = new Set(produtosOpcoes.value.map(p => p.categoria).filter(Boolean) as string[])
@@ -586,12 +586,12 @@ const CATEGORY_ICONS: Record<string, string> = {
 function categoryIconHtml(nome: string): string {
   const n = nome.toLowerCase()
   let key = 'default'
-  if (/ra[Ã§c][aÃ£]o|alimenta|comida|nutri/.test(n))               key = 'food'
+  if (/ra[çc][aã]o|alimenta|comida|nutri/.test(n))               key = 'food'
   else if (/petisco|snack|biscoito|trat/.test(n))                key = 'snack'
   else if (/higien|banho|limpeza|shampoo|grooming/.test(n))      key = 'hygiene'
   else if (/brinquedo|toy|lazer|jogo/.test(n))                   key = 'toy'
-  else if (/medic|sa[Ãºu]de|veterin|farm|rem[Ã©e]dio/.test(n))    key = 'health'
-  else if (/acess[oÃ³]rio|coleira|guia|roupa|vest/.test(n))       key = 'accessories'
+  else if (/medic|sa[úu]de|veterin|farm|rem[ée]dio/.test(n))    key = 'health'
+  else if (/acess[oó]rio|coleira|guia|roupa|vest/.test(n))       key = 'accessories'
   else if (/cama|casinha|confort|moradia/.test(n))               key = 'home'
   return CATEGORY_ICONS[key] ?? CATEGORY_ICONS['default']!
 }
@@ -616,7 +616,7 @@ watch(() => novoItem.produto_id, (id) => {
   if (p) novoItem.preco_unitario = p.preco_venda
 })
 
-// â”€â”€ Stats â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Stats �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 const faturamentoTotal = computed(() =>
   vendas.value.reduce((s, v) =>
     s + (v.vendas_itens ?? []).reduce((si, i) => si + (i.valor_total ?? i.quantidade * i.preco_unitario), 0), 0)
@@ -633,7 +633,7 @@ const vendasMes = computed(() => {
   }).length
 })
 
-// â”€â”€ Filtros â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Filtros �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 const filtrosAtivos = computed(() => {
   let c = 0
   if (filtros.busca) c++
@@ -657,13 +657,13 @@ const vendasFiltradas = computed(() => {
 })
 function limparFiltros() { filtros.busca = ''; filtros.status = ''; filtros.formaPagamento = '' }
 
-// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? Helpers �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 function formatCurrency(val: number | null | undefined): string {
-  if (val == null) return 'â€”'
+  if (val == null) return '�?"'
   return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 }
 function formatDate(iso: string | null): string {
-  if (!iso) return 'â€”'
+  if (!iso) return '�?"'
   return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 function toDatetimeLocal(iso: string | null): string {
@@ -674,7 +674,7 @@ function statusLabel(s: string | null): string {
   if (s === 'finalizada') return 'Finalizada'
   if (s === 'pendente')   return 'Pendente'
   if (s === 'cancelada')  return 'Cancelada'
-  return s ?? 'â€”'
+  return s ?? '�?"'
 }
 function statusBadgeClass(s: string | null): string {
   if (s === 'finalizada') return 'bg-green-100 text-green-700'
@@ -692,7 +692,7 @@ function vendaTotalValor(v: Venda): number {
   return (v.vendas_itens ?? []).reduce((s, i) => s + (i.valor_total ?? i.quantidade * i.preco_unitario), 0)
 }
 
-// â”€â”€ CRUD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// �"?�"? CRUD �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 onMounted(async () => {
   await Promise.all([fetchVendas(), fetchOpcoes()])
 })
@@ -864,13 +864,13 @@ function exportarPDF() {
   const now = new Date()
   const dataGeracao = now.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 
-  // CabeÃ§alho
+  // Cabeçalho
   doc.setFillColor(20, 83, 45)
   doc.rect(0, 0, doc.internal.pageSize.getWidth(), 56, 'F')
   doc.setTextColor(255, 255, 255)
   doc.setFontSize(20)
   doc.setFont('helvetica', 'bold')
-  doc.text('PetFlow â€” RelatÃ³rio de Vendas', 40, 34)
+  doc.text('PetFlow �?" Relatório de Vendas', 40, 34)
   doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
   doc.text(`Gerado em: ${dataGeracao}`, 40, 48)
@@ -880,7 +880,7 @@ function exportarPDF() {
     if (filtros.status) parts.push(`Status: ${statusLabel(filtros.status)}`)
     if (filtros.formaPagamento) parts.push(`Pagamento: ${filtros.formaPagamento}`)
     if (filtros.busca) parts.push(`Busca: "${filtros.busca}"`)
-    doc.text(`Filtros aplicados: ${parts.join(' Â· ')}`, doc.internal.pageSize.getWidth() - 40, 48, { align: 'right' })
+    doc.text(`Filtros aplicados: ${parts.join(' · ')}`, doc.internal.pageSize.getWidth() - 40, 48, { align: 'right' })
   }
 
   // Resumo
@@ -892,7 +892,7 @@ function exportarPDF() {
   const faturamentoFiltrado = vendasFiltradas.value.reduce((s, v) => s + vendaTotalValor(v), 0)
   const ticketFiltrado = totalVendasFiltradas ? faturamentoFiltrado / totalVendasFiltradas : 0
   doc.text(
-    `Total: ${totalVendasFiltradas} venda(s)   |   Faturamento: ${formatCurrency(faturamentoFiltrado)}   |   Ticket MÃ©dio: ${formatCurrency(ticketFiltrado)}`,
+    `Total: ${totalVendasFiltradas} venda(s)   |   Faturamento: ${formatCurrency(faturamentoFiltrado)}   |   Ticket Médio: ${formatCurrency(ticketFiltrado)}`,
     40, resumoY
   )
 
@@ -902,10 +902,10 @@ function exportarPDF() {
     head: [['#', 'Cliente', 'Itens', 'Total', 'Pagamento', 'Status', 'Data']],
     body: vendasFiltradas.value.map(v => [
       String(v.id),
-      v.clientes?.nome ?? 'â€”',
-      (v.vendas_itens ?? []).map(i => `${i.produtos_casa_racao?.nome ?? '?'} â€” ${i.quantidade}Ã— ${formatCurrency(i.preco_unitario)}`).join('\n') || 'â€”',
+      v.clientes?.nome ?? '�?"',
+      (v.vendas_itens ?? []).map(i => `${i.produtos_casa_racao?.nome ?? '?'} �?" ${i.quantidade}�- ${formatCurrency(i.preco_unitario)}`).join('\n') || '�?"',
       formatCurrency(vendaTotalValor(v)),
-      v.forma_pagamento ?? 'â€”',
+      v.forma_pagamento ?? '�?"',
       statusLabel(v.status),
       formatDate(v.data_venda),
     ]),
@@ -924,14 +924,14 @@ function exportarPDF() {
     tableLineWidth: 0.5,
   })
 
-  // RodapÃ©
+  // Rodapé
   const pageCount = (doc.internal as any).getNumberOfPages()
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i)
     doc.setFontSize(8)
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(150, 150, 150)
-    doc.text(`PÃ¡gina ${i} de ${pageCount}`, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 16, { align: 'center' })
+    doc.text(`Página ${i} de ${pageCount}`, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 16, { align: 'center' })
   }
 
   const filename = `vendas_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}.pdf`
