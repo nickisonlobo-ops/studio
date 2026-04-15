@@ -3,7 +3,7 @@
     <label
       v-if="label"
       :for="inputId"
-      class="text-sm font-medium text-content"
+      class="text-sm font-medium text-white"
     >
       {{ label }}
       <span v-if="required" class="text-error ml-0.5">*</span>
