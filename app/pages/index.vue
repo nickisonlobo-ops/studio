@@ -1,14 +1,13 @@
-<template>
-  <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
+﻿<template>
+  <div class="min-h-full bg-transparent p-3 sm:p-8">
 
     <!-- �.��.��.��.��.��.��.��.��.��.��.� VIS�fO FUNCIONÁRIO �.��.��.��.��.��.��.��.��.��.��.� -->
     <template v-if="!adminLoading && !isAdminOrGerente">
       <!-- Cabeçalho funcionário -->
       <div class="relative rounded-3xl overflow-hidden mb-7 shadow-xl">
-        <div class="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800" />
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.15),transparent_60%)]" />
-        <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-white/[0.03] pointer-events-none" />
-        <div class="absolute -bottom-20 left-1/4 w-96 h-96 rounded-full bg-white/[0.02] pointer-events-none" />
+        <div class="absolute inset-0 bg-gradient-to-br from-pink-600 via-pink-500 to-rose-400" />
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.15),transparent_60%)]" />
+        <PageLogo />
 
         <div class="relative px-4 sm:px-8 pt-6 pb-6">
           <div class="flex flex-wrap items-center justify-between gap-4">
@@ -19,7 +18,7 @@
                 </svg>
               </div>
               <div>
-                <p class="text-xs font-bold text-amber-400 uppercase tracking-widest">AutoFlow</p>
+                <p class="text-xs font-bold text-pink-100 uppercase tracking-widest">UpStudio</p>
                 <h1 class="text-2xl font-black text-white leading-tight">
                   {{ funcionarioLogado ? `Olá, ${primeiroNome(funcionarioLogado.nome)}!` : 'Minhas Atividades' }}
                 </h1>
@@ -32,7 +31,7 @@
                 {{ funcionarioLogado.cargo ?? 'Funcionário' }}
               </span>
               <span class="inline-flex items-center gap-1 text-xs font-bold bg-white/10 border border-white/15 text-white px-3 py-1.5 rounded-xl">
-                <span class="w-2 h-2 rounded-full bg-amber-400" />
+                <span class="w-2 h-2 rounded-full bg-pink-400" />
                 {{ minhasAtividades.length }} atividade(s)
               </span>
             </div>
@@ -41,7 +40,7 @@
           <!-- Stats rápidos -->
           <div v-if="funcionarioLogado && !loadingAtividades" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
             <div class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
-              <span class="text-[10px] font-bold text-amber-300 uppercase tracking-widest">Pendentes</span>
+              <span class="text-[10px] font-bold text-pink-300 uppercase tracking-widest">Pendentes</span>
               <span class="text-xl font-black text-white">{{ countAtivStatus('pendente') }}</span>
             </div>
             <div class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
@@ -62,8 +61,8 @@
 
       <!-- Sem funcionário vinculado -->
       <div v-if="!loadingAtividades && !funcionarioLogado" class="flex flex-col items-center justify-center py-24 gap-4">
-        <div class="w-16 h-16 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center">
-          <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+        <div class="w-16 h-16 rounded-2xl bg-pink-50 border border-pink-100 flex items-center justify-center">
+          <svg class="w-8 h-8 text-pink-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
         </div>
         <div class="text-center">
           <p class="text-base font-bold text-gray-700">Nenhum funcionário vinculado</p>
@@ -73,7 +72,7 @@
 
       <!-- Loading -->
       <div v-else-if="loadingAtividades" class="flex items-center justify-center py-24">
-        <span class="inline-block w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+        <span class="inline-block w-10 h-10 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
       </div>
 
       <!-- Tabs e lista de atividades -->
@@ -86,8 +85,8 @@
             type="button"
             class="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-150"
             :class="tabAtiva === tab.value
-              ? 'bg-amber-500 text-gray-950 shadow-md'
-              : 'bg-white text-gray-600 border border-gray-200 hover:border-amber-400 hover:text-amber-700'"
+              ? 'bg-pink-500 text-white shadow-md'
+              : 'bg-white text-gray-600 border border-gray-200 hover:border-pink-400 hover:text-pink-700'"
             @click="tabAtiva = tab.value"
           >
             {{ tab.label }}
@@ -101,8 +100,8 @@
         </div>
 
         <!-- Frase motivacional -->
-        <div v-if="funcionarioLogado" class="mb-5 flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-gray-50 to-amber-50/40 border border-amber-100">
-          <div class="shrink-0 w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center">
+        <div v-if="funcionarioLogado" class="mb-5 flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-gray-50 to-pink-50/40 border border-pink-100">
+          <div class="shrink-0 w-8 h-8 rounded-xl bg-pink-500 flex items-center justify-center">
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
           </div>
           <p class="text-sm font-semibold text-gray-800 leading-snug">{{ fraseAtual }}</p>
@@ -134,14 +133,14 @@
             <div v-else class="h-1" :class="prioridadeAccent(at.prioridade)" />
 
             <!-- Cabeçalho premium do título -->
-            <div class="relative px-5 pt-4 pb-3 bg-gradient-to-r from-gray-950 via-gray-900 to-gray-800 overflow-hidden">
+            <div class="relative px-5 pt-4 pb-3 bg-gradient-to-r from-pink-600 via-pink-500 to-rose-400 overflow-hidden">
               <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.12),transparent_65%)]" />
               <div class="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/5" />
               <div class="relative flex items-start justify-between gap-2">
                 <h3 class="font-black text-white text-sm leading-snug tracking-tight drop-shadow-sm">{{ at.titulo }}</h3>
                 <span :class="['shrink-0 inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full border',
                   at.status === 'em_andamento' ? 'bg-blue-500/20 border-blue-400/40 text-blue-200' :
-                  at.status === 'pendente'     ? 'bg-amber-500/20 border-amber-400/40 text-amber-200' :
+                  at.status === 'pendente'     ? 'bg-pink-500/20 border-pink-400/40 text-pink-200' :
                   'bg-white/10 border-white/20 text-white/80']">
                   <span v-if="at.status === 'em_andamento'" class="relative flex w-2 h-2">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-300 opacity-75" />
@@ -213,17 +212,16 @@
           <!-- Banner: tudo concluído nesta aba -->
           <div
             v-if="ativasTab(tabAtiva).length === 0 && concluidasTab(tabAtiva).length > 0"
-            class="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 p-5 shadow-lg"
+            class="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500 via-pink-400 to-rose-300 p-5 shadow-lg"
           >
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.2),transparent_60%)]" />
-            <div class="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-white/10 pointer-events-none" />
             <div class="relative flex items-center gap-4">
               <div class="shrink-0 w-14 h-14 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-3xl select-none">
                 �Y�?
               </div>
               <div>
                 <p class="text-base font-black text-white leading-tight">Parabéns, {{ funcionarioLogado ? primeiroNome(funcionarioLogado.nome) : 'campeão' }}!</p>
-                <p class="text-sm text-amber-100/90 mt-0.5">Todas as tarefas desta aba foram concluídas. Excelente trabalho! Continue assim! 🎉</p>
+                <p class="text-sm text-pink-100/90 mt-0.5">Todas as tarefas desta aba foram concluídas. Excelente trabalho! Continue assim! 🎉</p>
               </div>
             </div>
           </div>
@@ -231,12 +229,12 @@
           <!-- Divisor Concluídas -->
           <div v-if="concluidasTab(tabAtiva).length > 0" class="mt-8">
             <div class="flex items-center gap-3 mb-4">
-              <div class="flex-1 h-px bg-gray-200" />
-              <span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 bg-amber-50 border border-amber-100 px-3 py-1 rounded-full">
+              <div class="flex-1 h-px bg-pink-100" />
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold text-pink-600 bg-pink-50 border border-pink-100 px-3 py-1 rounded-full">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Concluídas ({{ concluidasTab(tabAtiva).length }})
               </span>
-              <div class="flex-1 h-px bg-gray-200" />
+              <div class="flex-1 h-px bg-pink-100" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 opacity-70">
               <div
@@ -278,92 +276,169 @@
     <template v-if="!adminLoading && isAdminOrGerente">
 
       <!-- Header compacto -->
-      <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 shadow-xl mb-6">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.15),transparent_60%)]" />
-        <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-white/[0.04] pointer-events-none" />
-        <div class="relative px-6 sm:px-10 py-6 flex items-center justify-between gap-4">
+      <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-pink-600 via-pink-500 to-rose-400 shadow-xl mb-6">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.15),transparent_60%)]" />
+        <div class="relative px-6 sm:px-10 py-6 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-amber-400 mb-1">AutoFlow · Painel Admin</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-pink-100 mb-1">UpStudio · Painel Admin</p>
             <h1 class="text-xl sm:text-3xl font-black text-white leading-tight">Visão Geral do Negócio</h1>
             <p class="text-sm text-gray-300/70 mt-1">{{ dataHoje }}</p>
           </div>
-          <div class="shrink-0 w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/>
-            </svg>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all"
+              :class="filtroAberto ? 'bg-white text-[#ff46a2] shadow-lg' : 'bg-white/10 text-white hover:bg-white/20 border border-white/15'"
+              @click="filtroAberto = !filtroAberto"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+              Filtros
+              <span v-if="filtroPeriodo !== 'mes_atual'" class="w-2 h-2 rounded-full bg-[#ff46a2]" />
+            </button>
+            <div class="shrink-0 w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/>
+              </svg>
+            </div>
           </div>
         </div>
       </section>
 
+      <!-- FILTRO AVANÇADO -->
+      <Transition name="slide-down">
+        <div v-if="filtroAberto" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/60">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#ff46a2]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+              <span class="text-sm font-black text-gray-700">Filtro Avançado</span>
+            </div>
+            <button type="button" class="text-xs font-bold text-[#ff46a2] hover:text-pink-700" @click="resetarFiltros">Redefinir</button>
+          </div>
+          <div class="px-6 py-5 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Período financeiro -->
+            <div>
+              <p class="text-[10px] font-black uppercase tracking-widest text-pink-500 mb-3">Período</p>
+              <div class="grid grid-cols-2 gap-2">
+                <button
+                  v-for="opt in periodoOpcoes"
+                  :key="opt.value"
+                  type="button"
+                  class="flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-semibold transition-all text-left"
+                  :class="filtroPeriodo === opt.value ? 'bg-pink-50 border-pink-300 text-[#ff46a2]' : 'border-gray-200 text-gray-600 hover:border-pink-200 hover:text-pink-500'"
+                  @click="filtroPeriodo = opt.value; aplicarFiltros()"
+                >
+                  <span class="w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center shrink-0" :class="filtroPeriodo === opt.value ? 'border-[#ff46a2]' : 'border-gray-300'">
+                    <span v-if="filtroPeriodo === opt.value" class="w-1.5 h-1.5 rounded-full bg-[#ff46a2]" />
+                  </span>
+                  {{ opt.label }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Mês/Ano específico -->
+            <div>
+              <p class="text-[10px] font-black uppercase tracking-widest text-pink-500 mb-3">Mês / Ano Específico</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-500 mb-1.5">Mês</label>
+                  <select
+                    v-model="filtroMes"
+                    class="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    @change="filtroPeriodo = 'personalizado'; aplicarFiltros()"
+                  >
+                    <option v-for="m in mesesOpcoes" :key="m.value" :value="m.value">{{ m.label }}</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-500 mb-1.5">Ano</label>
+                  <select
+                    v-model="filtroAno"
+                    class="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
+                    @change="filtroPeriodo = 'personalizado'; aplicarFiltros()"
+                  >
+                    <option v-for="a in anosOpcoes" :key="a" :value="a">{{ a }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mt-3 flex items-center gap-1.5 text-xs text-gray-400">
+                <svg class="w-3.5 h-3.5 text-pink-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                Exibindo: <span class="font-bold text-gray-600 ml-0.5">{{ periodoLabelAtual }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+
       <!-- Financeiro -->
       <div class="mb-3 flex items-center gap-2 px-1">
         <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">Financeiro</span>
-        <div class="flex-1 h-px bg-gray-200" />
+        <div class="flex-1 h-px bg-pink-100" />
+        <span class="text-[10px] font-bold text-pink-400">{{ periodoLabelAtual }}</span>
       </div>
       <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 mb-6">
 
         <!-- Faturamento -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 p-4 shadow-md">
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.18),transparent_65%)]" />
-          <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/[0.04] pointer-events-none" />
+        <div class="relative overflow-hidden rounded-2xl bg-white border border-pink-100 p-4 shadow-sm">
+
+
           <div class="relative flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Faturamento / Mês</span>
           </div>
-          <p class="relative text-lg sm:text-2xl font-black text-white truncate">{{ resumoLoading ? '...' : formatCurrency(faturamentoMes) }}</p>
-          <p class="relative text-[11px] text-gray-500 mt-1">vendas confirmadas</p>
+          <p class="relative text-lg sm:text-2xl font-black text-gray-900 truncate">{{ resumoLoading ? '...' : formatCurrency(faturamentoMes) }}</p>
+          <p class="relative text-[11px] text-gray-500 mt-1">agendamentos confirmados</p>
         </div>
 
-        <!-- Vendas do mês -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 p-4 shadow-md">
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.10),transparent_65%)]" />
-          <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/[0.04] pointer-events-none" />
+        <!-- Agendamentos do mês -->
+        <div class="relative overflow-hidden rounded-2xl bg-white border border-pink-100 p-4 shadow-sm">
+
+
           <div class="relative flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185z"/></svg>
+            <div class="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
             </div>
-            <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Vendas / Mês</span>
+            <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Agendamentos / Mês</span>
           </div>
-          <p class="relative text-2xl font-black text-white">{{ resumoLoading ? '...' : vendasMes }}</p>
-          <p class="relative text-[11px] text-gray-500 mt-1">pedidos este mês</p>
+          <p class="relative text-2xl font-black text-gray-900">{{ resumoLoading ? '...' : agendamentosMes }}</p>
+          <p class="relative text-[11px] text-gray-500 mt-1">este mês</p>
         </div>
 
         <!-- Contas a pagar -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 p-4 shadow-md">
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.10),transparent_65%)]" />
-          <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/[0.04] pointer-events-none" />
+        <div class="relative overflow-hidden rounded-2xl bg-white border border-pink-100 p-4 shadow-sm">
+
+
           <div class="relative flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/></svg>
+            <div class="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/></svg>
             </div>
             <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Contas a Pagar</span>
           </div>
-          <p class="relative text-lg sm:text-xl font-black text-white truncate">{{ resumoLoading ? '...' : formatCurrency(valorContasPagar) }}</p>
+          <p class="relative text-lg sm:text-xl font-black text-gray-900 truncate">{{ resumoLoading ? '...' : formatCurrency(valorContasPagar) }}</p>
           <div class="relative flex items-center gap-1.5 mt-1">
             <span class="text-[11px] text-gray-500">em aberto</span>
-            <span class="inline-flex items-center justify-center text-[10px] font-black px-1.5 py-0.5 rounded-full bg-white/10 text-gray-300">
+            <span class="inline-flex items-center justify-center text-[10px] font-black px-1.5 py-0.5 rounded-full bg-pink-50 text-gray-600 border border-pink-100">
               {{ resumoLoading ? '...' : totalContasPagar }} conta{{ totalContasPagar !== 1 ? 's' : '' }}
             </span>
           </div>
         </div>
 
         <!-- Contas vencidas -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 p-4 shadow-md">
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.10),transparent_65%)]" />
-          <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/[0.04] pointer-events-none" />
+        <div class="relative overflow-hidden rounded-2xl bg-white border border-pink-100 p-4 shadow-sm">
+
+
           <div class="relative flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4" :class="contasVencidas > 0 ? 'text-red-400' : 'text-amber-400'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+            <div class="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4" :class="contasVencidas > 0 ? 'text-red-400' : 'text-pink-400'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
             </div>
             <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Vencidas</span>
           </div>
-          <p class="relative text-2xl font-black text-white flex items-center gap-2">
+          <p class="relative text-2xl font-black text-gray-900 flex items-center gap-2">
             {{ resumoLoading ? '...' : contasVencidas }}
             <span v-if="contasVencidas > 0" class="inline-block w-2 h-2 rounded-full bg-red-400 animate-ping" />
           </p>
-          <p class="relative text-[11px] mt-1" :class="contasVencidas > 0 ? 'text-red-400' : 'text-gray-500'">
+          <p class="relative text-[11px] mt-1" :class="contasVencidas > 0 ? 'text-red-500' : 'text-gray-500'">
             {{ contasVencidas > 0 ? 'atenção necessária' : 'tudo em dia ✅' }}
           </p>
         </div>
@@ -372,70 +447,69 @@
       <!-- Operacional -->
       <div class="mb-3 flex items-center gap-2 px-1">
         <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">Operacional</span>
-        <div class="flex-1 h-px bg-gray-200" />
+        <div class="flex-1 h-px bg-pink-100" />
+        <span class="text-[10px] font-bold text-pink-400">{{ periodoLabelAtual }}</span>
       </div>
       <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 mb-8">
 
         <!-- Ticket Médio -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 p-4 shadow-md">
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.18),transparent_65%)]" />
-          <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/[0.04] pointer-events-none" />
+        <div class="relative overflow-hidden rounded-2xl bg-white border border-pink-100 p-4 shadow-sm">
+
+
           <div class="relative flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+            <div class="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
             </div>
             <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Ticket Médio</span>
           </div>
-          <p class="relative text-lg sm:text-2xl font-black text-white truncate">{{ resumoLoading ? '...' : formatCurrency(ticketMedio) }}</p>
-          <p class="relative text-[11px] text-gray-500 mt-1">por venda este mês</p>
+          <p class="relative text-lg sm:text-2xl font-black text-gray-900 truncate">{{ resumoLoading ? '...' : formatCurrency(ticketMedio) }}</p>
+          <p class="relative text-[11px] text-gray-500 mt-1">por agendamento este mês</p>
         </div>
 
-        <!-- Estoque -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 p-4 shadow-md">
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.10),transparent_65%)]" />
-          <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/[0.04] pointer-events-none" />
+        <!-- Produtos em estoque -->
+        <div class="relative overflow-hidden rounded-2xl bg-white border border-pink-100 p-4 shadow-sm">
+
+
           <div class="relative flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>
+            <div class="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
             </div>
-            <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Estoque</span>
+            <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Produtos</span>
           </div>
-          <p class="relative text-2xl font-black text-white">{{ resumoLoading ? '...' : veiculosTotal }}</p>
+          <p class="relative text-2xl font-black text-gray-900">{{ resumoLoading ? '...' : produtosTotal }}</p>
           <div class="relative flex items-center gap-2 mt-1 flex-wrap">
-            <span class="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/10 text-gray-300">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-400" />{{ veiculosDisponiveis }} disp.
+            <span v-if="produtosBaixoEstoque > 0" class="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-pink-100 text-pink-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-pink-400" />{{ produtosBaixoEstoque }} estoque baixo
             </span>
-            <span v-if="veiculosReservados > 0" class="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/10 text-gray-300">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-400" />{{ veiculosReservados }} res.
-            </span>
+            <span v-else class="text-[11px] text-gray-500">todos ok</span>
           </div>
         </div>
 
         <!-- Tarefas Hoje -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 p-4 shadow-md">
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.10),transparent_65%)]" />
-          <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/[0.04] pointer-events-none" />
+        <div class="relative overflow-hidden rounded-2xl bg-white border border-pink-100 p-4 shadow-sm">
+
+
           <div class="relative flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            <div class="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
             </div>
             <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Tarefas Hoje</span>
           </div>
-          <p class="relative text-2xl font-black text-white">{{ resumoLoading ? '...' : tarefasHoje }}</p>
+          <p class="relative text-2xl font-black text-gray-900">{{ resumoLoading ? '...' : tarefasHoje }}</p>
           <p class="relative text-[11px] text-gray-500 mt-1">{{ resumoLoading ? '' : tarefasConcluidasHoje + ' concluídas hoje' }}</p>
         </div>
 
         <!-- Clientes -->
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 p-4 shadow-md">
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.10),transparent_65%)]" />
-          <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/[0.04] pointer-events-none" />
+        <div class="relative overflow-hidden rounded-2xl bg-white border border-pink-100 p-4 shadow-sm">
+
+
           <div class="relative flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+            <div class="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
             </div>
             <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Clientes</span>
           </div>
-          <p class="relative text-2xl font-black text-white">{{ resumoLoading ? '...' : totalClientes }}</p>
+          <p class="relative text-2xl font-black text-gray-900">{{ resumoLoading ? '...' : totalClientes }}</p>
           <p class="relative text-[11px] text-gray-500 mt-1">cadastrados</p>
         </div>
       </div>
@@ -443,20 +517,20 @@
       <!-- Atalhos -->
       <div class="mb-3 flex items-center gap-2 px-1">
         <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">Atalhos</span>
-        <div class="flex-1 h-px bg-gray-200" />
+        <div class="flex-1 h-px bg-pink-100" />
       </div>
       <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
         <NuxtLink
           v-for="atalho in atalhosVisiveis"
           :key="atalho.to"
           :to="atalho.to"
-          class="group relative overflow-hidden flex flex-col items-center gap-2 py-4 px-2 rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+          class="group relative overflow-hidden flex flex-col items-center gap-2 py-4 px-2 rounded-2xl bg-white border border-pink-100 hover:shadow-md hover:border-pink-300 transition-all duration-200 hover:-translate-y-0.5"
         >
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.08),transparent_70%)]" />
-          <div class="relative w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
-            <AppNavIcon :name="atalho.icon" class="w-5 h-5 text-amber-400" />
+          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(236,72,153,0.0),transparent_70%)]" />
+          <div class="relative w-10 h-10 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+            <AppNavIcon :name="atalho.icon" class="w-5 h-5 text-pink-500" />
           </div>
-          <span class="relative text-[11px] font-bold text-gray-300 text-center leading-tight group-hover:text-white">{{ atalho.title }}</span>
+          <span class="relative text-[11px] font-bold text-gray-600 text-center leading-tight group-hover:text-pink-700">{{ atalho.title }}</span>
         </NuxtLink>
       </div>
 
@@ -464,13 +538,13 @@
 
     <!-- Loading inicial -->
     <div v-if="adminLoading" class="flex items-center justify-center py-32">
-      <span class="inline-block w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+      <span class="inline-block w-10 h-10 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useAdmin } from '~/composables/useAdmin'
 import { useEmpresa } from '~/composables/useEmpresa'
 import { createSupabaseClient } from '~/lib/supabase'
@@ -484,7 +558,7 @@ const { empresaId, userPerfil, loadEmpresa } = useEmpresa()
 const resumoLoading      = ref(true)
 const totalClientes      = ref(0)
 const clientesAtivos     = ref(0)
-const vendasMes          = ref(0)
+const agendamentosMes    = ref(0)
 const faturamentoMes     = ref(0)
 const totalContasPagar   = ref(0)
 const valorContasPagar   = ref(0)
@@ -492,11 +566,130 @@ const contasVencidas     = ref(0)
 const tarefasHoje           = ref(0)
 const tarefasConcluidasHoje = ref(0)
 const tarefasPendentes      = ref(0)
-const veiculosDisponiveis   = ref(0)
-const veiculosReservados    = ref(0)
-const veiculosTotal         = ref(0)
-const veiculosVendidosMes   = ref(0)
+const produtosTotal         = ref(0)
+const produtosBaixoEstoque  = ref(0)
 const ticketMedio           = ref(0)
+
+// ── Filtros painel admin ────────────────────────────────────────────────────
+const filtroAberto = ref(false)
+const filtroPeriodo = ref<'mes_atual' | 'semana_atual' | 'trimestre' | 'ano_atual' | 'personalizado'>('mes_atual')
+const filtroMes = ref(new Date().getMonth() + 1)
+const filtroAno = ref(new Date().getFullYear())
+const filtroOp = reactive({ agendamentos: true, contas: true, estoque: true, tarefas: true })
+
+const periodoOpcoes = [
+  { value: 'mes_atual',    label: 'Mes Atual' },
+  { value: 'semana_atual', label: 'Semana Atual' },
+  { value: 'trimestre',    label: 'Trimestre Atual' },
+  { value: 'ano_atual',    label: 'Ano Atual' },
+]
+
+const mesesOpcoes = [
+  { value: 1, label: 'Janeiro' }, { value: 2, label: 'Fevereiro' }, { value: 3, label: 'Marco' },
+  { value: 4, label: 'Abril' },   { value: 5, label: 'Maio' },      { value: 6, label: 'Junho' },
+  { value: 7, label: 'Julho' },   { value: 8, label: 'Agosto' },    { value: 9, label: 'Setembro' },
+  { value: 10, label: 'Outubro' },{ value: 11, label: 'Novembro' }, { value: 12, label: 'Dezembro' },
+]
+
+const anosOpcoes = computed(() => {
+  const y = new Date().getFullYear()
+  return [y - 2, y - 1, y, y + 1]
+})
+
+const periodoLabelAtual = computed(() => {
+  if (filtroPeriodo.value === 'mes_atual') {
+    const now = new Date()
+    return now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+  }
+  if (filtroPeriodo.value === 'semana_atual') return 'Esta semana'
+  if (filtroPeriodo.value === 'trimestre') {
+    const m = new Date().getMonth()
+    const q = Math.floor(m / 3) + 1
+    return String(q) + 'o Trimestre ' + String(new Date().getFullYear())
+  }
+  if (filtroPeriodo.value === 'ano_atual') return 'Ano ' + String(new Date().getFullYear())
+  if (filtroPeriodo.value === 'personalizado') {
+    const mes = mesesOpcoes.find(m => m.value === filtroMes.value)?.label ?? ''
+    return mes + ' ' + String(filtroAno.value)
+  }
+  return ''
+})
+
+function getPeriodoRange(): { inicio: string; fim: string } {
+  const now = new Date()
+  const y = now.getFullYear(), m = now.getMonth()
+  if (filtroPeriodo.value === 'mes_atual')
+    return { inicio: new Date(y, m, 1).toISOString().slice(0, 10), fim: new Date(y, m + 1, 0).toISOString().slice(0, 10) }
+  if (filtroPeriodo.value === 'semana_atual') {
+    const d = new Date(now); const day = d.getDay()
+    const mon = new Date(d); mon.setDate(d.getDate() + (day === 0 ? -6 : 1 - day))
+    const sun = new Date(mon); sun.setDate(mon.getDate() + 6)
+    return { inicio: mon.toISOString().slice(0, 10), fim: sun.toISOString().slice(0, 10) }
+  }
+  if (filtroPeriodo.value === 'trimestre') {
+    const q = Math.floor(m / 3)
+    return { inicio: new Date(y, q * 3, 1).toISOString().slice(0, 10), fim: new Date(y, q * 3 + 3, 0).toISOString().slice(0, 10) }
+  }
+  if (filtroPeriodo.value === 'ano_atual') return { inicio: y + '-01-01', fim: y + '-12-31' }
+  const pm = filtroMes.value - 1, py = filtroAno.value
+  return { inicio: new Date(py, pm, 1).toISOString().slice(0, 10), fim: new Date(py, pm + 1, 0).toISOString().slice(0, 10) }
+}
+
+function resetarFiltros() {
+  filtroPeriodo.value = 'mes_atual'
+  filtroMes.value = new Date().getMonth() + 1
+  filtroAno.value = new Date().getFullYear()
+  filtroOp.agendamentos = true; filtroOp.contas = true; filtroOp.estoque = true; filtroOp.tarefas = true
+  aplicarFiltros()
+}
+
+async function aplicarFiltros() {
+  resumoLoading.value = true
+  const { inicio, fim } = getPeriodoRange()
+  const todayIso = new Date().toISOString().slice(0, 10)
+
+  const [clientesResp, agendamentosResp, contasResp, tarefasResp, produtosResp] = await Promise.all([
+    supabase.from('clientes').select('ativo').eq('empresa_id', empresaId.value!),
+    filtroOp.agendamentos
+      ? supabase.from('agendamentos').select('valor_total, data_hora, status').eq('empresa_id', empresaId.value!).gte('data_hora', inicio).lte('data_hora', fim + 'T23:59:59')
+      : Promise.resolve({ data: [], error: null }),
+    filtroOp.contas
+      ? supabase.from('contas_pagar').select('valor, data_vencimento, status').eq('empresa_id', empresaId.value!).gte('data_vencimento', inicio).lte('data_vencimento', fim)
+      : Promise.resolve({ data: [], error: null }),
+    filtroOp.tarefas
+      ? supabase.from('atividades_funcionarios').select('status, data_atividade').eq('empresa_id', empresaId.value!).gte('data_atividade', inicio).lte('data_atividade', fim)
+      : Promise.resolve({ data: [], error: null }),
+    filtroOp.estoque
+      ? supabase.from('produtos_casa_racao').select('estoque, ativo').eq('empresa_id', empresaId.value!)
+      : Promise.resolve({ data: [], error: null }),
+  ])
+
+  const clientes = clientesResp.data ?? []
+  totalClientes.value = clientes.length
+  clientesAtivos.value = clientes.filter((c: any) => c.ativo !== false).length
+
+  const agendamentos = agendamentosResp.data ?? []
+  const confirmados = agendamentos.filter((a: any) => a.status !== 'cancelado')
+  agendamentosMes.value = agendamentos.length
+  faturamentoMes.value = confirmados.reduce((sum: number, a: any) => sum + Number(a.valor_total ?? 0), 0)
+  ticketMedio.value = confirmados.length > 0 ? faturamentoMes.value / confirmados.length : 0
+
+  const contas = (contasResp.data ?? []).filter((c: any) => c.status !== 'pago' && c.status !== 'cancelado')
+  totalContasPagar.value = contas.length
+  valorContasPagar.value = contas.reduce((sum: number, c: any) => sum + Number(c.valor ?? 0), 0)
+  contasVencidas.value = contas.filter((c: any) => c.data_vencimento && c.data_vencimento < todayIso).length
+
+  const tf = tarefasResp.data ?? []
+  tarefasHoje.value = tf.length
+  tarefasConcluidasHoje.value = tf.filter((t: any) => t.status === 'concluida').length
+  tarefasPendentes.value = tf.filter((t: any) => t.status === 'pendente').length
+
+  const prods = (produtosResp.data ?? []).filter((p: any) => p.ativo !== false)
+  produtosTotal.value = prods.length
+  produtosBaixoEstoque.value = prods.filter((p: any) => p.estoque <= 5).length
+
+  resumoLoading.value = false
+}
 
 // �"?�"? FUNCIONÁRIO: atividades �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 interface AtividadeFuncionario {
@@ -576,14 +769,14 @@ function concluidasTab(tab: string): AtividadeFuncionario[] {
 }
 
 const frasesMotivacionais = [
-  'Cada tarefa concluída é um passo rumo à excelência!',
-  'Foco total, resultado certo. Vamos lá!',
-  'Organização é o segredo de quem vai longe!',
-  'Um cliente satisfeito começa com uma equipe comprometida.',
-  'Consistência supera talento todos os dias.',
-  'Hoje é um ótimo dia para dar o seu melhor!',
-  'Pequenas ações, grandes resultados.',
-  'Produtividade é fazer as coisas certas com dedicação.',
+  'Cada cliente que sai daqui carrega sua arte no rosto!',
+  'Beleza é o reflexo do cuidado que você dedica a cada atendimento.',
+  'Um serviço especial faz toda a diferença no dia do cliente!',
+  'Sua habilidade transforma autoestima — isso é incrível!',
+  'Organização e dedicação são o segredo de um salão de sucesso.',
+  'Hoje é mais um dia para encantar e fazer a diferença!',
+  'Cada detalhe importa quando o objetivo é a excelência.',
+  'Clientes satisfeitos são a melhor propaganda do seu trabalho.',
 ]
 const fraseAtual = computed(() => {
   const idx = new Date().getDate() % frasesMotivacionais.length
@@ -641,14 +834,14 @@ function statusLabel(s: string | null) {
   return s ?? '�?"'
 }
 function statusBadgeClass(s: string | null) {
-  if (s === 'pendente')     return 'bg-amber-100 text-amber-700'
+  if (s === 'pendente')     return 'bg-pink-100 text-pink-700'
   if (s === 'em_andamento') return 'bg-blue-100 text-blue-700'
   if (s === 'concluida')    return 'bg-green-100 text-green-700'
   if (s === 'cancelada')    return 'bg-red-100 text-red-700'
   return 'bg-gray-100 text-gray-500'
 }
 function statusDotClass(s: string | null) {
-  if (s === 'pendente')     return 'bg-amber-500'
+  if (s === 'pendente')     return 'bg-pink-500'
   if (s === 'em_andamento') return 'bg-blue-500'
   if (s === 'concluida')    return 'bg-green-500'
   if (s === 'cancelada')    return 'bg-red-500'
@@ -727,61 +920,7 @@ onMounted(async () => {
 
   // Admin: buscar resumo
   loadingAtividades.value = false
-  const todayIso = new Date().toISOString().slice(0, 10)
-  const [clientesResp, vendasResp, contasResp, tarefasResp, veiculosResp] = await Promise.all([
-    supabase.from('clientes').select('ativo').eq('empresa_id', empresaId.value!),
-    supabase.from('vendas').select('preco_veiculo, data_venda, status').eq('empresa_id', empresaId.value!),
-    supabase.from('contas_pagar').select('valor, data_vencimento, status').eq('empresa_id', empresaId.value!),
-    supabase.from('atividades_funcionarios').select('status, data_atividade').eq('data_atividade', todayIso).eq('empresa_id', empresaId.value!),
-    supabase.from('veiculos').select('status').eq('empresa_id', empresaId.value!),
-  ])
-
-  if (!clientesResp.error) {
-    const clientes = clientesResp.data ?? []
-    totalClientes.value = clientes.length
-    clientesAtivos.value = clientes.filter(c => c.ativo !== false).length
-  }
-
-  if (!vendasResp.error) {
-    const vendas = vendasResp.data ?? []
-    const now = new Date()
-    const vendasNoMes = vendas.filter(v => {
-      if (!v.data_venda) return false
-      const d = new Date(v.data_venda)
-      return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()
-    })
-    const vendasConfirmadas = vendasNoMes.filter(v => v.status !== 'cancelada')
-    vendasMes.value = vendasNoMes.length
-    veiculosVendidosMes.value = vendasConfirmadas.length
-    faturamentoMes.value = vendasConfirmadas
-      .reduce((sum, v) => sum + Number(v.preco_veiculo ?? 0), 0)
-    ticketMedio.value = vendasConfirmadas.length > 0
-      ? faturamentoMes.value / vendasConfirmadas.length
-      : 0
-  }
-
-  if (!contasResp.error) {
-    const contas = (contasResp.data ?? []).filter(c => c.status !== 'pago' && c.status !== 'cancelado')
-    totalContasPagar.value = contas.length
-    valorContasPagar.value = contas.reduce((sum, c) => sum + Number(c.valor ?? 0), 0)
-    contasVencidas.value = contas.filter(c => c.data_vencimento && c.data_vencimento < todayIso).length
-  }
-
-  if (!tarefasResp.error) {
-    const tf = tarefasResp.data ?? []
-    tarefasHoje.value = tf.length
-    tarefasConcluidasHoje.value = tf.filter(t => t.status === 'concluida').length
-    tarefasPendentes.value = tf.filter(t => t.status === 'pendente').length
-  }
-
-  if (!veiculosResp.error) {
-    const vvs = veiculosResp.data ?? []
-    veiculosDisponiveis.value = vvs.filter(v => v.status === 'disponivel').length
-    veiculosReservados.value  = vvs.filter(v => v.status === 'reservado').length
-    veiculosTotal.value       = vvs.length
-  }
-
-  resumoLoading.value = false
+  await aplicarFiltros()
 })
 
 function formatCurrency(val: number): string {
@@ -790,64 +929,40 @@ function formatCurrency(val: number): string {
 
 const atalhos = [
   {
-    to: '/veiculos',
-    icon: 'car',
-    title: 'Veículos',
+    to: '/agendamentos',
+    icon: 'calendar',
+    title: 'Agendamentos',
     minPerfil: 'all',
-    accent: 'bg-amber-500',
-    iconBg: 'bg-amber-50 border-amber-100',
-    iconColor: 'text-amber-600',
-    badge: 'bg-amber-50 text-amber-700',
   },
   {
-    to: '/propostas',
-    icon: 'document',
-    title: 'Propostas',
+    to: '/servicos',
+    icon: 'sparkles',
+    title: 'Serviços',
     minPerfil: 'all',
-    accent: 'bg-sky-500',
-    iconBg: 'bg-sky-50 border-sky-100',
-    iconColor: 'text-sky-600',
-    badge: 'bg-sky-50 text-sky-700',
   },
   {
     to: '/clientes',
     icon: 'identification',
     title: 'Clientes',
     minPerfil: 'all',
-    accent: 'bg-violet-500',
-    iconBg: 'bg-violet-50 border-violet-100',
-    iconColor: 'text-violet-600',
-    badge: 'bg-violet-50 text-violet-700',
   },
   {
-    to: '/vendas',
-    icon: 'receipt',
-    title: 'Vendas',
+    to: '/estoque',
+    icon: 'package',
+    title: 'Estoque',
     minPerfil: 'all',
-    accent: 'bg-orange-500',
-    iconBg: 'bg-orange-50 border-orange-100',
-    iconColor: 'text-orange-600',
-    badge: 'bg-orange-50 text-orange-700',
   },
   {
     to: '/funcionarios',
     icon: 'users',
     title: 'Funcionários',
     minPerfil: 'all',
-    accent: 'bg-emerald-500',
-    iconBg: 'bg-emerald-50 border-emerald-100',
-    iconColor: 'text-emerald-600',
-    badge: 'bg-emerald-50 text-emerald-700',
   },
   {
     to: '/contas-pagar',
     icon: 'wallet',
     title: 'Contas a Pagar',
     minPerfil: 'manager',
-    accent: 'bg-rose-500',
-    iconBg: 'bg-rose-50 border-rose-100',
-    iconColor: 'text-rose-600',
-    badge: 'bg-rose-50 text-rose-700',
   },
 ] as const
 

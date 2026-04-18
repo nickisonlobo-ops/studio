@@ -24,8 +24,9 @@ export function useAuth() {
       return false
     }
 
-    // Atualiza JWT com empresa_id (lido do profile criado pelo trigger) para cache do RLS
-    if (data.user && !data.user.user_metadata?.empresa_id) {
+    // Sempre sincroniza empresa_id e perfil do banco para o JWT.
+    // Garante que funcionários criados pelo admin nunca recebam perfil errado.
+    if (data.user) {
       const { data: profile } = await supabase
         .from('profiles')
         .select('empresa_id, perfil')
@@ -33,10 +34,17 @@ export function useAuth() {
         .maybeSingle()
 
       if (profile?.empresa_id) {
-        await supabase.auth.updateUser({
-          data: { empresa_id: profile.empresa_id, perfil: profile.perfil ?? 'admin' },
-        })
-        await supabase.auth.refreshSession()
+        const perfilDB = profile.perfil ?? 'funcionario'
+        const metaEmpresaId = data.user.user_metadata?.empresa_id
+        const metaPerfil    = data.user.user_metadata?.perfil
+
+        // Só atualiza o JWT se algum valor estiver desatualizado
+        if (String(metaEmpresaId) !== String(profile.empresa_id) || metaPerfil !== perfilDB) {
+          await supabase.auth.updateUser({
+            data: { empresa_id: profile.empresa_id, perfil: perfilDB },
+          })
+          await supabase.auth.refreshSession()
+        }
       }
     }
 
@@ -48,7 +56,6 @@ export function useAuth() {
     loading.value = true
     error.value = null
 
-    // O trigger handle_new_user no Supabase cria empresa + profile automaticamente
     const { data, error: authError } = await supabase.auth.signUp({
       email,
       password,
@@ -57,49 +64,37 @@ export function useAuth() {
       },
     })
 
-    loading.value = false
-
     if (authError) {
+      loading.value = false
       error.value = authError.message
       return { ok: false, needsConfirmation: false }
     }
 
     const needsConfirmation = !data.session
 
-    // Se não precisar de confirmação de e-mail, atualiza JWT com empresa_id
+    // Enquanto a sessão está ativa, cria a empresa e vincula o profile imediatamente.
+    // Não depende do loadEmpresa() para fazer isso.
     if (data.session && data.user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('empresa_id')
-        .eq('id', data.user.id)
-        .maybeSingle()
+      const { data: rpcResult, error: rpcError } = await supabase.rpc('setup_admin_account', {
+        p_empresa_nome: nomeEmpresa.trim(),
+      })
 
-      if (profile?.empresa_id) {
+      if (rpcError) {
+        console.error('[register] setup_admin_account error:', rpcError.message)
+        loading.value = false
+        error.value = `Erro ao configurar empresa: ${rpcError.message}`
+        return { ok: false, needsConfirmation: false }
+      }
+
+      if (rpcResult?.empresa_id) {
         await supabase.auth.updateUser({
-          data: { empresa_id: profile.empresa_id, perfil: 'admin', empresa_nome: nomeEmpresa.trim() },
+          data: { empresa_id: rpcResult.empresa_id, perfil: 'admin', empresa_nome: nomeEmpresa.trim() },
         })
         await supabase.auth.refreshSession()
-      } else {
-        // Trigger ainda não rodou ou falhou — cria empresa + profile diretamente
-        const nomeFinal = nomeEmpresa.trim() || name.trim() || email.split('@')[0]
-        const { data: emp } = await supabase
-          .from('empresas')
-          .insert({ nome_fantasia: nomeFinal })
-          .select('id')
-          .single()
-        if (emp?.id) {
-          await supabase.from('profiles').upsert({
-            id: data.user.id, empresa_id: emp.id,
-            email, nome: name.trim(), perfil: 'admin', status: 'ativo',
-          })
-          await supabase.auth.updateUser({
-            data: { empresa_id: emp.id, perfil: 'admin', empresa_nome: nomeFinal },
-          })
-          await supabase.auth.refreshSession()
-        }
       }
     }
 
+    loading.value = false
     return { ok: true, needsConfirmation }
   }
 

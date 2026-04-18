@@ -1,12 +1,13 @@
-<template>
-  <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
+﻿<template>
+  <div class="min-h-full bg-transparent p-3 sm:p-8">
 
     <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
-      <div class="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800" />
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.15),transparent_60%)]" />
+      <div class="absolute inset-0 bg-gradient-to-br from-pink-600 via-pink-500 to-rose-400" />
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,70,162,0.18),transparent_60%)]" />
       <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-white/[0.03] pointer-events-none" />
       <div class="absolute -bottom-20 left-1/4 w-96 h-96 rounded-full bg-white/[0.02] pointer-events-none" />
+      <PageLogo />
 
       <div class="relative px-4 sm:px-8 pt-5 sm:pt-7 pb-5 sm:pb-7">
         <div class="flex flex-wrap items-start justify-between gap-3 sm:gap-6">
@@ -16,12 +17,12 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">CRM</span>
-                <span class="w-1 h-1 rounded-full bg-amber-400/50" />
-                <span class="text-xs text-gray-400 hidden sm:inline">AutoFlow</span>
+                <span class="text-xs font-semibold text-white/80 uppercase tracking-widest">CRM</span>
+                <span class="w-1 h-1 rounded-full bg-white/40" />
+                <span class="text-xs text-white/70 hidden sm:inline">UpStudio</span>
               </div>
               <h1 class="text-xl sm:text-3xl font-bold text-white tracking-tight leading-none">Clientes</h1>
-              <p class="text-sm text-green-200/80 mt-1.5">
+              <p class="text-sm text-white/80 mt-1.5">
                 {{ loading ? 'Carregando...' : `${clientesFiltrados.length} de ${clientes.length} cliente(s) exibido(s)` }}
               </p>
             </div>
@@ -32,18 +33,18 @@
               type="button"
               class="inline-flex items-center gap-2 text-sm font-semibold px-3 sm:px-5 py-2.5 rounded-xl transition-all duration-200"
               :class="filtroAberto
-                ? 'bg-amber-500 text-gray-950 shadow-lg scale-[1.02]'
+                ? 'bg-white text-[#ff46a2] shadow-lg scale-[1.02]'
                 : 'bg-white/10 text-white hover:bg-white/20 border border-white/15 backdrop-blur-sm'"
               @click="filtroAberto = !filtroAberto"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
               <span class="hidden sm:inline">Filtros</span>
-              <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-gray-950 text-amber-400 text-xs font-black">{{ filtrosAtivos }}</span>
+              <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-white text-pink-400 text-xs font-black">{{ filtrosAtivos }}</span>
             </button>
             <button
               v-if="isAdminOrGerente"
               type="button"
-              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-amber-500 text-gray-950 hover:bg-amber-400 shadow-lg shadow-amber-900/30 transition-all duration-200 hover:scale-[1.02]"
+              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-white text-[#ff46a2] hover:bg-pink-50 shadow-lg shadow-pink-200/40 transition-all duration-200 hover:scale-[1.02]"
               @click="abrirAdicionar"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -57,27 +58,27 @@
         <!-- Stats -->
         <div v-if="!loading" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Total</span>
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Total</span>
             <span class="text-xl font-black text-white leading-tight">{{ clientes.length }}</span>
-            <span class="text-xs text-gray-500">cliente(s)</span>
+            <span class="text-xs text-white/50">cliente(s)</span>
           </div>
-          <div class="flex flex-col gap-1 bg-green-400/10 rounded-2xl px-5 py-4 border border-green-300/20 hover:bg-green-400/15 transition-colors">
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-amber-400" />
-              <span class="text-xs font-semibold text-amber-300 uppercase tracking-widest">Ativos</span>
+              <span class="w-2 h-2 rounded-full bg-white" />
+              <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Ativos</span>
             </div>
-            <span class="text-xl font-black text-amber-200 leading-tight">{{ clientesAtivos }}</span>
-            <span class="text-xs text-amber-300/50">habilitados</span>
+            <span class="text-xl font-black text-white leading-tight">{{ clientesAtivos }}</span>
+            <span class="text-xs text-white/50">habilitados</span>
           </div>
           <div class="flex flex-col gap-1 bg-white/[0.07] rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/12 transition-colors">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Com E-mail</span>
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Com E-mail</span>
             <span class="text-xl font-black text-white leading-tight">{{ comEmail }}</span>
-            <span class="text-xs text-gray-500">de {{ clientes.length }} cadastrados</span>
+            <span class="text-xs text-white/50">de {{ clientes.length }} cadastrados</span>
           </div>
           <div class="flex flex-col gap-1 bg-white/[0.07] rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/12 transition-colors">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Cidades</span>
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Cidades</span>
             <span class="text-xl font-black text-white leading-tight">{{ cidadesUnicas.length }}</span>
-            <span class="text-xs text-gray-500">distintas</span>
+            <span class="text-xs text-white/50">distintas</span>
           </div>
         </div>
       </div>
@@ -88,10 +89,10 @@
       <div v-show="filtroAberto" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+            <svg class="w-4 h-4 text-[#ff46a2]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
             <span class="text-sm font-bold text-gray-700">Filtros</span>
           </div>
-          <button v-if="filtrosAtivos > 0" type="button" class="text-xs font-semibold text-orange-500 hover:text-orange-700 hover:underline" @click="limparFiltros">
+          <button v-if="filtrosAtivos > 0" type="button" class="text-xs font-semibold text-[#ff46a2] hover:text-pink-600 hover:underline" @click="limparFiltros">
             Limpar todos
           </button>
         </div>
@@ -120,7 +121,7 @@
                 class="flex-1 text-xs font-bold py-2 rounded-xl border transition-colors"
                 :class="filtros.ativo === op.value
                   ? 'bg-violet-600 border-violet-600 text-white'
-                  : 'border-gray-200 text-gray-500 hover:border-violet-400 hover:text-violet-700 bg-white'"
+                  : 'border-gray-200 text-gray-500 hover:border-pink-400 hover:text-[#ff46a2] bg-white'"
                 @click="filtros.ativo = op.value"
               >
                 {{ op.label }}
@@ -147,7 +148,7 @@
     <div v-else class="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden">
       <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/50">
         <span class="text-sm font-semibold text-gray-600">
-          <span class="text-violet-700 font-black">{{ clientesFiltrados.length }}</span>
+          <span class="text-[#ff46a2] font-black">{{ clientesFiltrados.length }}</span>
           resultado(s)
           <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> �?" filtros aplicados</span>
         </span>
@@ -181,16 +182,16 @@
             <tr
               v-for="cli in clientesFiltrados"
               :key="cli.id"
-              class="hover:bg-violet-50/40 transition-colors duration-150 group"
+              class="hover:bg-pink-50/40 transition-colors duration-150 group"
             >
               <td class="px-7 py-4">
-                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-violet-100 text-violet-700 font-black text-xs">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-violet-100 text-[#ff46a2] font-black text-xs">
                   {{ cli.id }}
                 </span>
               </td>
               <td class="px-5 py-4">
                 <div class="flex items-center gap-3">
-                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center text-white font-black text-sm shrink-0 shadow-sm shadow-violet-200 select-none">
+                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center text-white font-black text-sm shrink-0 shadow-sm shadow-pink-200 select-none">
                     {{ initials(cli.nome) }}
                   </div>
                   <span class="font-semibold text-gray-800 max-w-[160px] block truncate">{{ cli.nome }}</span>
@@ -219,12 +220,12 @@
                   {{ cli.ativo !== false ? 'Ativo' : 'Inativo' }}
                 </span>
               </td>
-              <td class="px-7 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-violet-50/40 transition-colors">
+              <td class="px-7 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-pink-50/40 transition-colors">
                 <div class="flex items-center justify-end gap-1">
                   <button
                     v-if="isAdminOrGerente"
                     type="button"
-                    class="w-8 h-8 flex items-center justify-center rounded-xl text-violet-500 hover:text-violet-700 hover:bg-violet-100 transition-colors"
+                    class="w-8 h-8 flex items-center justify-center rounded-xl text-[#ff46a2] hover:text-pink-700 hover:bg-pink-100 transition-colors"
                     title="Editar"
                     @click="editCliente(cli)"
                   >
@@ -256,10 +257,10 @@
           @click.self="fecharModal"
         >
           <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
-            <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-violet-50 to-white">
+            <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-pink-50 to-white">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-violet-100 flex items-center justify-center">
-                  <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.5 0a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm-1.5 6.75a3.375 3.375 0 00-6.75 0h6.75z"/></svg>
+                <div class="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-[#ff46a2]" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.5 0a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm-1.5 6.75a3.375 3.375 0 00-6.75 0h6.75z"/></svg>
                 </div>
                 <h2 class="text-lg font-bold text-gray-800">{{ adicionando ? 'Adicionar Cliente' : 'Editar Cliente' }}</h2>
               </div>
@@ -412,6 +413,7 @@ interface Cliente {
 
 const supabase = createSupabaseClient()
 const { empresaId, loadEmpresa } = useEmpresa()
+const { isAdminOrGerente } = useAdmin()
 
 const clientes = ref<Cliente[]>([])
 const loading = ref(true)

@@ -1,5 +1,5 @@
-<template>
-  <div class="h-screen bg-gray-950 flex items-center justify-center px-4">
+﻿<template>
+  <div class="h-screen bg-white flex items-center justify-center px-4">
     <LoginForm />
   </div>
 </template>

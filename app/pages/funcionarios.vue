@@ -1,12 +1,13 @@
-<template>
-  <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
+﻿<template>
+  <div class="min-h-full bg-transparent p-3 sm:p-8">
 
     <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
-      <div class="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800" />
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.15),transparent_60%)]" />
+      <div class="absolute inset-0 bg-gradient-to-br from-pink-600 via-pink-500 to-rose-400" />
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,70,162,0.18),transparent_60%)]" />
       <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-white/[0.03] pointer-events-none" />
       <div class="absolute -bottom-20 left-1/4 w-96 h-96 rounded-full bg-white/[0.02] pointer-events-none" />
+      <PageLogo />
 
       <div class="relative px-4 sm:px-8 pt-5 sm:pt-7 pb-5 sm:pb-7">
         <!-- Título + ações -->
@@ -17,12 +18,12 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Gestão</span>
-                <span class="w-1 h-1 rounded-full bg-amber-400/50" />
-                <span class="text-xs text-gray-400 hidden sm:inline">AutoFlow</span>
+                <span class="text-xs font-semibold text-white/80 uppercase tracking-widest">Gestão</span>
+                <span class="w-1 h-1 rounded-full bg-white/40" />
+                <span class="text-xs text-white/70 hidden sm:inline">UpStudio</span>
               </div>
               <h1 class="text-xl sm:text-3xl font-bold text-white tracking-tight leading-none">Funcionários</h1>
-              <p class="text-sm text-gray-300/80 mt-1.5">
+              <p class="text-sm text-white/80 mt-1.5">
                 {{ loading ? 'Carregando...' : `${funcionariosFiltrados.length} de ${funcionarios.length} funcionário(s) exibido(s)` }}
               </p>
             </div>
@@ -33,18 +34,18 @@
               type="button"
               class="inline-flex items-center gap-2 text-sm font-semibold px-3 sm:px-5 py-2.5 rounded-xl transition-all duration-200"
               :class="filtroAberto
-                ? 'bg-amber-500 text-gray-950 shadow-lg scale-[1.02]'
+                ? 'bg-white text-[#ff46a2] shadow-lg scale-[1.02]'
                 : 'bg-white/10 text-white hover:bg-white/20 border border-white/15 backdrop-blur-sm'"
               @click="filtroAberto = !filtroAberto"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
               <span class="hidden sm:inline">Filtros</span>
-              <span v-if="buscaAtiva" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-gray-950 text-amber-400 text-xs font-black">1</span>
+              <span v-if="buscaAtiva" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-white text-pink-400 text-xs font-black">1</span>
             </button>
             <button
               v-if="isAdminOrGerente"
               type="button"
-              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-orange-500 text-white hover:bg-orange-600 shadow-lg shadow-orange-900/25 transition-all duration-200 hover:scale-[1.02]"
+              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-white text-[#ff46a2] hover:bg-pink-50 shadow-lg shadow-pink-200/40 transition-all duration-200 hover:scale-[1.02]"
               @click="modalFolha = true"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -53,7 +54,7 @@
             <button
               v-if="isAdminOrGerente"
               type="button"
-              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-amber-500 text-gray-950 hover:bg-amber-400 shadow-lg shadow-amber-900/30 transition-all duration-200 hover:scale-[1.02]"
+              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-white text-[#ff46a2] hover:bg-pink-50 shadow-lg shadow-pink-200/40 transition-all duration-200 hover:scale-[1.02]"
               @click="abrirAdicionar"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -68,24 +69,24 @@
         <!-- Stats -->
         <div v-if="!loading" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Total</span>
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Total</span>
             <span class="text-xl font-black text-white leading-tight">{{ funcionarios.length }}</span>
-            <span class="text-xs text-gray-500">funcionário(s)</span>
-          </div>
-          <div class="flex flex-col gap-1 bg-orange-400/10 rounded-2xl px-5 py-4 border border-orange-300/20 hover:bg-orange-400/15 transition-colors">
-            <span class="text-xs font-semibold text-orange-200 uppercase tracking-widest">Folha Salarial</span>
-            <span class="text-xl font-black text-orange-100 leading-tight">{{ formatCurrency(totalFolha) }}</span>
-            <span class="text-xs text-orange-300/50">soma dos salários</span>
+            <span class="text-xs text-white/50">funcionário(s)</span>
           </div>
           <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Média Salarial</span>
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Folha Salarial</span>
+            <span class="text-xl font-black text-white leading-tight">{{ formatCurrency(totalFolha) }}</span>
+            <span class="text-xs text-white/50">soma dos salários</span>
+          </div>
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Média Salarial</span>
             <span class="text-xl font-black text-white leading-tight">{{ formatCurrency(mediaSalarial) }}</span>
-            <span class="text-xs text-gray-500">por funcionário</span>
+            <span class="text-xs text-white/50">por funcionário</span>
           </div>
           <div class="flex flex-col gap-1 bg-white/[0.07] rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/12 transition-colors">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Com Cargo</span>
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Com Cargo</span>
             <span class="text-xl font-black text-white leading-tight">{{ comCargo }}</span>
-            <span class="text-xs text-gray-500">de {{ funcionarios.length }} cadastrados</span>
+            <span class="text-xs text-white/50">de {{ funcionarios.length }} cadastrados</span>
           </div>
         </div>
       </div>
@@ -96,10 +97,10 @@
       <div v-show="filtroAberto" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+            <svg class="w-4 h-4 text-[#ff46a2]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
             <span class="text-sm font-bold text-gray-700">Filtros</span>
           </div>
-          <button v-if="buscaAtiva" type="button" class="text-xs font-semibold text-orange-500 hover:text-orange-700 hover:underline" @click="busca = ''">
+          <button v-if="buscaAtiva" type="button" class="text-xs font-semibold text-[#ff46a2] hover:text-pink-600 hover:underline" @click="busca = ''">
             Limpar
           </button>
         </div>
@@ -146,7 +147,7 @@
     <div v-else class="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden">
       <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/50">
         <span class="text-sm font-semibold text-gray-600">
-          <span class="text-green-700 font-black">{{ funcionariosFiltrados.length }}</span>
+          <span class="text-[#ff46a2] font-black">{{ funcionariosFiltrados.length }}</span>
           resultado(s)
           <span v-if="buscaAtiva || filtroCargo" class="text-gray-400 font-normal"> �?" filtros aplicados</span>
         </span>
@@ -182,16 +183,16 @@
             <tr
               v-for="func in funcionariosFiltrados"
               :key="func.id"
-              class="hover:bg-green-50/40 transition-colors duration-150 group"
+              class="hover:bg-pink-50/40 transition-colors duration-150 group"
             >
               <td class="px-7 py-4">
-                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-black text-xs">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-[#ff46a2] font-black text-xs">
                   {{ func.id }}
                 </span>
               </td>
               <td class="px-5 py-4">
                 <div class="flex items-center gap-3">
-                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-black text-sm shrink-0 shadow-sm shadow-orange-200 select-none">
+                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center text-white font-black text-sm shrink-0 shadow-sm shadow-pink-200 select-none">
                     {{ initials(func.nome) }}
                   </div>
                   <span class="font-semibold text-gray-800">{{ func.nome }}</span>
@@ -201,7 +202,7 @@
               <td class="px-5 py-4 text-gray-500 font-medium tabular-nums">{{ func.cpf ?? '�?"' }}</td>
               <td class="px-5 py-4 text-gray-500 font-medium text-center">{{ func.idade ?? '�?"' }}</td>
               <td class="px-5 py-4">
-                <span v-if="func.cargo" class="inline-block text-xs font-bold bg-green-50 text-green-700 border border-green-200 rounded-xl px-3 py-1.5">
+                <span v-if="func.cargo" class="inline-block text-xs font-bold bg-pink-50 text-[#ff46a2] border border-pink-200 rounded-xl px-3 py-1.5">
                   {{ func.cargo }}
                 </span>
                 <span v-else class="text-gray-300">�?"</span>
@@ -223,12 +224,12 @@
               <td class="px-5 py-4">
                 <span class="text-gray-400 text-xs max-w-[200px] block truncate" :title="func.endereco ?? ''">{{ func.endereco ?? '�?"' }}</span>
               </td>
-              <td class="px-7 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-green-50/60 transition-colors">
+              <td class="px-7 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-pink-50/60 transition-colors">
                 <div class="flex items-center justify-end gap-2">
                   <button
                     v-if="isAdminOrGerente"
                     type="button"
-                    class="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-xl transition-colors"
+                    class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#ff46a2] bg-pink-50 hover:bg-pink-100 border border-pink-200 px-3 py-1.5 rounded-xl transition-colors"
                     @click="editFuncionario(func)"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2.414a2 2 0 01.586-1.414z"/></svg>
@@ -262,7 +263,7 @@
           <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
             <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-orange-50 to-white">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center">
+                <div class="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center">
                   <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 </div>
                 <h2 class="text-lg font-bold text-gray-800">Lançar Folha Salarial</h2>
@@ -295,7 +296,7 @@
                   </div>
                   <div v-for="f in funcionariosComSalario" :key="f.id" class="flex items-center justify-between px-4 py-3">
                     <div class="flex items-center gap-2.5">
-                      <div class="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-black text-[10px]">
+                      <div class="w-7 h-7 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center text-white font-black text-[10px]">
                         {{ initials(f.nome) }}
                       </div>
                       <span class="text-sm font-medium text-gray-700">{{ f.nome }}</span>
@@ -312,7 +313,7 @@
               <p v-if="folhaError" class="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
                 {{ folhaError }}
               </p>
-              <p v-if="folhaSucesso" class="text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-3">
+              <p v-if="folhaSucesso" class="text-sm text-[#ff46a2] bg-pink-50 border border-pink-200 rounded-xl px-4 py-3">
                 {{ folhaSucesso }}
               </p>
 
@@ -322,7 +323,7 @@
                 </button>
                 <button
                   type="button"
-                  class="flex-1 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition-colors shadow-sm shadow-orange-200 disabled:opacity-60"
+                  class="flex-1 py-3 rounded-xl bg-[#ff46a2] hover:bg-pink-600 text-white font-bold text-sm transition-colors shadow-sm shadow-pink-200 disabled:opacity-60"
                   :disabled="lanandoFolha || !folhaMes || funcionariosComSalario.length === 0"
                   @click="lancarFolha"
                 >
@@ -347,7 +348,7 @@
           <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
             <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-green-50 to-white">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center">
+                <div class="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center">
                   <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
                 </div>
                 <h2 class="text-lg font-bold text-gray-800">{{ adicionando ? 'Adicionar Funcionário' : 'Editar Funcionário' }}</h2>
@@ -750,47 +751,58 @@ async function salvarAdicao() {
 
   // 2. Create auth account if requested
   if (form.criarLogin && form.email.trim() && form.senha.trim()) {
-    // Save current admin session
+    // Captura empresa_id e sessão do admin ANTES do signUp
+    const adminEmpresaId = empresaId.value!
     const { data: { session: adminSession } } = await supabase.auth.getSession()
+
+    // Nunca permite 'admin' via criação de funcionário
+    const perfilFuncionario = (form.perfil === 'admin' ? 'funcionario' : form.perfil) || 'funcionario'
 
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email: form.email.trim(),
       password: form.senha.trim(),
       options: {
         data: {
-          full_name: form.nome.trim(),
-          empresa_id: empresaId.value,
-          perfil: form.perfil || 'funcionario',
+          // O trigger handle_new_user lê estes campos e já cria o profile correto no banco
+          full_name:  form.nome.trim(),
+          empresa_id: adminEmpresaId,
+          perfil:     perfilFuncionario,
         },
       },
     })
 
+    // Restaura sessão do admin IMEDIATAMENTE após o signUp
+    // O signUp pode ter trocado a sessão ativa (Supabase auto-confirm ON)
+    if (adminSession) {
+      await supabase.auth.setSession({
+        access_token:  adminSession.access_token,
+        refresh_token: adminSession.refresh_token,
+      })
+    }
+
     if (signUpError) {
-      // Funcionario was inserted; just warn about auth failure
       editError.value = `Funcionário salvo, mas erro ao criar login: ${signUpError.message}`
-      // Restore admin session
-      if (adminSession) await supabase.auth.setSession({ access_token: adminSession.access_token, refresh_token: adminSession.refresh_token })
       saving.value = false
       adicionando.value = false
       await fetchFuncionarios()
       return
     }
 
-    // 3. Insert profile for new user
+    // Redundância: chama RPC SECURITY DEFINER para garantir que o profile
+    // tem empresa_id e perfil corretos, mesmo que o trigger tenha falhado.
+    // Se a RPC não existir no Supabase (SQL ainda não executado), apenas loga o aviso.
     if (signUpData.user) {
-      await supabase.from('profiles').upsert({
-        id: signUpData.user.id,
-        empresa_id: empresaId.value!,
-        email: form.email.trim(),
-        nome: form.nome.trim(),
-        perfil: form.perfil || 'funcionario',
-        funcionario_id: novoFunc?.id ?? null,
+      const { error: rpcError } = await supabase.rpc('create_employee_profile', {
+        p_user_id:    signUpData.user.id,
+        p_empresa_id: adminEmpresaId,
+        p_email:      form.email.trim(),
+        p_nome:       form.nome.trim(),
+        p_perfil:     perfilFuncionario,
       })
-    }
-
-    // Restore admin session
-    if (adminSession) {
-      await supabase.auth.setSession({ access_token: adminSession.access_token, refresh_token: adminSession.refresh_token })
+      if (rpcError) {
+        // Não bloqueia o fluxo — o trigger já criou o profile correto
+        console.warn('[funcionarios] create_employee_profile RPC aviso:', rpcError.message)
+      }
     }
   }
 

@@ -1,11 +1,11 @@
-<template>
-  <nav class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-gray-950 border-t border-white/[0.07] flex items-stretch h-16 shadow-2xl">
+﻿<template>
+  <nav class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white border-t border-pink-100 flex items-stretch h-16 shadow-2xl">
     <NuxtLink
       v-for="item in navItems"
       :key="item.to"
       :to="item.to"
-      exact-active-class="text-amber-400 bg-amber-500/10"
-      class="flex-1 flex flex-col items-center justify-center gap-0.5 text-gray-500 hover:text-white hover:bg-white/[0.07] transition-colors text-[10px] font-semibold"
+      exact-active-class="text-pink-600 bg-pink-100"
+      class="flex-1 flex flex-col items-center justify-center gap-0.5 text-gray-400 hover:text-pink-700 hover:bg-pink-50 transition-colors text-[10px] font-semibold"
     >
       <AppNavIcon :name="item.icon" class="w-5 h-5" />
       <span>{{ item.label }}</span>
@@ -23,14 +23,14 @@ defineOptions({ name: 'AppBottomNav' })
 const { isAdminOrGerente } = useAdmin()
 
 const allNavItems = [
-  { to: '/',             icon: 'home',           label: 'Início',       minPerfil: 'all' },
-  { to: '/veiculos',     icon: 'car',            label: 'Veículos',      minPerfil: 'all' },
-  { to: '/catalogo',     icon: 'catalog',        label: 'Catálogo',      minPerfil: 'all' },
-  { to: '/clientes',     icon: 'identification', label: 'Clientes',     minPerfil: 'all' },
-  { to: '/propostas',    icon: 'document',       label: 'Propostas',    minPerfil: 'all' },
-  { to: '/vendas',       icon: 'receipt',        label: 'Vendas',       minPerfil: 'all' },
-  { to: '/funcionarios', icon: 'users',          label: 'Equipe',       minPerfil: 'manager' },
-  { to: '/contas-pagar', icon: 'wallet',         label: 'Contas',       minPerfil: 'manager' },
+  { to: '/',              icon: 'home',           label: 'Início',        minPerfil: 'all' },
+  { to: '/agendamentos',  icon: 'calendar',       label: 'Agenda',        minPerfil: 'all' },
+  { to: '/servicos',      icon: 'sparkles',       label: 'Serviços',      minPerfil: 'all' },
+  { to: '/clientes',      icon: 'identification', label: 'Clientes',      minPerfil: 'all' },
+  { to: '/estoque',       icon: 'package',        label: 'Estoque',       minPerfil: 'all' },
+  { to: '/funcionarios',  icon: 'users',          label: 'Equipe',        minPerfil: 'manager' },
+  { to: '/contas-pagar',  icon: 'wallet',         label: 'Contas',        minPerfil: 'manager' },
+  { to: '/configuracoes', icon: 'settings',       label: 'Config',        minPerfil: 'manager' },
 ]
 
 const navItems = computed(() =>

@@ -1,12 +1,13 @@
-<template>
-  <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
+﻿<template>
+  <div class="min-h-full bg-transparent p-3 sm:p-8">
 
     <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
-      <div class="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800" />
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.15),transparent_60%)]" />
+      <div class="absolute inset-0 bg-gradient-to-br from-pink-600 via-pink-500 to-rose-400" />
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,70,162,0.18),transparent_60%)]" />
       <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-white/[0.03] pointer-events-none" />
       <div class="absolute -bottom-20 left-1/4 w-96 h-96 rounded-full bg-white/[0.02] pointer-events-none" />
+      <PageLogo />
 
       <div class="relative px-4 sm:px-8 pt-5 sm:pt-7 pb-5 sm:pb-7">
         <div class="flex flex-wrap items-start justify-between gap-3 sm:gap-6">
@@ -16,12 +17,12 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Estoque</span>
-                <span class="w-1 h-1 rounded-full bg-amber-400/50" />
-                <span class="text-xs text-gray-400 hidden sm:inline">AutoFlow</span>
+                <span class="text-xs font-semibold text-white/80 uppercase tracking-widest">Estoque</span>
+                <span class="w-1 h-1 rounded-full bg-white/40" />
+                <span class="text-xs text-white/70 hidden sm:inline">UpStudio</span>
               </div>
               <h1 class="text-xl sm:text-3xl font-bold text-white tracking-tight leading-none">Produtos</h1>
-              <p class="text-sm text-green-200/80 mt-1.5">
+              <p class="text-sm text-white/80 mt-1.5">
                 {{ loading ? 'Carregando...' : `${produtosFiltrados.length} de ${produtos.length} produto(s) exibido(s)` }}
               </p>
             </div>
@@ -32,18 +33,18 @@
               type="button"
               class="inline-flex items-center gap-2 text-sm font-semibold px-3 sm:px-5 py-2.5 rounded-xl transition-all duration-200"
               :class="filtroAberto
-                ? 'bg-amber-500 text-gray-950 shadow-lg scale-[1.02]'
+                ? 'bg-white text-[#ff46a2] shadow-lg scale-[1.02]'
                 : 'bg-white/10 text-white hover:bg-white/20 border border-white/15 backdrop-blur-sm'"
               @click="filtroAberto = !filtroAberto"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
               <span class="hidden sm:inline">Filtros</span>
-              <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-gray-950 text-amber-400 text-xs font-black">{{ filtrosAtivos }}</span>
+              <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-white text-pink-400 text-xs font-black">{{ filtrosAtivos }}</span>
             </button>
             <button
               v-if="isAdminOrGerente"
               type="button"
-              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-amber-500 text-gray-950 hover:bg-amber-400 shadow-lg shadow-amber-900/30 transition-all duration-200 hover:scale-[1.02]"
+              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-white text-[#ff46a2] hover:bg-pink-50 shadow-lg shadow-pink-200/40 transition-all duration-200 hover:scale-[1.02]"
               @click="abrirAdicionar"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -59,28 +60,28 @@
           <div class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <span class="text-xs font-semibold text-green-300 uppercase tracking-widest">Total</span>
             <span class="text-xl font-black text-white leading-tight">{{ produtos.length }}</span>
-            <span class="text-xs text-green-300/60">produto(s)</span>
+            <span class="text-xs text-white/50">produto(s)</span>
           </div>
-          <div class="flex flex-col gap-1 bg-green-400/10 rounded-2xl px-5 py-4 border border-green-300/20 hover:bg-green-400/15 transition-colors">
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-green-400" />
-              <span class="text-xs font-semibold text-green-200 uppercase tracking-widest">Ativos</span>
+              <span class="w-2 h-2 rounded-full bg-white/70" />
+              <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Ativos</span>
             </div>
-            <span class="text-xl font-black text-green-100 leading-tight">{{ produtosAtivos }}</span>
-            <span class="text-xs text-green-300/50">em catálogo</span>
+            <span class="text-xl font-black text-white leading-tight">{{ produtosAtivos }}</span>
+            <span class="text-xs text-white/50">em catálogo</span>
           </div>
-          <div class="flex flex-col gap-1 bg-red-400/10 rounded-2xl px-5 py-4 border border-red-300/20 hover:bg-red-400/15 transition-colors">
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-red-400" />
-              <span class="text-xs font-semibold text-red-200 uppercase tracking-widest">Estoque Baixo</span>
+              <span class="w-2 h-2 rounded-full bg-white/70" />
+              <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Estoque Baixo</span>
             </div>
-            <span class="text-xl font-black text-red-100 leading-tight">{{ estoqueBaixo }}</span>
-            <span class="text-xs text-red-300/50">abaixo do mínimo</span>
+            <span class="text-xl font-black text-white leading-tight">{{ estoqueBaixo }}</span>
+            <span class="text-xs text-white/50">abaixo do mínimo</span>
           </div>
-          <div class="flex flex-col gap-1 bg-orange-400/10 rounded-2xl px-5 py-4 border border-orange-300/20 hover:bg-orange-400/15 transition-colors">
-            <span class="text-xs font-semibold text-orange-200 uppercase tracking-widest">Valor em Estoque</span>
-            <span class="text-xl font-black text-orange-100 leading-tight">{{ formatCurrency(valorTotalEstoque) }}</span>
-            <span class="text-xs text-orange-300/50">preço de venda</span>
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Valor em Estoque</span>
+            <span class="text-xl font-black text-white leading-tight">{{ formatCurrency(valorTotalEstoque) }}</span>
+            <span class="text-xs text-white/50">preço de venda</span>
           </div>
         </div>
       </div>
@@ -91,10 +92,10 @@
       <div v-show="filtroAberto" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+            <svg class="w-4 h-4 text-[#ff46a2]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
             <span class="text-sm font-bold text-gray-700">Filtros</span>
           </div>
-          <button v-if="filtrosAtivos > 0" type="button" class="text-xs font-semibold text-orange-500 hover:text-orange-700 hover:underline" @click="limparFiltros">
+          <button v-if="filtrosAtivos > 0" type="button" class="text-xs font-semibold text-[#ff46a2] hover:text-pink-600 hover:underline" @click="limparFiltros">
             Limpar todos
           </button>
         </div>
@@ -123,7 +124,7 @@
                 class="flex-1 text-xs font-bold py-2 rounded-xl border transition-colors"
                 :class="filtros.ativo === op.value
                   ? 'bg-blue-600 border-blue-600 text-white'
-                  : 'border-gray-200 text-gray-500 hover:border-blue-400 hover:text-blue-700 bg-white'"
+                  : 'border-gray-200 text-gray-500 hover:border-pink-400 hover:text-[#ff46a2] bg-white'"
                 @click="filtros.ativo = op.value"
               >
                 {{ op.label }}
@@ -167,7 +168,7 @@
     <div v-else class="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden">
       <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/50">
         <span class="text-sm font-semibold text-gray-600">
-          <span class="text-blue-700 font-black">{{ produtosFiltrados.length }}</span>
+          <span class="text-[#ff46a2] font-black">{{ produtosFiltrados.length }}</span>
           resultado(s)
           <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> �?" filtros aplicados</span>
         </span>
@@ -204,10 +205,10 @@
             <tr
               v-for="prod in produtosFiltrados"
               :key="prod.id"
-              class="hover:bg-blue-50/40 transition-colors duration-150 group"
+              class="hover:bg-pink-50/40 transition-colors duration-150 group"
             >
               <td class="px-7 py-4">
-                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-black text-xs">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-[#ff46a2] font-black text-xs">
                   {{ prod.id }}
                 </span>
               </td>
@@ -260,12 +261,12 @@
                   {{ prod.ativo !== false ? 'Ativo' : 'Inativo' }}
                 </span>
               </td>
-              <td class="px-7 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-blue-50/40 transition-colors">
+              <td class="px-7 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-pink-50/40 transition-colors">
                 <div class="flex items-center justify-end gap-1">
                   <button
                     v-if="isAdminOrGerente"
                     type="button"
-                    class="w-8 h-8 flex items-center justify-center rounded-xl text-blue-500 hover:text-blue-700 hover:bg-blue-100 transition-colors"
+                    class="w-8 h-8 flex items-center justify-center rounded-xl text-[#ff46a2] hover:text-pink-700 hover:bg-pink-100 transition-colors"
                     title="Editar"
                     @click="editProduto(prod)"
                   >
@@ -299,7 +300,7 @@
           <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
             <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-white">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center">
+                <div class="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center">
                   <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
                 </div>
                 <h2 class="text-lg font-bold text-gray-800">{{ adicionando ? 'Adicionar Produto' : 'Editar Produto' }}</h2>

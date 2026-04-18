@@ -1,12 +1,13 @@
-<template>
-  <div class="min-h-full bg-gray-50/60 p-3 sm:p-8">
+﻿<template>
+  <div class="min-h-full bg-transparent p-3 sm:p-8">
 
     <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
-      <div class="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800" />
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.15),transparent_60%)]" />
+      <div class="absolute inset-0 bg-gradient-to-br from-pink-600 via-pink-500 to-rose-400" />
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,70,162,0.18),transparent_60%)]" />
       <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-white/[0.03] pointer-events-none" />
       <div class="absolute -bottom-20 left-1/4 w-96 h-96 rounded-full bg-white/[0.02] pointer-events-none" />
+      <PageLogo />
 
       <div class="relative px-4 sm:px-8 pt-5 sm:pt-7 pb-5 sm:pb-7">
         <div class="flex flex-wrap items-start justify-between gap-3 sm:gap-6">
@@ -18,12 +19,12 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Gestão</span>
-                <span class="w-1 h-1 rounded-full bg-amber-400/50" />
-                <span class="text-xs text-gray-400 hidden sm:inline">AutoFlow</span>
+                <span class="text-xs font-semibold text-white/80 uppercase tracking-widest">Gestão</span>
+                <span class="w-1 h-1 rounded-full bg-white/40" />
+                <span class="text-xs text-white/70 hidden sm:inline">UpStudio</span>
               </div>
               <h1 class="text-xl sm:text-3xl font-bold text-white tracking-tight leading-none">Atividades</h1>
-              <p class="text-sm text-gray-300/80 mt-1.5">
+              <p class="text-sm text-white/80 mt-1.5">
                 {{ loading ? 'Carregando...' : `${atividadesFiltradas.length} de ${atividades.length} atividade(s) exibida(s)` }}
               </p>
             </div>
@@ -34,26 +35,26 @@
               type="button"
               class="inline-flex items-center gap-2 text-sm font-semibold px-3 sm:px-5 py-2.5 rounded-xl transition-all duration-200"
               :class="filtroAberto
-                ? 'bg-white/20 text-white shadow-lg scale-[1.02]'
+                ? 'bg-white text-[#ff46a2] shadow-lg scale-[1.02]'
                 : 'bg-white/10 text-white hover:bg-white/20 border border-white/15 backdrop-blur-sm'"
               @click="filtroAberto = !filtroAberto"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
               <span class="hidden sm:inline">Filtros</span>
-              <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-gray-950 text-amber-400 text-xs font-black">{{ filtrosAtivos }}</span>
+              <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-white text-pink-400 text-xs font-black">{{ filtrosAtivos }}</span>
             </button>
             <!-- toggle Instâncias / Modelos -->
             <div class="flex rounded-xl overflow-hidden border border-white/20">
               <button
                 type="button"
                 class="px-3 py-2 text-xs font-bold transition-colors"
-                :class="viewMode === 'instancias' ? 'bg-amber-500 text-gray-950' : 'text-white hover:bg-white/20'"
+                :class="viewMode === 'instancias' ? 'bg-white text-[#ff46a2]' : 'text-white hover:bg-white/20'"
                 @click="viewMode = 'instancias'"
               >Instâncias</button>
               <button
                 type="button"
                 class="px-3 py-2 text-xs font-bold transition-colors"
-                :class="viewMode === 'modelos' ? 'bg-amber-500 text-gray-950' : 'text-white hover:bg-white/20'"
+                :class="viewMode === 'modelos' ? 'bg-white text-[#ff46a2]' : 'text-white hover:bg-white/20'"
                 @click="viewMode = 'modelos'"
               >Modelos</button>
             </div>
@@ -62,16 +63,16 @@
               v-if="viewMode === 'modelos' && isAdminOrGerente"
               type="button"
               :disabled="gerando"
-              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-4 py-2.5 rounded-xl bg-amber-400 text-amber-900 hover:bg-amber-300 shadow-md transition-all duration-200 hover:scale-[1.02] disabled:opacity-60"
+              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-4 py-2.5 rounded-xl bg-white text-[#ff46a2] hover:bg-pink-50 shadow-lg shadow-pink-200/40 transition-all duration-200 hover:scale-[1.02] disabled:opacity-60"
               @click="gerarHoje"
             >
-              <span v-if="gerando" class="inline-block w-4 h-4 border-2 border-amber-900 border-t-transparent rounded-full animate-spin" />
+              <span v-if="gerando" class="inline-block w-4 h-4 border-2 border-[#ff46a2] border-t-transparent rounded-full animate-spin" />
               <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
               <span class="hidden sm:inline">{{ gerando ? 'Gerando...' : 'Gerar Hoje' }}</span>
             </button>
             <button
               type="button"
-              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-amber-500 text-gray-950 hover:bg-amber-400 shadow-lg shadow-amber-900/30 transition-all duration-200 hover:scale-[1.02]"
+              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-white text-[#ff46a2] hover:bg-pink-50 shadow-lg shadow-pink-200/40 transition-all duration-200 hover:scale-[1.02]"
               @click="abrirAdicionar"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -85,33 +86,33 @@
         <!-- Stats -->
         <div v-if="!loading" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Total</span>
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Total</span>
             <span class="text-xl font-black text-white leading-tight">{{ atividades.length }}</span>
-            <span class="text-xs text-green-300/60">atividade(s)</span>
+            <span class="text-xs text-white/50">atividade(s)</span>
           </div>
-          <div class="flex flex-col gap-1 bg-amber-400/10 rounded-2xl px-5 py-4 border border-amber-300/20 hover:bg-amber-400/15 transition-colors">
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-amber-400" />
-              <span class="text-xs font-semibold text-amber-200 uppercase tracking-widest">Pendentes</span>
+              <span class="w-2 h-2 rounded-full bg-white" />
+              <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Pendentes</span>
             </div>
-            <span class="text-xl font-black text-amber-100 leading-tight">{{ countByStatus('pendente') }}</span>
-            <span class="text-xs text-amber-300/50">aguardando início</span>
+            <span class="text-xl font-black text-white leading-tight">{{ countByStatus('pendente') }}</span>
+            <span class="text-xs text-white/50">aguardando início</span>
           </div>
-          <div class="flex flex-col gap-1 bg-blue-400/10 rounded-2xl px-5 py-4 border border-blue-300/20 hover:bg-blue-400/15 transition-colors">
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-blue-400" />
-              <span class="text-xs font-semibold text-blue-200 uppercase tracking-widest">Em Andamento</span>
+              <span class="w-2 h-2 rounded-full bg-white/70" />
+              <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Em Andamento</span>
             </div>
-            <span class="text-xl font-black text-blue-100 leading-tight">{{ countByStatus('em_andamento') }}</span>
-            <span class="text-xs text-blue-300/50">em execução</span>
+            <span class="text-xl font-black text-white leading-tight">{{ countByStatus('em_andamento') }}</span>
+            <span class="text-xs text-white/50">em execução</span>
           </div>
-          <div class="flex flex-col gap-1 bg-green-400/10 rounded-2xl px-5 py-4 border border-green-300/20 hover:bg-green-400/15 transition-colors">
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-green-400" />
-              <span class="text-xs font-semibold text-green-200 uppercase tracking-widest">Concluídas</span>
+              <span class="w-2 h-2 rounded-full bg-white/70" />
+              <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Concluídas</span>
             </div>
-            <span class="text-xl font-black text-green-100 leading-tight">{{ countByStatus('concluida') }}</span>
-            <span class="text-xs text-green-300/50">finalizadas</span>
+            <span class="text-xl font-black text-white leading-tight">{{ countByStatus('concluida') }}</span>
+            <span class="text-xs text-white/50">finalizadas</span>
           </div>
         </div>
       </div>
@@ -122,10 +123,10 @@
       <div v-show="filtroAberto" class="bg-white rounded-3xl border border-gray-100 shadow-md mb-6 overflow-hidden">
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+            <svg class="w-4 h-4 text-[#ff46a2]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
             <span class="text-sm font-bold text-gray-700">Filtros</span>
           </div>
-          <button v-if="filtrosAtivos > 0" type="button" class="text-xs font-semibold text-indigo-500 hover:text-indigo-700 hover:underline" @click="limparFiltros">
+          <button v-if="filtrosAtivos > 0" type="button" class="text-xs font-semibold text-[#ff46a2] hover:text-pink-600 hover:underline" @click="limparFiltros">
             Limpar todos
           </button>
         </div>
@@ -192,13 +193,13 @@
     <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� TABELA �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div v-else class="bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden">
       <!-- Banner Modelos -->
-      <div v-if="viewMode === 'modelos'" class="flex items-center gap-3 px-7 py-3 bg-amber-50 border-b border-amber-100">
-        <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg>
-        <p class="text-xs font-semibold text-amber-700">
+      <div v-if="viewMode === 'modelos'" class="flex items-center gap-3 px-7 py-3 bg-pink-50 border-b border-pink-100">
+        <svg class="w-4 h-4 text-pink-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg>
+        <p class="text-xs font-semibold text-pink-700">
           Modelos são atividades <strong>sem data definida</strong> usadas como base para geração automática.
           Ao clicar em <strong>Gerar Hoje</strong>, instâncias com a data de hoje são criadas para cada modelo conforme a periodicidade.
         </p>
-        <span v-if="geracaoMsg" class="ml-auto text-xs font-bold text-green-700 bg-green-100 px-3 py-1 rounded-full shrink-0">{{ geracaoMsg }}</span>
+        <span v-if="geracaoMsg" class="ml-auto text-xs font-bold text-[#ff46a2] bg-pink-100 px-3 py-1 rounded-full shrink-0">{{ geracaoMsg }}</span>
       </div>
 
       <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/50">
@@ -296,7 +297,7 @@
               <td class="px-5 py-4">
                 <div class="flex flex-col gap-0.5 text-xs text-gray-500 font-medium whitespace-nowrap">
                   <span v-if="at.data_atividade">{{ formatDate(at.data_atividade) }}</span>
-                  <span v-else class="inline-flex items-center gap-1 text-[11px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">
+                  <span v-else class="inline-flex items-center gap-1 text-[11px] font-bold bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
                     Recorrente
                   </span>
@@ -415,7 +416,7 @@
               <div class="flex flex-col gap-1.5">
                 <label class="text-sm font-semibold text-gray-700">
                   Data da Atividade
-                  <span v-if="viewMode === 'modelos'" class="ml-1 text-xs font-normal text-amber-600">(deixe em branco para modelo recorrente)</span>
+                  <span v-if="viewMode === 'modelos'" class="ml-1 text-xs font-normal text-pink-600">(deixe em branco para modelo recorrente)</span>
                 </label>
                 <input v-model="form.data_atividade" type="date" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
               </div>
@@ -617,14 +618,14 @@ function statusLabel(s: string | null): string {
   return s ?? '�?"'
 }
 function statusBadgeClass(s: string | null): string {
-  if (s === 'pendente')     return 'bg-amber-100 text-amber-700'
+  if (s === 'pendente')     return 'bg-pink-100 text-pink-700'
   if (s === 'em_andamento') return 'bg-blue-100 text-blue-700'
   if (s === 'concluida')    return 'bg-green-100 text-green-700'
   if (s === 'cancelada')    return 'bg-red-100 text-red-700'
   return 'bg-gray-100 text-gray-500'
 }
 function statusDotClass(s: string | null): string {
-  if (s === 'pendente')     return 'bg-amber-500'
+  if (s === 'pendente')     return 'bg-pink-500'
   if (s === 'em_andamento') return 'bg-blue-500'
   if (s === 'concluida')    return 'bg-green-500'
   if (s === 'cancelada')    return 'bg-red-500'

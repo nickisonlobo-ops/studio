@@ -1,5 +1,5 @@
-<template>
-  <div class="flex flex-col h-screen bg-bg overflow-hidden">
+﻿<template>
+  <div class="flex flex-col h-screen overflow-hidden" :style="{ background: 'var(--color-bg, #f9fafb)' }">
     <AppHeader />
 
     <div class="flex flex-1 min-h-0">
@@ -15,7 +15,15 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import AppHeader from '~/components/AppHeader.vue'
 import AppSidebar from '~/components/AppSidebar.vue'
 import AppBottomNav from '~/components/AppBottomNav.vue'
+import { usePersonalizacao } from '~/composables/usePersonalizacao'
+
+const { loadPersonalizacao } = usePersonalizacao()
+
+onMounted(async () => {
+  await loadPersonalizacao()
+})
 </script>

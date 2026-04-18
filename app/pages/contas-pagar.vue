@@ -1,12 +1,13 @@
-<template>
-  <div class="min-h-full bg-gray-50/60 p-3 sm:p-8" @click="statusDropdownId = null">
+﻿<template>
+  <div class="min-h-full bg-transparent p-3 sm:p-8" @click="statusDropdownId = null">
 
     <!-- �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� CABE�?ALHO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
     <div class="relative rounded-3xl overflow-hidden mb-8 shadow-xl">
-      <div class="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800" />
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.15),transparent_60%)]" />
+      <div class="absolute inset-0 bg-gradient-to-br from-pink-600 via-pink-500 to-rose-400" />
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,70,162,0.18),transparent_60%)]" />
       <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-white/[0.03] pointer-events-none" />
       <div class="absolute -bottom-20 left-1/4 w-96 h-96 rounded-full bg-white/[0.02] pointer-events-none" />
+      <PageLogo />
 
       <div class="relative px-4 sm:px-8 pt-5 sm:pt-7 pb-5 sm:pb-7">
         <!-- Linha superior: identidade + ações -->
@@ -17,12 +18,12 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Financeiro</span>
-                <span class="w-1 h-1 rounded-full bg-amber-400/50" />
-                <span class="text-xs text-gray-400 hidden sm:inline">AutoFlow</span>
+                <span class="text-xs font-semibold text-white/80 uppercase tracking-widest">Financeiro</span>
+                <span class="w-1 h-1 rounded-full bg-white/40" />
+                <span class="text-xs text-white/70 hidden sm:inline">UpStudio</span>
               </div>
               <h1 class="text-xl sm:text-3xl font-bold text-white tracking-tight leading-none">Contas a Pagar</h1>
-              <p class="text-sm text-gray-300/80 mt-1.5">
+              <p class="text-sm text-white/80 mt-1.5">
                 {{ loading ? 'Carregando...' : `${contasFiltradas.length} de ${contas.length} conta(s) exibida(s)` }}
               </p>
             </div>
@@ -33,20 +34,20 @@
               type="button"
               class="inline-flex items-center gap-2 text-sm font-semibold px-3 sm:px-5 py-2.5 rounded-xl transition-all duration-200"
               :class="filtrosAbertos
-                ? 'bg-amber-500 text-gray-950 shadow-lg scale-[1.02]'
+                ? 'bg-white text-[#ff46a2] shadow-lg scale-[1.02]'
                 : 'bg-white/10 text-white hover:bg-white/20 border border-white/15 backdrop-blur-sm'"
               @click="filtrosAbertos = !filtrosAbertos"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
               <span class="hidden sm:inline">Filtros</span>
-              <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-gray-950 text-amber-400 text-xs font-black">
+              <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-white text-pink-400 text-xs font-black">
                 {{ filtrosAtivos }}
               </span>
             </button>
             <button
               v-if="isAdminOrGerente"
               type="button"
-              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-amber-500 text-gray-950 hover:bg-amber-400 shadow-lg shadow-amber-900/30 transition-all duration-200 hover:scale-[1.02]"
+              class="inline-flex items-center gap-2 text-sm font-bold px-3 sm:px-5 py-2.5 rounded-xl bg-white text-[#ff46a2] hover:bg-pink-50 shadow-lg shadow-pink-200/40 transition-all duration-200 hover:scale-[1.02]"
               @click="abrirAdicionar"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -61,33 +62,33 @@
         <!-- Stats cards -->
         <div v-if="!loading" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div class="group flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Total Geral</span>
+            <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Total Geral</span>
             <span class="text-xl font-black text-white leading-tight">{{ formatCurrency(totalValor) }}</span>
-            <span class="text-xs text-gray-500">{{ contas.length }} conta(s)</span>
+            <span class="text-xs text-white/50">{{ contas.length }} conta(s)</span>
           </div>
-          <div class="flex flex-col gap-1 bg-yellow-400/10 rounded-2xl px-5 py-4 border border-yellow-300/20 hover:bg-yellow-400/15 transition-colors">
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-yellow-400 shadow-sm shadow-yellow-400/50" />
-              <span class="text-xs font-semibold text-yellow-200 uppercase tracking-widest">Pendente</span>
+              <span class="w-2 h-2 rounded-full bg-white/70 shadow-sm shadow-yellow-400/50" />
+              <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Pendente</span>
             </div>
-            <span class="text-xl font-black text-yellow-100 leading-tight">{{ formatCurrency(totalPorStatus('pendente')) }}</span>
-            <span class="text-xs text-yellow-300/50">{{ contasPorStatus('pendente') }} conta(s)</span>
+            <span class="text-xl font-black text-white leading-tight">{{ formatCurrency(totalPorStatus('pendente')) }}</span>
+            <span class="text-xs text-white/50">{{ contasPorStatus('pendente') }} conta(s)</span>
           </div>
-          <div class="flex flex-col gap-1 bg-red-400/10 rounded-2xl px-5 py-4 border border-red-300/20 hover:bg-red-400/15 transition-colors">
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-red-400 shadow-sm shadow-red-400/50" />
-              <span class="text-xs font-semibold text-red-200 uppercase tracking-widest">Vencido</span>
+              <span class="w-2 h-2 rounded-full bg-white/70 shadow-sm shadow-red-400/50" />
+              <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Vencido</span>
             </div>
-            <span class="text-xl font-black text-red-100 leading-tight">{{ formatCurrency(totalPorStatus('vencido')) }}</span>
-            <span class="text-xs text-red-300/50">{{ contasPorStatus('vencido') }} conta(s)</span>
+            <span class="text-xl font-black text-white leading-tight">{{ formatCurrency(totalPorStatus('vencido')) }}</span>
+            <span class="text-xs text-white/50">{{ contasPorStatus('vencido') }} conta(s)</span>
           </div>
-          <div class="flex flex-col gap-1 bg-emerald-400/10 rounded-2xl px-5 py-4 border border-emerald-300/20 hover:bg-emerald-400/15 transition-colors">
+          <div class="flex flex-col gap-1 bg-white/10 rounded-2xl px-5 py-4 border border-white/10 hover:bg-white/15 transition-colors">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-emerald-300 shadow-sm shadow-emerald-300/50" />
-              <span class="text-xs font-semibold text-emerald-200 uppercase tracking-widest">Pago</span>
+              <span class="w-2 h-2 rounded-full bg-white/70 shadow-sm shadow-emerald-300/50" />
+              <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">Pago</span>
             </div>
-            <span class="text-xl font-black text-emerald-100 leading-tight">{{ formatCurrency(totalPorStatus('pago')) }}</span>
-            <span class="text-xs text-emerald-300/50">{{ contasPorStatus('pago') }} conta(s)</span>
+            <span class="text-xl font-black text-white leading-tight">{{ formatCurrency(totalPorStatus('pago')) }}</span>
+            <span class="text-xs text-white/50">{{ contasPorStatus('pago') }} conta(s)</span>
           </div>
         </div>
       </div>
@@ -99,16 +100,16 @@
         <!-- Header do painel -->
         <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/70">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+            <svg class="w-4 h-4 text-[#ff46a2]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
             <span class="text-sm font-bold text-gray-700">Filtros avançados</span>
-            <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-orange-100 text-orange-600 text-xs font-bold">
+            <span v-if="filtrosAtivos > 0" class="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-pink-50 text-[#ff46a2] text-xs font-bold">
               {{ filtrosAtivos }} ativo(s)
             </span>
           </div>
           <button
             v-if="filtrosAtivos > 0"
             type="button"
-            class="text-xs font-semibold text-orange-500 hover:text-orange-700 hover:underline transition-colors"
+            class="text-xs font-semibold text-[#ff46a2] hover:text-pink-600 hover:underline transition-colors"
             @click="limparFiltros"
           >
             Limpar tudo
@@ -150,8 +151,8 @@
                 type="button"
                 class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl border transition-all duration-150"
                 :class="filtros.presetAtivo === preset.label
-                  ? 'bg-green-600 border-green-600 text-white shadow-sm shadow-green-200'
-                  : 'bg-white border-gray-200 text-gray-600 hover:border-green-400 hover:text-green-700 hover:bg-green-50'"
+                  ? 'bg-[#ff46a2] border-[#ff46a2] text-white shadow-sm shadow-pink-200'
+                  : 'bg-white border-gray-200 text-gray-600 hover:border-pink-400 hover:text-[#ff46a2] hover:bg-pink-50'"
                 @click="aplicarPreset(preset)"
               >
                 {{ preset.label }}
@@ -201,7 +202,7 @@
                 :key="p"
                 type="button"
                 class="text-xs font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-150 capitalize"
-                :class="filtros.periodicidade.includes(p) ? 'bg-green-100 border-green-400 text-green-800' : 'bg-white border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-700'"
+                :class="filtros.periodicidade.includes(p) ? 'bg-pink-100 border-pink-400 text-[#ff46a2]' : 'bg-white border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-700'"
                 @click="toggleFiltroPeriodicidade(p)"
               >
                 {{ p }}
@@ -229,7 +230,7 @@
       <!-- Barra acima da tabela -->
       <div class="flex items-center justify-between px-7 py-4 border-b border-gray-100 bg-gray-50/50">
         <span class="text-sm font-semibold text-gray-600">
-          <span class="text-green-700 font-black">{{ contasFiltradas.length }}</span>
+          <span class="text-[#ff46a2] font-black">{{ contasFiltradas.length }}</span>
           resultado(s)
           <span v-if="filtrosAtivos > 0" class="text-gray-400 font-normal"> - filtros aplicados</span>
         </span>
@@ -248,7 +249,6 @@
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Pagamento</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Categoria</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Forma Pgto</th>
-              <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Func. ID</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Periodicidade</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Observação</th>
               <th class="text-left px-5 py-4 text-xs font-extrabold text-gray-400 uppercase tracking-widest">Criado em</th>
@@ -257,7 +257,7 @@
           </thead>
           <tbody class="divide-y divide-gray-50">
             <tr v-if="contasFiltradas.length === 0">
-              <td colspan="13" class="text-center py-20">
+              <td colspan="12" class="text-center py-20">
                 <div class="flex flex-col items-center gap-3">
                   <svg class="w-14 h-14 text-gray-300" fill="none" stroke="currentColor" stroke-width="1.25" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3"/></svg>
                   <span class="text-base font-semibold text-gray-400">Nenhuma conta encontrada</span>
@@ -268,10 +268,10 @@
             <tr
               v-for="conta in contasFiltradas"
               :key="conta.id"
-              class="hover:bg-green-50/40 transition-colors duration-150 group"
+              class="hover:bg-pink-50/40 transition-colors duration-150 group"
             >
               <td class="px-7 py-4">
-                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-black text-xs">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-[#ff46a2] font-black text-xs">
                   {{ conta.id }}
                 </span>
               </td>
@@ -332,7 +332,7 @@
                 <span v-if="conta.forma_pagamento" class="inline-block text-xs font-semibold bg-gray-100 text-gray-600 rounded-lg px-2.5 py-1">{{ conta.forma_pagamento }}</span>
                 <span v-else class="text-gray-300">-</span>
               </td>
-              <td class="px-5 py-4 text-gray-500 font-medium">{{ conta.funcionario_id ?? '-' }}</td>
+
               <td class="px-5 py-4">
                 <span class="inline-block text-xs font-semibold capitalize"
                   :class="conta.periodicidade === 'mensal' ? 'bg-purple-50 text-purple-700 border border-purple-100 rounded-lg px-2.5 py-1' : 'text-gray-400'"
@@ -344,25 +344,25 @@
                 <span class="text-gray-400 text-xs max-w-[150px] block truncate" :title="conta.observacao ?? ''">{{ conta.observacao ?? '-' }}</span>
               </td>
               <td class="px-5 py-4 text-gray-400 text-xs tabular-nums">{{ formatDateTime(conta.created_at) }}</td>
-              <td class="px-7 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-green-50/60 transition-colors">
-                <div class="flex items-center justify-end gap-2">
+              <td class="px-4 py-3 text-right sm:sticky sm:right-0 bg-white group-hover:bg-pink-50/60 transition-colors">
+                <div class="flex items-center justify-end gap-1">
                   <button
                     v-if="isAdminOrGerente"
                     type="button"
-                    class="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-xl transition-colors"
+                    title="Editar"
+                    class="p-1.5 rounded-lg text-[#ff46a2] hover:bg-pink-50 transition-colors"
                     @click="editConta(conta)"
                   >
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2.414a2 2 0 01.586-1.414z"/></svg>
-                    Editar
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2.414a2 2 0 01.586-1.414z"/></svg>
                   </button>
                   <button
                     v-if="isAdmin"
                     type="button"
-                    class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-500 bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1.5 rounded-xl transition-colors"
+                    title="Excluir"
+                    class="p-1.5 rounded-lg text-red-400 hover:bg-red-50 transition-colors"
                     @click="confirmarExclusao(conta)"
                   >
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0a1 1 0 01-1-1V5a1 1 0 011-1h8a1 1 0 011 1v1a1 1 0 01-1 1H9z"/></svg>
-                    Excluir
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0a1 1 0 01-1-1V5a1 1 0 011-1h8a1 1 0 011 1v1a1 1 0 01-1 1H9z"/></svg>
                   </button>
                 </div>
               </td>
@@ -384,7 +384,7 @@
             <!-- Header do modal -->
             <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-green-50 to-white">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center">
+                <div class="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center">
                   <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3"/></svg>
                 </div>
                 <h2 class="text-lg font-bold text-gray-800">{{ adicionando ? 'Adicionar Conta' : 'Editar Conta' }}</h2>
@@ -416,15 +416,15 @@
                 <AppInput v-model="form.categoria" label="Categoria" placeholder="Ex: Infraestrutura" />
                 <AppInput v-model="form.forma_pagamento" label="Forma de Pagamento" placeholder="Ex: PIX" />
               </div>
-              <div class="grid grid-cols-2 gap-4">
-                <AppInput v-model="form.funcionario_id" label="ID do Funcionário" type="number" placeholder="Opcional" />
-                <div class="flex flex-col gap-1.5">
-                  <label class="text-sm font-semibold text-gray-700">Periodicidade</label>
-                  <select v-model="form.periodicidade" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                    <option value="avulsa">Avulsa</option>
-                    <option value="mensal">Mensal</option>
-                  </select>
-                </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-sm font-semibold text-gray-700">Periodicidade</label>
+                <select v-model="form.periodicidade" class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                  <option value="avulsa">Avulsa</option>
+                  <option value="mensal">Mensal (lança até dez/{{ new Date().getFullYear() }})</option>
+                </select>
+                <p v-if="form.periodicidade === 'mensal'" class="text-xs text-pink-600 font-semibold">
+                  Serão criadas {{ mesesRestantes }} parcela(s) a partir do vencimento informado.
+                </p>
               </div>
               <AppInput v-model="form.observacao" label="Observação" placeholder="Informações adicionais" />
 
@@ -507,7 +507,7 @@ interface ContaPagar {
   categoria: string | null
   forma_pagamento: string | null
   observacao: string | null
-  funcionario_id: number | null
+
   periodicidade: string | null
   created_at: string | null
 }
@@ -534,7 +534,7 @@ const mudandoStatusId = ref<number | null>(null)
 
 const form = reactive({
   descricao: '', valor: '', data_vencimento: '', data_pagamento: '',
-  status: 'pendente', categoria: '', forma_pagamento: '', observacao: '', funcionario_id: '', periodicidade: 'avulsa',
+  status: 'pendente', categoria: '', forma_pagamento: '', observacao: '', periodicidade: 'avulsa',
 })
 
 const formErrors = reactive({ descricao: '', valor: '', data_vencimento: '' })
@@ -556,7 +556,7 @@ const filtros = reactive({
 
 const statusOpcoes = [
   { value: 'pendente',  label: 'Pendente',  activeClass: 'bg-yellow-100 border-yellow-400 text-yellow-800' },
-  { value: 'pago',      label: 'Pago',      activeClass: 'bg-green-100 border-green-400 text-green-800' },
+  { value: 'pago',      label: 'Pago',      activeClass: 'bg-pink-100 border-pink-400 text-[#ff46a2]' },
   { value: 'vencido',   label: 'Vencido',   activeClass: 'bg-red-100 border-red-400 text-red-700' },
   { value: 'cancelado', label: 'Cancelado', activeClass: 'bg-gray-200 border-gray-400 text-gray-700' },
 ]
@@ -683,7 +683,6 @@ const columns = [
   { key: 'data_pagamento',   label: 'Pagamento' },
   { key: 'categoria',        label: 'Categoria' },
   { key: 'forma_pagamento',  label: 'Forma Pgto' },
-  { key: 'funcionario_id',   label: 'Func. ID' },
   { key: 'periodicidade',    label: 'Periodicidade' },
   { key: 'observacao',       label: 'Observação' },
   { key: 'created_at',       label: 'Criado em' },
@@ -746,7 +745,7 @@ function statusClass(status: string | null): string {
 function limparForm() {
   form.descricao = ''; form.valor = ''; form.data_vencimento = ''; form.data_pagamento = ''
   form.status = 'pendente'; form.categoria = ''; form.forma_pagamento = ''
-  form.observacao = ''; form.funcionario_id = ''; form.periodicidade = 'avulsa'
+  form.observacao = ''; form.periodicidade = 'avulsa'
   formErrors.descricao = ''; formErrors.valor = ''; formErrors.data_vencimento = ''
   modalError.value = null
 }
@@ -769,7 +768,7 @@ function editConta(conta: ContaPagar) {
   form.categoria       = conta.categoria ?? ''
   form.forma_pagamento = conta.forma_pagamento ?? ''
   form.observacao      = conta.observacao ?? ''
-  form.funcionario_id  = conta.funcionario_id != null ? String(conta.funcionario_id) : ''
+
   form.periodicidade   = conta.periodicidade ?? 'avulsa'
 }
 
@@ -788,17 +787,25 @@ function validarForm(): boolean {
   return true
 }
 
-function buildPayload() {
+const mesesRestantes = computed(() => {
+  if (!form.data_vencimento) return 0
+  const ano = new Date().getFullYear()
+  const [y, m] = form.data_vencimento.split('-').map(Number)
+  if (y > ano) return 0
+  const mesInicio = y === ano ? m : 1
+  return Math.max(0, 12 - mesInicio + 1)
+})
+
+function buildPayload(dataVencimento?: string) {
   return {
     descricao:       form.descricao.trim(),
     valor:           Number(form.valor),
-    data_vencimento: form.data_vencimento,
+    data_vencimento: dataVencimento ?? form.data_vencimento,
     data_pagamento:  form.data_pagamento || null,
     status:          form.status || 'pendente',
     categoria:       form.categoria || null,
     forma_pagamento: form.forma_pagamento || null,
     observacao:      form.observacao || null,
-    funcionario_id:  form.funcionario_id ? Number(form.funcionario_id) : null,
     periodicidade:   form.periodicidade || 'avulsa',
     empresa_id:      empresaId.value!,
   }
@@ -807,9 +814,27 @@ function buildPayload() {
 async function salvarAdicao() {
   if (!validarForm()) return
   saving.value = true
-  const { error: insertError } = await supabase.from('contas_pagar').insert(buildPayload())
-  saving.value = false
-  if (insertError) { modalError.value = insertError.message; return }
+
+  if (form.periodicidade === 'mensal' && form.data_vencimento) {
+    const ano = new Date().getFullYear()
+    const [startY, startM, startD] = form.data_vencimento.split('-').map(Number)
+    const parcelas = []
+    let y = startY, m = startM
+    while (y < ano || (y === ano && m <= 12)) {
+      const mm = String(m).padStart(2, '0')
+      const dd = String(startD).padStart(2, '0')
+      parcelas.push(buildPayload(`${y}-${mm}-${dd}`))
+      m++; if (m > 12) { m = 1; y++ }
+    }
+    const { error: insertError } = await supabase.from('contas_pagar').insert(parcelas)
+    saving.value = false
+    if (insertError) { modalError.value = insertError.message; return }
+  } else {
+    const { error: insertError } = await supabase.from('contas_pagar').insert(buildPayload())
+    saving.value = false
+    if (insertError) { modalError.value = insertError.message; return }
+  }
+
   adicionando.value = false
   await fetchContas()
 }
