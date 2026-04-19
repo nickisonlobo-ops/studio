@@ -70,19 +70,35 @@
         </div>
 
         <!-- Tamanho do logo -->
-        <div v-if="form.logo_url" class="space-y-2 pt-2 border-t border-gray-100">
-          <label class="text-sm font-medium text-gray-700">Tamanho do logo nas páginas</label>
-          <div class="flex flex-wrap gap-2">
-            <button
-              v-for="size in logoSizes"
-              :key="size.value"
-              type="button"
-              class="px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all"
-              :class="form.logo_size === size.value ? 'border-gray-800 bg-gray-100' : 'border-gray-200 hover:border-gray-300'"
-              @click="form.logo_size = size.value"
-            >
-              {{ size.label }}
-            </button>
+        <div v-if="form.logo_url" class="space-y-3 pt-3 border-t border-gray-100">
+          <div class="flex items-center justify-between">
+            <label class="text-sm font-medium text-gray-700">Tamanho do logo no cabeçalho</label>
+            <span class="text-sm font-black px-2.5 py-0.5 rounded-lg bg-pink-50 text-pink-600 border border-pink-100">{{ logoSizePx }}px</span>
+          </div>
+          <!-- Preview em tempo real -->
+          <div class="flex items-center justify-center bg-gray-50 rounded-2xl border border-gray-100 py-6" style="min-height: 120px">
+            <img
+              :src="form.logo_url!"
+              alt="preview logo"
+              class="object-contain rounded-xl transition-all duration-100"
+              :style="{ width: logoSizePx + 'px', height: logoSizePx + 'px' }"
+            />
+          </div>
+          <!-- Slider -->
+          <input
+            type="range"
+            min="20"
+            max="128"
+            step="2"
+            :value="logoSizePx"
+            class="w-full h-2 rounded-full cursor-pointer"
+            style="accent-color: var(--color-primary, #ec4899)"
+            @input="onLogoSlider($event)"
+          />
+          <div class="flex justify-between text-[10px] text-gray-400 font-semibold select-none">
+            <span>20px</span>
+            <span>64px</span>
+            <span>128px</span>
           </div>
         </div>
       </section>
@@ -395,12 +411,23 @@ const direcoes = [
   { label: '← Esquerda', value: '270deg' },
 ]
 
-const logoSizes = [
-  { label: 'Pequeno', value: 'sm' },
-  { label: 'Médio',   value: 'md' },
-  { label: 'Grande',  value: 'lg' },
-  { label: 'Extra G', value: 'xl' },
-]
+/** Converte logo_size (string nomeada ou numérica) → px */
+const logoSizePx = computed(() => {
+  const s = form.logo_size
+  const num = parseInt(s)
+  if (!isNaN(num)) return num
+  switch (s) {
+    case 'sm':  return 28
+    case 'lg':  return 44
+    case 'xl':  return 56
+    case '2xl': return 72
+    default:    return 32
+  }
+})
+
+function onLogoSlider(e: Event) {
+  form.logo_size = String((e.target as HTMLInputElement).value)
+}
 
 // Computed para preview — usa degradê se ativado
 const previewPrimaryBg = computed(() =>

@@ -504,7 +504,7 @@
         <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">Atalhos</span>
         <div class="flex-1 h-px bg-pink-100" />
       </div>
-      <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
+      <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
         <NuxtLink
           v-for="atalho in atalhosVisiveis"
           :key="atalho.to"
@@ -915,42 +915,18 @@ function formatCurrency(val: number): string {
 }
 
 const atalhos = [
-  {
-    to: '/agendamentos',
-    icon: 'calendar',
-    title: 'Agendamentos',
-    minPerfil: 'all',
-  },
-  {
-    to: '/servicos',
-    icon: 'sparkles',
-    title: 'Serviços',
-    minPerfil: 'all',
-  },
-  {
-    to: '/clientes',
-    icon: 'identification',
-    title: 'Clientes',
-    minPerfil: 'all',
-  },
-  {
-    to: '/estoque',
-    icon: 'package',
-    title: 'Estoque',
-    minPerfil: 'all',
-  },
-  {
-    to: '/funcionarios',
-    icon: 'users',
-    title: 'Funcionários',
-    minPerfil: 'all',
-  },
-  {
-    to: '/contas-pagar',
-    icon: 'wallet',
-    title: 'Contas a Pagar',
-    minPerfil: 'manager',
-  },
+  { to: '/agendamentos',  icon: 'calendar',       title: 'Agendamentos',  minPerfil: 'all'     },
+  { to: '/servicos',      icon: 'sparkles',       title: 'Serviços',      minPerfil: 'all'     },
+  { to: '/clientes',      icon: 'identification', title: 'Clientes',      minPerfil: 'all'     },
+  { to: '/estoque',       icon: 'package',        title: 'Estoque',       minPerfil: 'all'     },
+  { to: '/veiculos',      icon: 'car',            title: 'Veículos',      minPerfil: 'all'     },
+  { to: '/catalogo',      icon: 'catalog',        title: 'Catálogo',      minPerfil: 'all'     },
+  { to: '/propostas',     icon: 'document',       title: 'Propostas',     minPerfil: 'all'     },
+  { to: '/vendas',        icon: 'receipt',        title: 'Vendas',        minPerfil: 'all'     },
+  { to: '/funcionarios',  icon: 'users',          title: 'Funcionários',  minPerfil: 'manager' },
+  { to: '/atividades',    icon: 'clipboard',      title: 'Atividades',    minPerfil: 'all'     },
+  { to: '/contas-pagar',  icon: 'wallet',         title: 'Contas a Pagar', minPerfil: 'manager' },
+  { to: '/configuracoes', icon: 'settings',       title: 'Configurações', minPerfil: 'manager' },
 ] as const
 
 const atalhosVisiveis = computed(() =>

@@ -9,7 +9,7 @@
       >
         <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true" :style="{ color: 'var(--color-primary-text, #ffffff)' }"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>
       </div>
-      <img v-else :src="config.logo_url" alt="Logo" class="object-contain rounded-xl" :class="headerLogoSize" />
+      <img v-else :src="config.logo_url" alt="Logo" class="object-contain rounded-xl" :style="{ width: headerLogoPx + 'px', height: headerLogoPx + 'px' }" />
       <span class="text-lg font-black tracking-tight" :style="{ color: 'var(--color-primary-text, #ffffff)' }">{{ config.nome_empresa }}</span>
     </div>
 
@@ -48,23 +48,29 @@ const { logout } = useAuth()
 const supabase = createSupabaseClient()
 const { config } = usePersonalizacao()
 
-const headerLogoSize = computed(() => {
-  switch (config.value.logo_size) {
-    case 'sm': return 'w-7 h-7'
-    case 'lg': return 'w-11 h-11'
-    case 'xl': return 'w-14 h-14'
-    default:   return 'w-8 h-8'
+function logoSizeToPx(s: string): number {
+  const num = parseInt(s)
+  if (!isNaN(num)) return num
+  switch (s) {
+    case 'sm':  return 28
+    case 'lg':  return 44
+    case 'xl':  return 56
+    case '2xl': return 72
+    default:    return 32
   }
-})
+}
+
+const headerLogoPx = computed(() => logoSizeToPx(config.value.logo_size))
 
 const headerHeight = computed(() => {
   if (!config.value.logo_url) return 'h-16'
-  switch (config.value.logo_size) {
-    case 'sm': return 'h-14'
-    case 'lg': return 'h-[4.5rem]'
-    case 'xl': return 'h-20'
-    default:   return 'h-16'
-  }
+  const px = headerLogoPx.value
+  if (px <= 28) return 'h-14'
+  if (px <= 32) return 'h-16'
+  if (px <= 44) return 'h-[4.5rem]'
+  if (px <= 56) return 'h-20'
+  if (px <= 72) return 'h-24'
+  return 'h-28'
 })
 
 const userName = ref('')
