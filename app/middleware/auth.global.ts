@@ -3,7 +3,7 @@ import { createSupabaseClient } from '~/lib/supabase'
 // Rotas bloqueadas para funcionario (somente admin/gerente)
 const MANAGER_ROUTES = ['/contas-pagar', '/produtos', '/funcionarios']
 // Rotas públicas (sem login)
-const PUBLIC_ROUTES = ['/catalogo', '/loja', '/agendar']
+const PUBLIC_ROUTES = ['/catalogo', '/loja', '/agendar', '/landing']
 
 export default defineNuxtRouteMiddleware(async (to) => {
   const supabase = createSupabaseClient()
