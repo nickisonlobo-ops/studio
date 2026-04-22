@@ -136,6 +136,18 @@
             <span class="ml-auto text-lg font-black text-gray-900">{{ formatPreco(s.preco) }}</span>
           </div>
 
+          <!-- Funcionários vinculados -->
+          <div v-if="s.servico_funcionarios?.length" class="flex flex-wrap gap-1.5 mt-2.5">
+            <span
+              v-for="sf in s.servico_funcionarios"
+              :key="sf.funcionario_id"
+              class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100"
+            >
+              <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+              {{ sf.funcionarios?.nome }}
+            </span>
+          </div>
+
           <div v-if="isAdminOrGerente" class="flex gap-2 mt-4 pt-4 border-t border-gray-100">
             <button
               type="button"
@@ -253,6 +265,23 @@
               </div>
             </div>
 
+            <!-- Funcionários -->
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-2">Funcionários que realizam este serviço</label>
+              <div v-if="funcionarios.length === 0" class="text-xs text-gray-400 py-2">Nenhum funcionário cadastrado.</div>
+              <div v-else class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1">
+                <label
+                  v-for="func in funcionarios"
+                  :key="func.id"
+                  class="flex items-center gap-2 text-sm cursor-pointer select-none px-3 py-2 rounded-xl border transition-colors"
+                  :class="form.funcionarioIds.includes(func.id) ? 'border-pink-300 bg-pink-50 text-pink-700 font-semibold' : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100'"
+                >
+                  <input type="checkbox" :value="func.id" v-model="form.funcionarioIds" class="accent-pink-500 w-3.5 h-3.5 shrink-0" />
+                  <span class="truncate">{{ func.nome }}</span>
+                </label>
+              </div>
+            </div>
+
             <div class="flex gap-3 pt-2">
               <button type="button" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50" @click="fecharModal">Cancelar</button>
               <button
@@ -302,6 +331,16 @@ import AppNavIcon from '~/components/AppNavIcon.vue'
 defineOptions({ name: 'ServicosPage' })
 useHead({ title: 'Serviços' })
 
+interface FuncionarioVinculado {
+  funcionario_id: number
+  funcionarios: { id: number; nome: string } | null
+}
+
+interface FuncionarioSimples {
+  id: number
+  nome: string
+}
+
 interface Servico {
   id: number
   nome: string
@@ -311,6 +350,7 @@ interface Servico {
   preco: number
   ativo: boolean
   created_at: string | null
+  servico_funcionarios?: FuncionarioVinculado[]
 }
 
 const supabase = createSupabaseClient()
@@ -318,6 +358,7 @@ const { empresaId, loadEmpresa } = useEmpresa()
 const { isAdminOrGerente } = useAdmin()
 
 const servicos = ref<Servico[]>([])
+const funcionarios = ref<FuncionarioSimples[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
 
@@ -340,6 +381,7 @@ const form = reactive({
   duracao_min: 60,
   preco: 0,
   ativo: true,
+  funcionarioIds: [] as number[],
 })
 
 const formErrors = reactive({ nome: '', duracao_min: '', preco: '' })
@@ -377,14 +419,14 @@ function categoriaBadge(cat: string) {
 
 onMounted(async () => {
   await loadEmpresa()
-  await fetchServicos()
+  await Promise.all([fetchServicos(), fetchFuncionarios()])
 })
 
 async function fetchServicos() {
   loading.value = true
   const { data, error: fetchError } = await supabase
     .from('servicos')
-    .select('*')
+    .select('*, servico_funcionarios(funcionario_id, funcionarios(id, nome))')
     .eq('empresa_id', empresaId.value!)
     .order('categoria', { ascending: true })
     .order('nome', { ascending: true })
@@ -394,9 +436,19 @@ async function fetchServicos() {
   servicos.value = (data ?? []) as Servico[]
 }
 
+async function fetchFuncionarios() {
+  const { data } = await supabase
+    .from('funcionarios')
+    .select('id, nome')
+    .eq('empresa_id', empresaId.value!)
+    .order('nome', { ascending: true })
+  funcionarios.value = (data ?? []) as FuncionarioSimples[]
+}
+
 function resetForm() {
   form.nome = ''; form.descricao = ''; form.categoria = ''
   form.duracao_min = 60; form.preco = 0; form.ativo = true
+  form.funcionarioIds = []
   formErrors.nome = ''; formErrors.duracao_min = ''; formErrors.preco = ''
 }
 
@@ -423,6 +475,7 @@ function editServico(s: Servico) {
   form.duracao_min = s.duracao_min
   form.preco = s.preco
   form.ativo = s.ativo
+  form.funcionarioIds = (s.servico_funcionarios ?? []).map(sf => sf.funcionario_id)
 }
 
 function validateForm(): boolean {
@@ -446,6 +499,17 @@ function buildPayload() {
   }
 }
 
+async function syncFuncionarios(servicoId: number) {
+  await supabase.from('servico_funcionarios').delete().eq('servico_id', servicoId)
+  if (form.funcionarioIds.length > 0) {
+    const rows = form.funcionarioIds.map(fid => ({
+      servico_id: servicoId,
+      funcionario_id: fid,
+    }))
+    await supabase.from('servico_funcionarios').insert(rows)
+  }
+}
+
 async function salvarEdicao() {
   if (!editando.value || !validateForm()) return
   saving.value = true
@@ -456,8 +520,11 @@ async function salvarEdicao() {
     .update(buildPayload())
     .eq('id', editando.value.id)
 
+  if (updateError) { saving.value = false; modalError.value = updateError.message; return }
+
+  await syncFuncionarios(editando.value.id)
+
   saving.value = false
-  if (updateError) { modalError.value = updateError.message; return }
   editando.value = null
   await fetchServicos()
 }
@@ -467,12 +534,17 @@ async function salvarAdicao() {
   saving.value = true
   modalError.value = null
 
-  const { error: insertError } = await supabase
+  const { data: inserted, error: insertError } = await supabase
     .from('servicos')
     .insert(buildPayload())
+    .select('id')
+    .single()
+
+  if (insertError) { saving.value = false; modalError.value = insertError.message; return }
+
+  await syncFuncionarios(inserted.id)
 
   saving.value = false
-  if (insertError) { modalError.value = insertError.message; return }
   adicionando.value = false
   await fetchServicos()
 }

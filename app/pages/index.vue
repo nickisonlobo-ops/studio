@@ -77,6 +77,108 @@
 
       <!-- Tabs e lista de atividades -->
       <template v-else-if="funcionarioLogado">
+        <!-- ─── Kanban de agendamentos do funcionário ─── -->
+        <div class="mb-8">
+          <div class="flex items-center gap-3 mb-4">
+            <svg class="w-5 h-5 shrink-0" :style="{ color: 'var(--color-primary, #ec4899)' }" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+            <h2 class="text-base font-bold text-gray-800 capitalize">{{ meuKanbanMesLabel }}</h2>
+            <button type="button" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-pink-100 text-pink-600 hover:bg-pink-200 transition-colors" @click="meuKanbanIrParaHoje">Hoje</button>
+            <div class="ml-auto flex gap-2">
+              <button type="button" class="w-8 h-8 flex items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-pink-50 hover:text-pink-500 transition-colors shadow-sm" @click="meuKanbanSemanaAnterior">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <button type="button" class="w-8 h-8 flex items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-pink-50 hover:text-pink-500 transition-colors shadow-sm" @click="meuKanbanSemanaProxima">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div v-if="meuKanbanLoading" class="flex justify-center py-8">
+            <div class="w-8 h-8 rounded-full border-4 border-gray-200 animate-spin" :style="{ borderTopColor: 'var(--color-primary, #ec4899)' }" />
+          </div>
+
+          <template v-else>
+            <!-- Mobile: 4+3 -->
+            <div class="sm:hidden space-y-2">
+              <div class="grid grid-cols-4 gap-2">
+                <div v-for="dia in meuKanbanDias.slice(0, 4)" :key="dia.iso" class="flex flex-col min-w-0">
+                  <div class="flex flex-col items-center py-2 px-1 rounded-2xl mb-2 border transition-colors" :class="dia.ehHoje ? 'border-transparent shadow-md' : 'bg-white border-gray-200'" :style="dia.ehHoje ? { background: 'var(--color-primary-bg, linear-gradient(180deg,#ec4899,#f43f5e))' } : {}">
+                    <span class="text-[10px] font-bold tracking-widest" :class="dia.ehHoje ? 'text-white/80' : 'text-gray-400'">{{ dia.diaSemana }}</span>
+                    <span class="text-xl font-black leading-none mt-0.5" :class="dia.ehHoje ? 'text-white' : 'text-gray-800'">{{ dia.diaNum }}</span>
+                    <span class="text-[10px] font-bold mt-1 rounded-full px-2 py-0.5" :class="dia.ehHoje ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'">{{ (meuKanbanPorDia[dia.iso] ?? []).length }}</span>
+                  </div>
+                  <div class="flex flex-col gap-1.5 flex-1 rounded-2xl p-1 min-h-[48px]">
+                    <div v-for="ag in meuKanbanPorDia[dia.iso]" :key="ag.id" class="rounded-xl border shadow-sm px-2.5 py-2 bg-white border-gray-200/80">
+                      <div class="h-0.5 w-full rounded-full mb-2" :class="agKanbanStatusCor(ag.status)" />
+                      <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '\u2014' }}</p>
+                      <p class="text-[10px] font-semibold mt-0.5" :style="{ color: 'var(--color-primary, #ec4899)' }">{{ agKanbanFormatHora(ag.data_hora) }}</p>
+                      <p v-if="ag.servicos_nomes" class="text-[10px] text-gray-400 mt-0.5 truncate">{{ ag.servicos_nomes }}</p>
+                      <p v-if="ag.funcionario_nome" class="text-[10px] text-indigo-500 font-semibold mt-0.5 truncate">👤 {{ ag.funcionario_nome }}</p>
+                      <span class="inline-flex mt-1.5 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold" :class="agKanbanStatusBadge(ag.status)">{{ agKanbanStatusLabel(ag.status) }}</span>
+                      <a v-if="ag.cliente_telefone" :href="`https://wa.me/55${ag.cliente_telefone.replace(/\D/g, '')}`" target="_blank" rel="noopener noreferrer" class="mt-1.5 flex items-center justify-center w-full py-1 rounded-lg bg-green-500 text-white hover:bg-green-600 transition-colors">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-center gap-2">
+                <div v-for="dia in meuKanbanDias.slice(4)" :key="dia.iso" class="flex flex-col min-w-0 shrink-0 basis-[calc(25%-6px)]">
+                  <div class="flex flex-col items-center py-2 px-1 rounded-2xl mb-2 border transition-colors" :class="dia.ehHoje ? 'border-transparent shadow-md' : 'bg-white border-gray-200'" :style="dia.ehHoje ? { background: 'var(--color-primary-bg, linear-gradient(180deg,#ec4899,#f43f5e))' } : {}">
+                    <span class="text-[10px] font-bold tracking-widest" :class="dia.ehHoje ? 'text-white/80' : 'text-gray-400'">{{ dia.diaSemana }}</span>
+                    <span class="text-xl font-black leading-none mt-0.5" :class="dia.ehHoje ? 'text-white' : 'text-gray-800'">{{ dia.diaNum }}</span>
+                    <span class="text-[10px] font-bold mt-1 rounded-full px-2 py-0.5" :class="dia.ehHoje ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'">{{ (meuKanbanPorDia[dia.iso] ?? []).length }}</span>
+                  </div>
+                  <div class="flex flex-col gap-1.5 flex-1 rounded-2xl p-1 min-h-[48px]">
+                    <div v-for="ag in meuKanbanPorDia[dia.iso]" :key="ag.id" class="rounded-xl border shadow-sm px-2.5 py-2 bg-white border-gray-200/80">
+                      <div class="h-0.5 w-full rounded-full mb-2" :class="agKanbanStatusCor(ag.status)" />
+                      <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '\u2014' }}</p>
+                      <p class="text-[10px] font-semibold mt-0.5" :style="{ color: 'var(--color-primary, #ec4899)' }">{{ agKanbanFormatHora(ag.data_hora) }}</p>
+                      <p v-if="ag.servicos_nomes" class="text-[10px] text-gray-400 mt-0.5 truncate">{{ ag.servicos_nomes }}</p>
+                      <p v-if="ag.funcionario_nome" class="text-[10px] text-indigo-500 font-semibold mt-0.5 truncate">👤 {{ ag.funcionario_nome }}</p>
+                      <span class="inline-flex mt-1.5 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold" :class="agKanbanStatusBadge(ag.status)">{{ agKanbanStatusLabel(ag.status) }}</span>
+                      <a v-if="ag.cliente_telefone" :href="`https://wa.me/55${ag.cliente_telefone.replace(/\D/g, '')}`" target="_blank" rel="noopener noreferrer" class="mt-1.5 flex items-center justify-center w-full py-1 rounded-lg bg-green-500 text-white hover:bg-green-600 transition-colors">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desktop: 7 colunas -->
+            <div class="hidden sm:grid grid-cols-7 gap-2">
+              <div v-for="dia in meuKanbanDias" :key="dia.iso" class="flex flex-col min-w-0">
+                <div class="flex flex-col items-center py-2 px-1 rounded-2xl mb-2 border transition-colors" :class="dia.ehHoje ? 'border-transparent shadow-md' : 'bg-white border-gray-200'" :style="dia.ehHoje ? { background: 'var(--color-primary-bg, linear-gradient(180deg,#ec4899,#f43f5e))' } : {}">
+                  <span class="text-[10px] font-bold tracking-widest" :class="dia.ehHoje ? 'text-white/80' : 'text-gray-400'">{{ dia.diaSemana }}</span>
+                  <span class="text-xl font-black leading-none mt-0.5" :class="dia.ehHoje ? 'text-white' : 'text-gray-800'">{{ dia.diaNum }}</span>
+                  <span class="text-[10px] font-bold mt-1 rounded-full px-2 py-0.5" :class="dia.ehHoje ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'">{{ (meuKanbanPorDia[dia.iso] ?? []).length }}</span>
+                </div>
+                <div class="flex flex-col gap-1.5 flex-1 rounded-2xl p-1 min-h-[48px]">
+                  <div v-for="ag in meuKanbanPorDia[dia.iso]" :key="ag.id" class="rounded-xl border shadow-sm px-2.5 py-2 bg-white border-gray-200/80">
+                    <div class="h-0.5 w-full rounded-full mb-2" :class="agKanbanStatusCor(ag.status)" />
+                    <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '\u2014' }}</p>
+                    <p class="text-[10px] font-semibold mt-0.5" :style="{ color: 'var(--color-primary, #ec4899)' }">{{ agKanbanFormatHora(ag.data_hora) }}</p>
+                    <p v-if="ag.servicos_nomes" class="text-[10px] text-gray-400 mt-0.5 truncate">{{ ag.servicos_nomes }}</p>
+                    <p v-if="ag.funcionario_nome" class="text-[10px] text-indigo-500 font-semibold mt-0.5 truncate">👤 {{ ag.funcionario_nome }}</p>
+                    <span class="inline-flex mt-1.5 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold" :class="agKanbanStatusBadge(ag.status)">{{ agKanbanStatusLabel(ag.status) }}</span>
+                    <a v-if="ag.cliente_telefone" :href="`https://wa.me/55${ag.cliente_telefone.replace(/\D/g, '')}`" target="_blank" rel="noopener noreferrer" class="mt-1.5 flex items-center justify-center w-full py-1 rounded-lg bg-green-500 text-white hover:bg-green-600 transition-colors">
+                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Divisor -->
+        <div class="flex items-center gap-3 mb-6">
+          <div class="flex-1 h-px bg-gray-100" />
+          <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Minhas Tarefas</span>
+          <div class="flex-1 h-px bg-gray-100" />
+        </div>
+
         <!-- Tabs -->
         <div class="flex gap-2 mb-6 overflow-x-auto pb-1">
           <button
@@ -875,6 +977,189 @@ async function alterarStatus(at: AtividadeFuncionario, novoStatus: string) {
   atualizando.value = null
 }
 
+// ── Kanban de agendamentos do funcionário ────────────────────
+interface AgKanban {
+  id: number
+  data_hora: string
+  status: string
+  cliente_nome: string | null
+  nome_solicitante: string | null
+  cliente_telefone: string | null
+  servicos_nomes: string | null
+  funcionario_nome: string | null
+}
+
+const meuKanban          = ref<AgKanban[]>([])
+const meuKanbanLoading   = ref(false)
+
+function getMondayOfWeekFun(date: Date): Date {
+  const d = new Date(date)
+  const day = d.getDay()
+  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day))
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+const meuKanbanSemanaInicio = ref<Date>(getMondayOfWeekFun(new Date()))
+const hojeIso = new Date().toISOString().split('T')[0]
+
+const meuKanbanDias = computed(() =>
+  Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(meuKanbanSemanaInicio.value)
+    d.setDate(d.getDate() + i)
+    const iso = d.toISOString().split('T')[0]
+    return {
+      iso,
+      diaSemana: d.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '').toUpperCase(),
+      diaNum: d.toLocaleDateString('pt-BR', { day: '2-digit' }),
+      ehHoje: iso === hojeIso,
+    }
+  })
+)
+
+const meuKanbanMesLabel = computed(() => {
+  const dias = meuKanbanDias.value
+  const inicio = new Date(dias[0].iso + 'T12:00:00')
+  const fim    = new Date(dias[6].iso + 'T12:00:00')
+  if (inicio.getMonth() === fim.getMonth())
+    return inicio.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+  return `${inicio.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '')} – ${fim.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }).replace('.', '')}`
+})
+
+const meuKanbanPorDia = computed(() => {
+  const map: Record<string, AgKanban[]> = {}
+  meuKanbanDias.value.forEach(d => { map[d.iso] = [] })
+  meuKanban.value.forEach(ag => {
+    const key = ag.data_hora.slice(0, 10)
+    if (map[key]) map[key].push(ag)
+  })
+  Object.keys(map).forEach(k => map[k].sort((a, b) => a.data_hora.localeCompare(b.data_hora)))
+  return map
+})
+
+function meuKanbanSemanaAnterior() {
+  const d = new Date(meuKanbanSemanaInicio.value)
+  d.setDate(d.getDate() - 7)
+  meuKanbanSemanaInicio.value = d
+}
+function meuKanbanSemanaProxima() {
+  const d = new Date(meuKanbanSemanaInicio.value)
+  d.setDate(d.getDate() + 7)
+  meuKanbanSemanaInicio.value = d
+}
+function meuKanbanIrParaHoje() {
+  meuKanbanSemanaInicio.value = getMondayOfWeekFun(new Date())
+}
+
+function agKanbanFormatHora(iso: string) { return iso.slice(11, 16) }
+
+function agKanbanStatusCor(s: string) {
+  return { solicitado: 'bg-amber-400', agendado: 'bg-blue-400', confirmado: 'bg-green-400', concluido: 'bg-violet-500', cancelado: 'bg-red-400', faltou: 'bg-orange-400' }[s] ?? 'bg-gray-300'
+}
+function agKanbanStatusBadge(s: string) {
+  return { solicitado: 'bg-amber-100 text-amber-700', agendado: 'bg-blue-100 text-blue-700', confirmado: 'bg-green-100 text-green-700', concluido: 'bg-violet-100 text-violet-700', cancelado: 'bg-red-100 text-red-600', faltou: 'bg-orange-100 text-orange-600' }[s] ?? 'bg-gray-100 text-gray-600'
+}
+function agKanbanStatusLabel(s: string) {
+  return { solicitado: 'Solicitado', agendado: 'Agendado', confirmado: 'Confirmado', concluido: 'Concluído', cancelado: 'Cancelado', faltou: 'Faltou' }[s] ?? s
+}
+
+async function fetchMeuKanban(userId: string, funcId: number, eId: number) {
+  meuKanbanLoading.value = true
+
+  // Estratégia 1: agendamentos onde funcionario_id = uuid do usuário logado
+  const { data: rowsByUuid } = await supabase
+    .from('agendamentos')
+    .select('id, data_hora, status, nome_solicitante, telefone_solicitante, funcionario_id, clientes(nome, telefone)')
+    .eq('empresa_id', eId)
+    .eq('funcionario_id', userId)
+    .not('status', 'in', '(cancelado,faltou)')
+    .order('data_hora', { ascending: true })
+
+  // Estratégia 2: agendamentos cujo serviço está vinculado ao funcionário (bigint id)
+  // — cobre os casos em que funcionario_id ainda é null no banco
+  const { data: meusSvcs } = await supabase
+    .from('servico_funcionarios')
+    .select('servico_id')
+    .eq('funcionario_id', funcId)
+
+  const meusSvcIds = (meusSvcs ?? []).map((s: any) => Number(s.servico_id))
+  let rowsByServico: any[] = []
+  if (meusSvcIds.length) {
+    const { data: agLinks } = await supabase
+      .from('agendamento_servicos')
+      .select('agendamento_id')
+      .in('servico_id', meusSvcIds)
+
+    const agIds = [...new Set((agLinks ?? []).map((l: any) => Number(l.agendamento_id)))]
+    if (agIds.length) {
+      const { data: rowsSvc } = await supabase
+        .from('agendamentos')
+        .select('id, data_hora, status, nome_solicitante, telefone_solicitante, funcionario_id, clientes(nome, telefone)')
+        .eq('empresa_id', eId)
+        .in('id', agIds)
+        .not('status', 'in', '(cancelado,faltou)')
+        .order('data_hora', { ascending: true })
+      rowsByServico = rowsSvc ?? []
+    }
+  }
+
+  // Mescla as duas listas sem duplicar (por id)
+  const seenIds = new Set<number>()
+  const allRows: any[] = []
+  for (const r of [...(rowsByUuid ?? []), ...rowsByServico]) {
+    if (!seenIds.has(Number(r.id))) {
+      seenIds.add(Number(r.id))
+      allRows.push(r)
+    }
+  }
+  allRows.sort((a, b) => a.data_hora.localeCompare(b.data_hora))
+
+  // Busca nomes dos serviços
+  const ids = allRows.map((r: any) => r.id)
+  let servicosMap: Record<number, string[]> = {}
+  if (ids.length) {
+    const { data: agSvcs } = await supabase
+      .from('agendamento_servicos')
+      .select('agendamento_id, servicos(nome)')
+      .in('agendamento_id', ids)
+    ;(agSvcs ?? []).forEach((row: any) => {
+      if (!servicosMap[row.agendamento_id]) servicosMap[row.agendamento_id] = []
+      if (row.servicos?.nome) servicosMap[row.agendamento_id].push(row.servicos.nome)
+    })
+  }
+
+  // Busca nome do profissional direto de funcionarios (cadastro)
+  // uuid → nome via profiles.email → funcionarios.nome
+  const funcUuids = [...new Set(allRows.map((r: any) => r.funcionario_id).filter(Boolean))] as string[]
+  const funcNomeByUuid: Record<string, string> = {}
+  if (funcUuids.length) {
+    const { data: profs } = await supabase
+      .from('profiles').select('id, email').in('id', funcUuids)
+    const emailToUuid: Record<string, string> = {}
+    ;(profs ?? []).forEach((p: any) => { if (p.email) emailToUuid[p.email.toLowerCase()] = p.id })
+    const { data: funcs } = await supabase
+      .from('funcionarios').select('nome, email').eq('empresa_id', eId)
+    ;(funcs ?? []).forEach((f: any) => {
+      if (f.email) {
+        const uuid = emailToUuid[f.email.toLowerCase()]
+        if (uuid) funcNomeByUuid[uuid] = f.nome
+      }
+    })
+  }
+
+  meuKanban.value = allRows.map((r: any) => ({
+    id:               r.id,
+    data_hora:        r.data_hora,
+    status:           r.status,
+    cliente_nome:     r.clientes?.nome ?? null,
+    nome_solicitante: r.nome_solicitante ?? null,
+    cliente_telefone: r.clientes?.telefone ?? r.telefone_solicitante ?? null,
+    servicos_nomes:   servicosMap[r.id]?.join(', ') ?? null,
+    funcionario_nome: funcNomeByUuid[r.funcionario_id] ?? null,
+  }))
+  meuKanbanLoading.value = false
+}
+
 // �"?�"? Fetch �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?
 onMounted(async () => {
   const { data: { session } } = await supabase.auth.getSession()
@@ -899,6 +1184,10 @@ onMounted(async () => {
         .eq('empresa_id', empresaId.value!)
         .order('data_atividade', { ascending: true })
       minhasAtividades.value = (ativs ?? []) as AtividadeFuncionario[]
+      // Buscar agendamentos do funcionário (por uuid E por serviço vinculado)
+      if (session?.user?.id) {
+        await fetchMeuKanban(session.user.id, func.id, empresaId.value!)
+      }
     }
     loadingAtividades.value = false
     resumoLoading.value = false

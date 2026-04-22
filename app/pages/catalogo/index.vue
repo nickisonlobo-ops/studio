@@ -248,16 +248,35 @@ const linkCopiado = ref(false)
 const linkPublicoCopiado = ref(false)
 
 function copiarLink() {
-  navigator.clipboard.writeText(window.location.href).then(() => {
+  copiarParaAreaDeTransferencia(window.location.href).then(() => {
     linkCopiado.value = true
     setTimeout(() => { linkCopiado.value = false }, 2500)
   })
 }
 function copiarLinkPublico() {
   const url = `${window.location.origin}/loja?e=${empresaId.value}`
-  navigator.clipboard.writeText(url).then(() => {
+  copiarParaAreaDeTransferencia(url).then(() => {
     linkPublicoCopiado.value = true
     setTimeout(() => { linkPublicoCopiado.value = false }, 2500)
+  })
+}
+
+function copiarParaAreaDeTransferencia(texto: string): Promise<void> {
+  if (navigator.clipboard?.writeText) {
+    return navigator.clipboard.writeText(texto)
+  }
+  return new Promise((resolve) => {
+    const el = document.createElement('textarea')
+    el.value = texto
+    el.setAttribute('readonly', '')
+    el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0'
+    document.body.appendChild(el)
+    el.focus()
+    el.select()
+    el.setSelectionRange(0, el.value.length)
+    document.execCommand('copy')
+    document.body.removeChild(el)
+    resolve()
   })
 }
 

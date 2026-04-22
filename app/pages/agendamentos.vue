@@ -295,6 +295,7 @@
                 <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '\u2014' }}</p>
                 <p class="text-[10px] font-semibold text-[#ff46a2] mt-0.5">{{ formatHora(ag.data_hora) }}</p>
                 <p v-if="ag.servicos_nomes" class="text-[10px] text-gray-400 mt-0.5 truncate">{{ ag.servicos_nomes }}</p>
+                <p v-if="ag.funcionario_nome" class="text-[10px] text-indigo-500 font-semibold mt-0.5 truncate">👤 {{ ag.funcionario_nome }}</p>
                 <span class="inline-flex mt-1.5 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold" :class="statusBadge(ag.status)">{{ statusLabel(ag.status) }}</span>
                 <div v-if="ag.status === 'solicitado'" class="flex gap-1 mt-1.5">
                   <button type="button" class="flex-1 py-1 rounded-lg bg-green-500 text-white text-[9px] font-bold hover:bg-green-600 transition-colors" @click.stop="aprovarSolicitacao(ag)">✓</button>
@@ -357,6 +358,7 @@
                 <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '\u2014' }}</p>
                 <p class="text-[10px] font-semibold text-[#ff46a2] mt-0.5">{{ formatHora(ag.data_hora) }}</p>
                 <p v-if="ag.servicos_nomes" class="text-[10px] text-gray-400 mt-0.5 truncate">{{ ag.servicos_nomes }}</p>
+                <p v-if="ag.funcionario_nome" class="text-[10px] text-indigo-500 font-semibold mt-0.5 truncate">👤 {{ ag.funcionario_nome }}</p>
                 <span class="inline-flex mt-1.5 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold" :class="statusBadge(ag.status)">{{ statusLabel(ag.status) }}</span>
                 <div v-if="ag.status === 'solicitado'" class="flex gap-1 mt-1.5">
                   <button type="button" class="flex-1 py-1 rounded-lg bg-green-500 text-white text-[9px] font-bold hover:bg-green-600 transition-colors" @click.stop="aprovarSolicitacao(ag)">✓</button>
@@ -422,6 +424,7 @@
               <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '\u2014' }}</p>
               <p class="text-[10px] font-semibold text-[#ff46a2] mt-0.5">{{ formatHora(ag.data_hora) }}</p>
               <p v-if="ag.servicos_nomes" class="text-[10px] text-gray-400 mt-0.5 truncate">{{ ag.servicos_nomes }}</p>
+              <p v-if="ag.funcionario_nome" class="text-[10px] text-indigo-500 font-semibold mt-0.5 truncate">👤 {{ ag.funcionario_nome }}</p>
               <span class="inline-flex mt-1.5 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold" :class="statusBadge(ag.status)">{{ statusLabel(ag.status) }}</span>
               <div v-if="ag.status === 'solicitado'" class="flex gap-1.5 mt-2">
                 <button type="button" class="flex-1 py-1.5 rounded-lg bg-green-500 text-white text-[10px] font-bold hover:bg-green-600 transition-colors" @click.stop="aprovarSolicitacao(ag)">✓ Aprovar</button>
@@ -537,28 +540,29 @@
               </div>
               <div>
                 <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Profissional</label>
-                <select v-model="form.funcionario_id" class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400">
+                <select v-model="form.funcionario_bigint_id" class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400">
                   <option :value="null">Não atribuído</option>
                   <option v-for="f in funcionarios" :key="f.id" :value="f.id">{{ f.nome ?? f.email }}</option>
                 </select>
               </div>
             </div>
 
-            <!-- Serviços -->
+            <!-- Serviço -->
             <div>
-              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Serviços</label>
+              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Serviço</label>
               <div class="flex flex-col gap-2 max-h-40 overflow-y-auto border border-gray-200 rounded-xl p-2 bg-gray-50">
                 <label
                   v-for="s in servicosAtivos"
                   :key="s.id"
                   class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white cursor-pointer transition-colors"
-                  :class="form.servico_ids.includes(s.id) ? 'bg-violet-50 border border-violet-200' : ''"
+                  :class="form.servico_id === s.id ? 'bg-violet-50 border border-violet-200' : ''"
                 >
                   <input
-                    type="checkbox"
+                    type="radio"
+                    name="servico_agendamento"
                     :value="s.id"
-                    v-model="form.servico_ids"
-                    class="rounded text-violet-500 focus:ring-violet-400"
+                    v-model="form.servico_id"
+                    class="accent-violet-500 focus:ring-violet-400"
                   />
                   <span class="flex-1 text-sm font-medium text-gray-800">{{ s.nome }}</span>
                   <span class="text-xs text-gray-500">{{ formatPreco(s.preco) }}</span>
@@ -566,7 +570,7 @@
                 </label>
                 <p v-if="!servicosAtivos.length" class="text-xs text-gray-400 text-center py-2">Nenhum serviço ativo cadastrado</p>
               </div>
-              <p v-if="form.servico_ids.length" class="text-xs text-violet-600 font-semibold mt-1.5">
+              <p v-if="form.servico_id" class="text-xs text-violet-600 font-semibold mt-1.5">
                 Total estimado: {{ formatPreco(totalSelecionado) }}
               </p>
             </div>
@@ -896,7 +900,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { createSupabaseClient } from '~/lib/supabase'
 import { useEmpresa } from '~/composables/useEmpresa'
 import { useAdmin } from '~/composables/useAdmin'
@@ -928,8 +932,8 @@ interface AgendamentoRow {
 }
 
 interface ClienteOption { id: number; nome: string }
-interface FuncionarioOption { id: number; nome: string | null; email: string | null }
-interface ServicoOption { id: number; nome: string; preco: number; duracao_min: number }
+interface FuncionarioOption { id: number; nome: string | null; email: string | null; profile_id: string | null }
+interface ServicoOption { id: number; nome: string; preco: number; duracao_min: number; funcionario_id: number | null; funcionario_profile_id: string | null }
 
 const supabase = createSupabaseClient()
 const { empresaId, loadEmpresa } = useEmpresa()
@@ -1020,9 +1024,29 @@ const linkCopiado = ref(false)
 function copiarLinkPublico() {
   if (!empresaId.value) return
   const url = `${window.location.origin}/agendar/${empresaId.value}`
-  navigator.clipboard.writeText(url).then(() => {
+  copiarParaAreaDeTransferencia(url).then(() => {
     linkCopiado.value = true
     setTimeout(() => { linkCopiado.value = false }, 2500)
+  })
+}
+
+function copiarParaAreaDeTransferencia(texto: string): Promise<void> {
+  if (navigator.clipboard?.writeText) {
+    return navigator.clipboard.writeText(texto)
+  }
+  // Fallback para mobile/navegadores sem Clipboard API
+  return new Promise((resolve) => {
+    const el = document.createElement('textarea')
+    el.value = texto
+    el.setAttribute('readonly', '')
+    el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0'
+    document.body.appendChild(el)
+    el.focus()
+    el.select()
+    el.setSelectionRange(0, el.value.length)
+    document.execCommand('copy')
+    document.body.removeChild(el)
+    resolve()
   })
 }
 
@@ -1050,13 +1074,14 @@ async function saveQuickCliente() {
 }
 
 const form = reactive({
-  cliente_id: null as number | null,
-  funcionario_id: null as string | null,
-  data: '',
-  hora: '',
-  status: 'agendado',
-  observacoes: '',
-  servico_ids: [] as number[],
+  cliente_id:           null as number | null,
+  funcionario_id:       null as string | null,  // uuid para salvar no DB
+  funcionario_bigint_id: null as number | null, // bigint para o dropdown
+  data:         '',
+  hora:         '',
+  status:       'agendado',
+  observacoes:  '',
+  servico_id:   null as number | null,
 })
 
 const formErrors = reactive({ cliente_id: '', data: '', hora: '' })
@@ -1191,11 +1216,28 @@ const stats = computed(() => {
   ]
 })
 
-const totalSelecionado = computed(() =>
-  servicosAtivos.value
-    .filter(s => form.servico_ids.includes(s.id))
-    .reduce((sum, s) => sum + s.preco, 0)
-)
+const totalSelecionado = computed(() => {
+  if (!form.servico_id) return 0
+  return servicosAtivos.value.find(s => s.id === form.servico_id)?.preco ?? 0
+})
+
+// Ao selecionar um serviço, preenche profissional vinculado no dropdown e uuid para salvar
+watch(() => form.servico_id, (newId) => {
+  if (newId != null) {
+    const svc = servicosAtivos.value.find(s => s.id === newId)
+    if (svc?.funcionario_id != null) {
+      form.funcionario_bigint_id  = svc.funcionario_id
+      form.funcionario_id         = svc.funcionario_profile_id ?? null
+    }
+  }
+})
+
+// Ao trocar o dropdown manualmente, atualiza o uuid correspondente
+watch(() => form.funcionario_bigint_id, (bigintId) => {
+  if (bigintId == null) { form.funcionario_id = null; return }
+  const func = funcionarios.value.find(f => f.id === bigintId)
+  form.funcionario_id = func?.profile_id ?? null
+})
 
 // ── Helpers ───────────────────────────────────────────────────
 
@@ -1238,7 +1280,9 @@ function statusBadge(s: string) {
 
 onMounted(async () => {
   await loadEmpresa()
-  await Promise.all([fetchAgendamentos(), fetchClientes(), fetchFuncionarios(), fetchServicos(), loadHorarios()])
+  // fetchFuncionarios deve terminar ANTES de fetchServicos para que profile_id seja resolvido
+  await Promise.all([fetchAgendamentos(), fetchClientes(), fetchFuncionarios(), loadHorarios()])
+  await fetchServicos()
 })
 
 async function fetchAgendamentos() {
@@ -1247,11 +1291,15 @@ async function fetchAgendamentos() {
   // Fetch agendamentos
   const { data: rows, error: fetchError } = await supabase
     .from('agendamentos')
-    .select('*, clientes(nome, telefone), profiles(nome, email)')
+    .select('*, clientes(nome, telefone)')
     .eq('empresa_id', empresaId.value!)
     .order('data_hora', { ascending: false })
 
   if (fetchError) { error.value = fetchError.message; loading.value = false; return }
+
+  // Mapa uuid → nome vindo direto do cadastro de funcionários
+  const funcNomeByUuid: Record<string, string> = {}
+  funcionarios.value.forEach(f => { if (f.profile_id) funcNomeByUuid[f.profile_id] = f.nome })
 
   // Fetch servicos vinculados
   const ids = (rows ?? []).map(r => r.id)
@@ -1272,7 +1320,7 @@ async function fetchAgendamentos() {
     ...r,
     cliente_nome: r.clientes?.nome ?? null,
     cliente_telefone: r.clientes?.telefone ?? null,
-    funcionario_nome: r.profiles?.nome ?? r.profiles?.email ?? null,
+    funcionario_nome: funcNomeByUuid[r.funcionario_id] ?? null,
     servicos_nomes: (servicosMap[r.id] ?? []).join(', ') || null,
     nome_solicitante: r.nome_solicitante ?? null,
     telefone_solicitante: r.telefone_solicitante ?? null,
@@ -1292,32 +1340,85 @@ async function fetchClientes() {
 }
 
 async function fetchFuncionarios() {
-  const { data } = await supabase
+  const { data, error: funcErr } = await supabase
     .from('funcionarios')
     .select('id, nome, email')
     .eq('empresa_id', empresaId.value!)
     .eq('ativo', true)
     .order('nome')
-  funcionarios.value = (data ?? []) as FuncionarioOption[]
+  if (funcErr) { console.error('[fetchFuncionarios]', funcErr.message); return }
+  console.log('[fetchFuncionarios] funcionarios:', (data ?? []).map((f: any) => ({ id: f.id, email: f.email })))
+
+  // Busca TODOS os profiles sem filtrar por empresa_id (a RLS controla o acesso)
+  // para garantir que o match por email funcione independente do campo empresa_id
+  let profileMap: Record<string, string> = {}
+  const { data: profs, error: profErr } = await supabase
+    .from('profiles')
+    .select('id, email')
+  if (profErr) console.error('[fetchFuncionarios profiles]', profErr.message)
+  console.log('[fetchFuncionarios] profiles encontrados:', (profs ?? []).map((p: any) => ({ id: p.id, email: p.email })))
+  ;(profs ?? []).forEach((p: any) => {
+    if (p.email) profileMap[p.email.toLowerCase()] = p.id
+  })
+
+  funcionarios.value = (data ?? []).map((f: any) => ({
+    id:         f.id,
+    nome:       f.nome,
+    email:      f.email,
+    profile_id: f.email ? (profileMap[f.email.toLowerCase()] ?? null) : null,
+  })) as FuncionarioOption[]
+  console.log('[fetchFuncionarios] resultado final:', funcionarios.value.map(f => ({ id: f.id, nome: f.nome, profile_id: f.profile_id })))
 }
 
 async function fetchServicos() {
-  const { data } = await supabase
+  // IMPORTANTE: chamar após fetchFuncionarios para que funcionarios.value esteja populado
+  const { data, error: err } = await supabase
     .from('servicos')
     .select('id, nome, preco, duracao_min')
     .eq('empresa_id', empresaId.value!)
     .eq('ativo', true)
     .order('categoria')
     .order('nome')
-  servicosAtivos.value = (data ?? []) as ServicoOption[]
+  if (err) { console.error('[fetchServicos]', err.message); return }
+
+  // Busca vínculos serviço → funcionario_id (bigint)
+  const servicoIds = (data ?? []).map((s: any) => Number(s.id))
+  const funcIdMap: Record<number, number> = {}  // servico_id → funcionario bigint id
+  if (servicoIds.length) {
+    const { data: links, error: linkErr } = await supabase
+      .from('servico_funcionarios')
+      .select('servico_id, funcionario_id')
+      .in('servico_id', servicoIds)
+    if (linkErr) console.error('[fetchServicos links]', linkErr.message)
+    ;(links ?? []).forEach((lnk: any) => {
+      funcIdMap[Number(lnk.servico_id)] = Number(lnk.funcionario_id)
+    })
+  }
+
+  // Resolve profile_id (uuid) agora que funcionarios.value já está populado
+  servicosAtivos.value = (data ?? []).map((s: any) => {
+    const funcBigintId = funcIdMap[Number(s.id)] ?? null
+    const func = funcBigintId != null
+      ? funcionarios.value.find(f => Number(f.id) === funcBigintId) ?? null
+      : null
+    return {
+      id:                     Number(s.id),
+      nome:                   s.nome,
+      preco:                  s.preco,
+      duracao_min:            s.duracao_min,
+      funcionario_id:         funcBigintId,
+      funcionario_profile_id: func?.profile_id ?? null,
+    }
+  }) as ServicoOption[]
 }
+
 
 // ── CRUD ──────────────────────────────────────────────────────
 
 function resetForm() {
-  form.cliente_id = null; form.funcionario_id = null
+  form.cliente_id = null; form.funcionario_id = null; form.funcionario_bigint_id = null
   form.data = ''; form.hora = ''; form.status = 'agendado'
-  form.observacoes = ''; form.servico_ids = []
+  form.observacoes = ''; form.servico_id = null
   formErrors.cliente_id = ''; formErrors.data = ''; formErrors.hora = ''
 }
 
@@ -1344,19 +1445,21 @@ function editAgendamento(ag: AgendamentoRow) {
   formErrors.cliente_id = ''; formErrors.data = ''; formErrors.hora = ''
   form.cliente_id = ag.cliente_id
   form.funcionario_id = ag.funcionario_id
+  // Reverse-lookup: achar o bigint id a partir do profile_id salvo
+  form.funcionario_bigint_id = funcionarios.value.find(f => f.profile_id === ag.funcionario_id)?.id ?? null
   form.data = ag.data_hora.slice(0, 10)
   form.hora = ag.data_hora.slice(11, 16)
   form.status = ag.status
   form.observacoes = ag.observacoes ?? ''
   form.servico_ids = []
 
-  // Load linked services
+  // Load linked service
   supabase
     .from('agendamento_servicos')
     .select('servico_id')
     .eq('agendamento_id', ag.id)
     .then(({ data }) => {
-      form.servico_ids = (data ?? []).map((r: any) => r.servico_id)
+      form.servico_id = data?.[0]?.servico_id ?? null
     })
 }
 
@@ -1383,15 +1486,14 @@ const horasOpcoes = (() => {
 })()
 
 async function syncServicos(agendamentoId: number) {
-  // Remove todos e reinsertes os selecionados
   await supabase.from('agendamento_servicos').delete().eq('agendamento_id', agendamentoId)
-
-  if (form.servico_ids.length) {
-    const rows = form.servico_ids.map(sid => {
-      const svc = servicosAtivos.value.find(s => s.id === sid)
-      return { agendamento_id: agendamentoId, servico_id: sid, preco_cobrado: svc?.preco ?? 0 }
+  if (form.servico_id) {
+    const svc = servicosAtivos.value.find(s => s.id === form.servico_id)
+    await supabase.from('agendamento_servicos').insert({
+      agendamento_id: agendamentoId,
+      servico_id: form.servico_id,
+      preco_cobrado: svc?.preco ?? 0,
     })
-    await supabase.from('agendamento_servicos').insert(rows)
   }
 }
 
