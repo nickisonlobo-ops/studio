@@ -26,6 +26,37 @@
           </div>
 
           <div class="flex items-center gap-2 shrink-0">
+            <!-- Configurar horários de agendamento -->
+            <button
+              v-if="empresaId"
+              type="button"
+              class="inline-flex items-center gap-2 text-sm font-semibold px-3 sm:px-4 py-2.5 rounded-xl transition-all duration-200 bg-white/10 text-white hover:bg-white/20 border border-white/15 backdrop-blur-sm"
+              title="Configurar horários de atendimento"
+              @click="horarioModalAberto = true"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span class="hidden sm:inline">Horários</span>
+            </button>
+
+            <!-- Link público de agendamento -->
+            <button
+              v-if="empresaId"
+              type="button"
+              class="inline-flex items-center gap-2 text-sm font-semibold px-3 sm:px-4 py-2.5 rounded-xl transition-all duration-200 bg-white/10 text-white hover:bg-white/20 border border-white/15 backdrop-blur-sm"
+              :title="linkCopiado ? 'Link copiado!' : 'Copiar link público de agendamento'"
+              @click="copiarLinkPublico"
+            >
+              <svg v-if="!linkCopiado" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+              </svg>
+              <svg v-else class="w-4 h-4 text-green-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+              </svg>
+              <span class="hidden sm:inline">{{ linkCopiado ? 'Copiado!' : 'Link público' }}</span>
+            </button>
+
             <button
               type="button"
               class="inline-flex items-center gap-2 text-sm font-semibold px-3 sm:px-5 py-2.5 rounded-xl transition-all duration-200"
@@ -49,7 +80,7 @@
         <div class="h-px bg-white/10 my-4 sm:my-6" />
 
         <!-- Stats -->
-        <div v-if="!loading" class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+        <div v-if="!loading" class="grid grid-cols-3 sm:grid-cols-6 gap-3">
           <div v-for="stat in stats" :key="stat.label" class="flex flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
             <span class="text-xs font-semibold text-white/70 uppercase tracking-widest">{{ stat.label }}</span>
             <span class="text-2xl font-black" :class="stat.color">{{ stat.value }}</span>
@@ -73,7 +104,7 @@
         <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5">Status</label>
         <div class="flex flex-wrap gap-2">
           <button
-            v-for="s in ['agendado','confirmado','concluido','cancelado','faltou']"
+            v-for="s in ['solicitado','agendado','confirmado','concluido','cancelado','faltou']"
             :key="s"
             type="button"
             class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border transition-all"
@@ -138,6 +169,7 @@
               v-for="ag in agendamentosFiltrados"
               :key="ag.id"
               class="hover:bg-pink-50/40 transition-colors duration-150 group"
+              :class="ag.status === 'solicitado' ? 'bg-amber-50/40' : ''"
             >
               <td class="px-5 py-3 font-semibold text-gray-700">
                 {{ new Date(ag.data_hora).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' }) }}
@@ -146,9 +178,9 @@
               <td class="px-5 py-3">
                 <div class="flex items-center gap-2">
                   <div class="w-7 h-7 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center text-white font-black text-[10px] shrink-0 shadow-sm shadow-pink-200">
-                    {{ (ag.cliente_nome ?? '?').slice(0, 2).toUpperCase() }}
+                    {{ (ag.cliente_nome ?? ag.nome_solicitante ?? '?').slice(0, 2).toUpperCase() }}
                   </div>
-                  <span class="font-semibold text-gray-800 max-w-[140px] truncate">{{ ag.cliente_nome ?? '—' }}</span>
+                  <span class="font-semibold text-gray-800 max-w-[140px] truncate">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '—' }}</span>
                 </div>
               </td>
               <td class="px-5 py-3 text-gray-500 max-w-[180px] truncate">{{ ag.servicos_nomes ?? '—' }}</td>
@@ -160,25 +192,43 @@
                   {{ statusLabel(ag.status) }}
                 </span>
               </td>
-              <td class="px-5 py-3 text-right sm:sticky sm:right-0 bg-white group-hover:bg-pink-50/40 transition-colors">
+              <td class="px-5 py-3 text-right sm:sticky sm:right-0 group-hover:bg-pink-50/40 transition-colors">
                 <div class="flex items-center justify-end gap-1">
-                  <button
-                    type="button"
-                    class="w-8 h-8 flex items-center justify-center rounded-xl text-[#ff46a2] hover:text-pink-700 hover:bg-pink-100 transition-colors"
-                    title="Editar"
-                    @click="editAgendamento(ag)"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487a2.1 2.1 0 112.97 2.97L8.5 18.81l-4 1 1-4 11.362-11.323z"/></svg>
-                  </button>
-                  <button
-                    v-if="isAdminOrGerente"
-                    type="button"
-                    class="w-8 h-8 flex items-center justify-center rounded-xl text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-                    title="Excluir"
-                    @click="confirmarExclusao(ag)"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0a1 1 0 01-1-1V5a1 1 0 011-1h6a1 1 0 011 1v1a1 1 0 01-1 1H9z"/></svg>
-                  </button>
+                  <!-- Ações para solicitações -->
+                  <template v-if="ag.status === 'solicitado'">
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-500 text-white text-[10px] font-bold hover:bg-green-600 transition-colors"
+                      title="Aprovar solicitação"
+                      @click="aprovarSolicitacao(ag)"
+                    >✓ Aprovar</button>
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-400 text-white text-[10px] font-bold hover:bg-red-500 transition-colors"
+                      title="Recusar solicitação"
+                      @click="recusarSolicitacao(ag)"
+                    >✗ Recusar</button>
+                  </template>
+                  <!-- Ações para agendamentos normais -->
+                  <template v-else>
+                    <button
+                      type="button"
+                      class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm text-[#ff46a2] hover:bg-pink-100 transition-colors"
+                      title="Editar"
+                      @click="editAgendamento(ag)"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487a2.1 2.1 0 112.97 2.97L8.5 18.81l-4 1 1-4 11.362-11.323z"/></svg>
+                    </button>
+                    <button
+                      v-if="isAdminOrGerente"
+                      type="button"
+                      class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm text-red-400 hover:bg-red-50 transition-colors"
+                      title="Excluir"
+                      @click="confirmarExclusao(ag)"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0a1 1 0 01-1-1V5a1 1 0 011-1h6a1 1 0 011 1v1a1 1 0 01-1 1H9z"/></svg>
+                    </button>
+                  </template>
                 </div>
               </td>
             </tr>
@@ -205,7 +255,136 @@
           </button>
         </div>
       </div>
-      <div class="grid grid-cols-7 gap-2 overflow-x-auto min-w-0">
+      <!-- Mobile: 4 dias em cima + 3 dias centralizados em baixo -->
+      <div class="sm:hidden space-y-2">
+        <div class="grid grid-cols-4 gap-2">
+          <div v-for="dia in kanbanDias.slice(0, 4)" :key="dia.iso" class="flex flex-col min-w-0">
+            <div
+              class="flex flex-col items-center py-2 px-1 rounded-2xl mb-2 border transition-colors"
+              :class="dia.hoje ? 'border-transparent shadow-md' : 'bg-white border-gray-200'"
+              :style="dia.hoje ? { background: 'var(--color-primary-bg, linear-gradient(180deg, #ec4899, #f43f5e))' } : {}"
+            >
+              <span class="text-[10px] font-bold tracking-widest" :class="dia.hoje ? 'text-white/80' : 'text-gray-400'">{{ dia.diaSemana }}</span>
+              <span class="text-xl font-black leading-none mt-0.5" :class="dia.hoje ? 'text-white' : 'text-gray-800'">{{ dia.diaNum }}</span>
+              <span class="text-[10px] font-bold mt-1 rounded-full px-2 py-0.5" :class="dia.hoje ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'">{{ (kanbanPorDia[dia.iso] ?? []).length }}</span>
+            </div>
+            <div
+              class="flex flex-col gap-1.5 flex-1 rounded-2xl p-1 transition-colors min-h-[48px]"
+              :class="kanbanDragOver === dia.iso ? 'bg-white/60 ring-2 ring-offset-1' : ''"
+              :style="kanbanDragOver === dia.iso ? { '--tw-ring-color': 'var(--color-primary, #ec4899)' } : {}"
+              @dragover.prevent="kanbanDragOver = dia.iso"
+              @dragleave="kanbanDragOver = null"
+              @drop.prevent="kanbanDrop(dia.iso)"
+            >
+              <div
+                v-for="ag in kanbanPorDia[dia.iso]"
+                :key="ag.id"
+                :draggable="ag.status !== 'solicitado'"
+                class="rounded-xl border shadow-sm px-2.5 py-2 transition-all select-none"
+                :class="[
+                  ag.status === 'solicitado'
+                    ? 'bg-amber-50 border-amber-200 cursor-default hover:border-amber-300 hover:shadow-md'
+                    : 'bg-white border-gray-200/80 cursor-grab active:cursor-grabbing hover:shadow-md hover:border-pink-200',
+                  kanbanDragging === ag.id ? 'opacity-40 scale-95' : ''
+                ]"
+                @dragstart="ag.status !== 'solicitado' && kanbanDragStart(ag)"
+                @dragend="kanbanDragEnd"
+                @click="ag.status !== 'solicitado' && editAgendamento(ag)"
+              >
+                <div class="h-0.5 w-full rounded-full mb-2" :class="statusCor(ag.status)" />
+                <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '\u2014' }}</p>
+                <p class="text-[10px] font-semibold text-[#ff46a2] mt-0.5">{{ formatHora(ag.data_hora) }}</p>
+                <p v-if="ag.servicos_nomes" class="text-[10px] text-gray-400 mt-0.5 truncate">{{ ag.servicos_nomes }}</p>
+                <span class="inline-flex mt-1.5 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold" :class="statusBadge(ag.status)">{{ statusLabel(ag.status) }}</span>
+                <div v-if="ag.status === 'solicitado'" class="flex gap-1 mt-1.5">
+                  <button type="button" class="flex-1 py-1 rounded-lg bg-green-500 text-white text-[9px] font-bold hover:bg-green-600 transition-colors" @click.stop="aprovarSolicitacao(ag)">✓</button>
+                  <button type="button" class="flex-1 py-1 rounded-lg bg-red-400 text-white text-[9px] font-bold hover:bg-red-500 transition-colors" @click.stop="recusarSolicitacao(ag)">✗</button>
+                </div>
+                <a
+                  v-else-if="ag.cliente_telefone"
+                  :href="`https://wa.me/55${ag.cliente_telefone.replace(/\D/g, '')}`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-1.5 flex items-center justify-center w-full py-1 rounded-lg bg-green-500 text-white hover:bg-green-600 transition-colors"
+                  @click.stop
+                >
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </a>
+              </div>
+              <button
+                type="button"
+                class="mt-0.5 w-full py-2 rounded-xl border border-dashed border-gray-200 text-gray-300 text-[10px] font-semibold hover:border-pink-300 hover:text-[#ff46a2] transition-colors"
+                @click="abrirAdicionar"
+              >+ novo</button>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-center gap-2">
+          <div v-for="dia in kanbanDias.slice(4)" :key="dia.iso" class="flex flex-col min-w-0 shrink-0 basis-[calc(25%-6px)]">
+            <div
+              class="flex flex-col items-center py-2 px-1 rounded-2xl mb-2 border transition-colors"
+              :class="dia.hoje ? 'border-transparent shadow-md' : 'bg-white border-gray-200'"
+              :style="dia.hoje ? { background: 'var(--color-primary-bg, linear-gradient(180deg, #ec4899, #f43f5e))' } : {}"
+            >
+              <span class="text-[10px] font-bold tracking-widest" :class="dia.hoje ? 'text-white/80' : 'text-gray-400'">{{ dia.diaSemana }}</span>
+              <span class="text-xl font-black leading-none mt-0.5" :class="dia.hoje ? 'text-white' : 'text-gray-800'">{{ dia.diaNum }}</span>
+              <span class="text-[10px] font-bold mt-1 rounded-full px-2 py-0.5" :class="dia.hoje ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'">{{ (kanbanPorDia[dia.iso] ?? []).length }}</span>
+            </div>
+            <div
+              class="flex flex-col gap-1.5 flex-1 rounded-2xl p-1 transition-colors min-h-[48px]"
+              :class="kanbanDragOver === dia.iso ? 'bg-white/60 ring-2 ring-offset-1' : ''"
+              :style="kanbanDragOver === dia.iso ? { '--tw-ring-color': 'var(--color-primary, #ec4899)' } : {}"
+              @dragover.prevent="kanbanDragOver = dia.iso"
+              @dragleave="kanbanDragOver = null"
+              @drop.prevent="kanbanDrop(dia.iso)"
+            >
+              <div
+                v-for="ag in kanbanPorDia[dia.iso]"
+                :key="ag.id"
+                :draggable="ag.status !== 'solicitado'"
+                class="rounded-xl border shadow-sm px-2.5 py-2 transition-all select-none"
+                :class="[
+                  ag.status === 'solicitado'
+                    ? 'bg-amber-50 border-amber-200 cursor-default hover:border-amber-300 hover:shadow-md'
+                    : 'bg-white border-gray-200/80 cursor-grab active:cursor-grabbing hover:shadow-md hover:border-pink-200',
+                  kanbanDragging === ag.id ? 'opacity-40 scale-95' : ''
+                ]"
+                @dragstart="ag.status !== 'solicitado' && kanbanDragStart(ag)"
+                @dragend="kanbanDragEnd"
+                @click="ag.status !== 'solicitado' && editAgendamento(ag)"
+              >
+                <div class="h-0.5 w-full rounded-full mb-2" :class="statusCor(ag.status)" />
+                <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '\u2014' }}</p>
+                <p class="text-[10px] font-semibold text-[#ff46a2] mt-0.5">{{ formatHora(ag.data_hora) }}</p>
+                <p v-if="ag.servicos_nomes" class="text-[10px] text-gray-400 mt-0.5 truncate">{{ ag.servicos_nomes }}</p>
+                <span class="inline-flex mt-1.5 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold" :class="statusBadge(ag.status)">{{ statusLabel(ag.status) }}</span>
+                <div v-if="ag.status === 'solicitado'" class="flex gap-1 mt-1.5">
+                  <button type="button" class="flex-1 py-1 rounded-lg bg-green-500 text-white text-[9px] font-bold hover:bg-green-600 transition-colors" @click.stop="aprovarSolicitacao(ag)">✓</button>
+                  <button type="button" class="flex-1 py-1 rounded-lg bg-red-400 text-white text-[9px] font-bold hover:bg-red-500 transition-colors" @click.stop="recusarSolicitacao(ag)">✗</button>
+                </div>
+                <a
+                  v-else-if="ag.cliente_telefone"
+                  :href="`https://wa.me/55${ag.cliente_telefone.replace(/\D/g, '')}`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-1.5 flex items-center justify-center w-full py-1 rounded-lg bg-green-500 text-white hover:bg-green-600 transition-colors"
+                  @click.stop
+                >
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </a>
+              </div>
+              <button
+                type="button"
+                class="mt-0.5 w-full py-2 rounded-xl border border-dashed border-gray-200 text-gray-300 text-[10px] font-semibold hover:border-pink-300 hover:text-[#ff46a2] transition-colors"
+                @click="abrirAdicionar"
+              >+ novo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop: 7 colunas em linha -->
+      <div class="hidden sm:grid grid-cols-7 gap-2 min-w-0">
         <div v-for="dia in kanbanDias" :key="dia.iso" class="flex flex-col min-w-0">
           <div
             class="flex flex-col items-center py-2 px-1 rounded-2xl mb-2 border transition-colors"
@@ -227,18 +406,38 @@
             <div
               v-for="ag in kanbanPorDia[dia.iso]"
               :key="ag.id"
-              draggable="true"
-              class="bg-white rounded-xl border border-gray-200/80 shadow-sm px-2.5 py-2 cursor-grab active:cursor-grabbing hover:shadow-md hover:border-pink-200 transition-all select-none"
-              :class="kanbanDragging === ag.id ? 'opacity-40 scale-95' : ''"
-              @dragstart="kanbanDragStart(ag)"
+              :draggable="ag.status !== 'solicitado'"
+              class="rounded-xl border shadow-sm px-2.5 py-2 transition-all select-none"
+              :class="[
+                ag.status === 'solicitado'
+                  ? 'bg-amber-50 border-amber-200 cursor-default hover:border-amber-300 hover:shadow-md'
+                  : 'bg-white border-gray-200/80 cursor-grab active:cursor-grabbing hover:shadow-md hover:border-pink-200',
+                kanbanDragging === ag.id ? 'opacity-40 scale-95' : ''
+              ]"
+              @dragstart="ag.status !== 'solicitado' && kanbanDragStart(ag)"
               @dragend="kanbanDragEnd"
-              @click="editAgendamento(ag)"
+              @click="ag.status !== 'solicitado' && editAgendamento(ag)"
             >
               <div class="h-0.5 w-full rounded-full mb-2" :class="statusCor(ag.status)" />
-              <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? '—' }}</p>
+              <p class="text-xs font-bold text-gray-900 truncate leading-tight">{{ ag.cliente_nome ?? ag.nome_solicitante ?? '\u2014' }}</p>
               <p class="text-[10px] font-semibold text-[#ff46a2] mt-0.5">{{ formatHora(ag.data_hora) }}</p>
               <p v-if="ag.servicos_nomes" class="text-[10px] text-gray-400 mt-0.5 truncate">{{ ag.servicos_nomes }}</p>
               <span class="inline-flex mt-1.5 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold" :class="statusBadge(ag.status)">{{ statusLabel(ag.status) }}</span>
+              <div v-if="ag.status === 'solicitado'" class="flex gap-1.5 mt-2">
+                <button type="button" class="flex-1 py-1.5 rounded-lg bg-green-500 text-white text-[10px] font-bold hover:bg-green-600 transition-colors" @click.stop="aprovarSolicitacao(ag)">✓ Aprovar</button>
+                <button type="button" class="flex-1 py-1.5 rounded-lg bg-red-400 text-white text-[10px] font-bold hover:bg-red-500 transition-colors" @click.stop="recusarSolicitacao(ag)">✗ Recusar</button>
+              </div>
+              <a
+                v-else-if="ag.cliente_telefone"
+                :href="`https://wa.me/55${ag.cliente_telefone.replace(/\D/g, '')}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-2 flex items-center justify-center gap-1.5 w-full py-1.5 rounded-lg bg-green-500 text-white text-[10px] font-bold hover:bg-green-600 transition-colors"
+                @click.stop
+              >
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp
+              </a>
             </div>
             <button
               type="button"
@@ -264,6 +463,14 @@
 
           <form class="px-6 py-5 flex flex-col gap-4" @submit.prevent="editando ? salvarEdicao() : salvarAdicao()">
             <div v-if="modalError" class="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-sm">{{ modalError }}</div>
+
+            <!-- Banner de solicitação -->
+            <div v-if="editando?.nome_solicitante" class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+              <p class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1">Solicitação do link público</p>
+              <p class="text-sm font-bold text-amber-900">{{ editando.nome_solicitante }}</p>
+              <p class="text-xs text-amber-700">{{ editando.telefone_solicitante }}</p>
+              <p class="text-[10px] text-amber-600 mt-1">Selecione ou cadastre o cliente e confirme o agendamento.</p>
+            </div>
 
             <!-- Cliente -->
             <div>
@@ -439,6 +646,232 @@
       </Transition>
     </Teleport>
 
+    <!-- MODAL CONFIRMAR SOLICITAÇÃO — Premium -->
+    <Teleport to="body">
+      <Transition name="quick-card">
+        <div v-if="confirmandoSolicitacao" class="fixed inset-0 z-[55] flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div class="absolute inset-0 bg-black/70 backdrop-blur-md" @click="confirmandoSolicitacao = null" />
+          <div class="relative w-full sm:max-w-md rounded-t-[2rem] sm:rounded-[2rem] overflow-hidden shadow-2xl">
+
+            <!-- Faixa hero verde -->
+            <div class="relative bg-gradient-to-br from-emerald-500 to-green-400 px-6 pt-6 pb-10">
+              <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.15),transparent_60%)]" />
+              <button type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-colors" @click="confirmandoSolicitacao = null">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+              <div class="relative flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white font-black text-xl shadow-lg shrink-0">
+                  {{ (confirmandoSolicitacao.cliente_nome ?? confirmandoSolicitacao.nome_solicitante ?? '?').slice(0, 2).toUpperCase() }}
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-white/70 uppercase tracking-widest mb-0.5">Nova solicitação</p>
+                  <p class="text-xl font-black text-white leading-tight">{{ confirmandoSolicitacao.cliente_nome ?? confirmandoSolicitacao.nome_solicitante }}</p>
+                  <p v-if="confirmandoSolicitacao.cliente_telefone ?? confirmandoSolicitacao.telefone_solicitante" class="text-sm text-white/80 mt-0.5">
+                    {{ confirmandoSolicitacao.cliente_telefone ?? confirmandoSolicitacao.telefone_solicitante }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card branco levitando sobre a faixa -->
+            <div class="bg-white -mt-6 rounded-t-3xl px-6 pt-6 pb-6 space-y-5">
+
+              <!-- Pills de data e hora -->
+              <div class="flex gap-3">
+                <div class="flex-1 bg-emerald-50 border border-emerald-100 rounded-2xl px-4 py-3 text-center">
+                  <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1">Data</p>
+                  <p class="text-base font-black text-gray-900 leading-tight">
+                    {{ new Date(confirmandoSolicitacao.data_hora.slice(0,10) + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.','') }}
+                  </p>
+                  <p class="text-[10px] text-gray-400 mt-0.5 capitalize">
+                    {{ new Date(confirmandoSolicitacao.data_hora.slice(0,10) + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long' }) }}
+                  </p>
+                </div>
+                <div class="flex-1 bg-blue-50 border border-blue-100 rounded-2xl px-4 py-3 text-center">
+                  <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1">Hora</p>
+                  <p class="text-2xl font-black text-gray-900 leading-tight tracking-tight">{{ formatHora(confirmandoSolicitacao.data_hora) }}</p>
+                </div>
+              </div>
+
+              <!-- Serviços -->
+              <div v-if="confirmandoSolicitacao.servicos_nomes" class="bg-violet-50 border border-violet-100 rounded-2xl px-4 py-3">
+                <p class="text-[10px] font-bold text-violet-600 uppercase tracking-widest mb-1">Serviços</p>
+                <p class="text-sm font-semibold text-gray-800">{{ confirmandoSolicitacao.servicos_nomes }}</p>
+              </div>
+
+              <!-- Observações -->
+              <div v-if="confirmandoSolicitacao.observacoes" class="bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3">
+                <p class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1">Observações</p>
+                <p class="text-sm text-gray-700">{{ confirmandoSolicitacao.observacoes }}</p>
+              </div>
+
+              <!-- Aviso WhatsApp -->
+              <div v-if="confirmandoSolicitacao.cliente_telefone ?? confirmandoSolicitacao.telefone_solicitante" class="flex items-center gap-2.5 bg-green-50 border border-green-200 rounded-2xl px-4 py-3">
+                <svg class="w-5 h-5 text-green-500 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <p class="text-xs text-green-700 font-semibold">Ao confirmar, o WhatsApp será aberto com mensagem de confirmação para o cliente.</p>
+              </div>
+
+              <!-- Botões -->
+              <div class="flex gap-3 pt-1">
+                <button type="button" class="flex-1 py-3 rounded-2xl border-2 border-gray-200 text-sm font-bold text-gray-500 hover:bg-gray-50 transition-colors" @click="confirmandoSolicitacao = null">
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  :disabled="confirmandoLoading"
+                  class="flex-2 flex-1 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-400 text-white text-sm font-black hover:from-emerald-600 hover:to-green-500 disabled:opacity-50 transition-all shadow-lg shadow-emerald-200 flex items-center justify-center gap-2"
+                  @click="confirmarSolicitacaoEWhatsApp"
+                >
+                  <svg v-if="confirmandoLoading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+                  <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                  {{ confirmandoLoading ? 'Confirmando...' : 'Confirmar agendamento' }}
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
+    <!-- MODAL HORÁRIOS DE ATENDIMENTO -->
+    <Teleport to="body">
+      <Transition name="quick-card">
+        <div v-if="horarioModalAberto" class="fixed inset-0 z-[55] flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="horarioModalAberto = false" />
+          <div class="relative bg-white w-full sm:max-w-md rounded-t-[2rem] sm:rounded-[2rem] shadow-2xl overflow-hidden">
+
+            <!-- Header gradiente -->
+            <div class="relative px-6 pt-6 pb-8" :style="{ background: `linear-gradient(135deg, ${tema.cor_primaria}, ${temaGrad})` }">
+              <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.12),transparent_60%)]" />
+              <button type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-colors" @click="horarioModalAberto = false">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+              <div class="relative flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-white/70 uppercase tracking-widest">Agendamento público</p>
+                  <h3 class="text-lg font-black text-white">Horários de atendimento</h3>
+                </div>
+              </div>
+            </div>
+
+            <!-- Body -->
+            <div class="bg-white -mt-4 rounded-t-3xl px-6 pt-6 pb-6 space-y-6">
+
+              <!-- Dias da semana -->
+              <div class="space-y-2">
+                <label class="text-xs font-black text-gray-500 uppercase tracking-widest">Dias de atendimento</label>
+                <div class="flex gap-1.5 flex-wrap">
+                  <button
+                    v-for="(label, idx) in DIAS_SEMANA_LABELS" :key="idx"
+                    type="button"
+                    class="w-12 h-12 rounded-2xl text-sm font-black border-2 transition-all"
+                    :class="horarios.dias.includes(idx) ? 'shadow-md scale-[1.05]' : 'bg-white border-gray-200 text-gray-400 hover:border-gray-300'"
+                    :style="horarios.dias.includes(idx) ? { background: tema.cor_primaria, borderColor: tema.cor_primaria, color: tema.cor_primaria_texto } : {}"
+                    @click="toggleDia(idx)"
+                  >{{ label }}</button>
+                </div>
+              </div>
+
+              <!-- Horários -->
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-xs font-black text-gray-500 uppercase tracking-widest">Abertura</label>
+                  <input
+                    v-model="horarios.abertura"
+                    type="time"
+                    class="w-full rounded-2xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm font-bold text-gray-800 focus:outline-none focus:border-violet-400 focus:bg-white transition-colors"
+                  />
+                </div>
+                <div class="space-y-1.5">
+                  <label class="text-xs font-black text-gray-500 uppercase tracking-widest">Fechamento</label>
+                  <input
+                    v-model="horarios.fechamento"
+                    type="time"
+                    class="w-full rounded-2xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm font-bold text-gray-800 focus:outline-none focus:border-violet-400 focus:bg-white transition-colors"
+                  />
+                </div>
+              </div>
+
+              <!-- Horário de almoço -->
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-black text-gray-500 uppercase tracking-widest">Pausa / Almoço</label>
+                  <button
+                    type="button"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors border-2"
+                    :class="horarios.almoco_ativo ? '' : 'bg-gray-200 border-gray-200'"
+                    :style="horarios.almoco_ativo ? { background: tema.cor_primaria, borderColor: tema.cor_primaria } : {}"
+                    @click="horarios.almoco_ativo = !horarios.almoco_ativo"
+                  >
+                    <span
+                      class="inline-block h-4 w-4 rounded-full bg-white shadow transition-transform"
+                      :class="horarios.almoco_ativo ? 'translate-x-5' : 'translate-x-0.5'"
+                    />
+                  </button>
+                </div>
+                <div v-if="horarios.almoco_ativo" class="grid grid-cols-2 gap-4">
+                  <div class="space-y-1.5">
+                    <label class="text-xs font-black text-gray-500 uppercase tracking-widest">Início</label>
+                    <input
+                      v-model="horarios.almoco_inicio"
+                      type="time"
+                      class="w-full rounded-2xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm font-bold text-gray-800 focus:outline-none focus:border-violet-400 focus:bg-white transition-colors"
+                    />
+                  </div>
+                  <div class="space-y-1.5">
+                    <label class="text-xs font-black text-gray-500 uppercase tracking-widest">Fim</label>
+                    <input
+                      v-model="horarios.almoco_fim"
+                      type="time"
+                      class="w-full rounded-2xl border-2 border-gray-200 bg-gray-50 px-4 py-3 text-sm font-bold text-gray-800 focus:outline-none focus:border-violet-400 focus:bg-white transition-colors"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Intervalo -->
+              <div class="space-y-2">
+                <label class="text-xs font-black text-gray-500 uppercase tracking-widest">Intervalo entre slots</label>
+                <div class="flex flex-wrap gap-2">
+                  <button
+                    v-for="min in [15, 20, 30, 45, 60, 90]" :key="min"
+                    type="button"
+                    class="px-4 py-2 rounded-xl text-sm font-black border-2 transition-all"
+                    :class="horarios.intervalo === min ? 'shadow-md' : 'bg-white border-gray-200 text-gray-400 hover:border-gray-300'"
+                    :style="horarios.intervalo === min ? { background: tema.cor_primaria, borderColor: tema.cor_primaria, color: tema.cor_primaria_texto } : {}"
+                    @click="horarios.intervalo = min"
+                  >{{ min }}min</button>
+                </div>
+              </div>
+
+              <!-- Botões -->
+              <div class="flex items-center gap-3 pt-1">
+                <span v-if="savedHorariosFeedback" class="text-sm text-emerald-600 font-bold flex items-center gap-1">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                  Salvo!
+                </span>
+                <button type="button" class="flex-1 py-3 rounded-2xl border-2 border-gray-200 text-sm font-bold text-gray-500 hover:bg-gray-50 transition-colors" @click="horarioModalAberto = false">Fechar</button>
+                <button
+                  type="button"
+                  :disabled="savingHorarios"
+                  class="flex-1 py-3 rounded-2xl text-sm font-black disabled:opacity-50 transition-all shadow-lg flex items-center justify-center gap-2"
+                  :style="{ background: `linear-gradient(135deg, ${tema.cor_primaria}, ${temaGrad})`, color: tema.cor_primaria_texto }"
+                  @click="saveHorarios"
+                >
+                  <svg v-if="savingHorarios" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+                  {{ savingHorarios ? 'Salvando...' : 'Salvar' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
     <!-- MODAL EXCLUIR -->
     <Teleport to="body">
       <div v-if="excluindo" class="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -467,28 +900,35 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { createSupabaseClient } from '~/lib/supabase'
 import { useEmpresa } from '~/composables/useEmpresa'
 import { useAdmin } from '~/composables/useAdmin'
+import { usePersonalizacao } from '~/composables/usePersonalizacao'
 import AppNavIcon from '~/components/AppNavIcon.vue'
 
 defineOptions({ name: 'AgendamentosPage' })
 useHead({ title: 'Agendamentos' })
 
+const { config: tema } = usePersonalizacao()
+const temaGrad = computed(() => tema.value.cor_primaria_grad ?? tema.value.cor_primaria)
+
 interface AgendamentoRow {
   id: number
-  cliente_id: number
+  cliente_id: number | null
   funcionario_id: string | null
   data_hora: string
   status: string
   observacoes: string | null
   valor_total: number | null
   created_at: string | null
+  nome_solicitante?: string | null
+  telefone_solicitante?: string | null
   // joined
   cliente_nome?: string | null
+  cliente_telefone?: string | null
   funcionario_nome?: string | null
   servicos_nomes?: string | null
 }
 
 interface ClienteOption { id: number; nome: string }
-interface FuncionarioOption { id: string; nome: string | null; email: string | null }
+interface FuncionarioOption { id: number; nome: string | null; email: string | null }
 interface ServicoOption { id: number; nome: string; preco: number; duracao_min: number }
 
 const supabase = createSupabaseClient()
@@ -502,6 +942,66 @@ const servicosAtivos = ref<ServicoOption[]>([])
 
 const loading = ref(true)
 const error = ref<string | null>(null)
+const confirmandoSolicitacao = ref<AgendamentoRow | null>(null)
+const confirmandoLoading = ref(false)
+
+// ── Configuração de horários ─────────────────────────────────────────
+const horarioModalAberto = ref(false)
+const savingHorarios = ref(false)
+const savedHorariosFeedback = ref(false)
+const DIAS_SEMANA_LABELS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+const horarios = reactive({
+  abertura:    '08:00',
+  fechamento:  '18:00',
+  intervalo:   30,
+  dias:        [1, 2, 3, 4, 5] as number[],
+  almoco_ativo:  false,
+  almoco_inicio: '12:00',
+  almoco_fim:    '13:00',
+})
+
+async function loadHorarios() {
+  await loadEmpresa()
+  if (!empresaId.value) return
+  const [cfgRes, diasRes] = await Promise.all([
+    supabase.from('empresa_personalizacao').select('horario_abertura, horario_fechamento, intervalo_min, almoco_inicio, almoco_fim').eq('empresa_id', empresaId.value).maybeSingle(),
+    supabase.from('empresa_dias_funcionamento').select('dia_semana, ativo').eq('empresa_id', empresaId.value),
+  ])
+  if (cfgRes.data) {
+    const d = cfgRes.data as { horario_abertura?: string | null; horario_fechamento?: string | null; intervalo_min?: number | null; almoco_inicio?: string | null; almoco_fim?: string | null }
+    horarios.abertura      = d.horario_abertura   ?? '08:00'
+    horarios.fechamento    = d.horario_fechamento ?? '18:00'
+    horarios.intervalo     = d.intervalo_min      ?? 30
+    horarios.almoco_inicio = d.almoco_inicio      ?? '12:00'
+    horarios.almoco_fim    = d.almoco_fim         ?? '13:00'
+    horarios.almoco_ativo  = !!d.almoco_inicio
+  }
+  if (diasRes.data && diasRes.data.length > 0)
+    horarios.dias = diasRes.data.filter((r: { dia_semana: number; ativo: boolean }) => r.ativo).map((r: { dia_semana: number; ativo: boolean }) => r.dia_semana)
+}
+
+async function saveHorarios() {
+  await loadEmpresa()
+  if (!empresaId.value) return
+  savingHorarios.value = true
+  await supabase.from('empresa_personalizacao').update({
+    horario_abertura:  horarios.abertura,
+    horario_fechamento: horarios.fechamento,
+    intervalo_min:     horarios.intervalo,
+    almoco_inicio:     horarios.almoco_ativo ? horarios.almoco_inicio : null,
+    almoco_fim:        horarios.almoco_ativo ? horarios.almoco_fim    : null,
+  }).eq('empresa_id', empresaId.value)
+  const diasRows = DIAS_SEMANA_LABELS.map((_, i) => ({ empresa_id: empresaId.value as number, dia_semana: i, ativo: horarios.dias.includes(i) }))
+  await supabase.from('empresa_dias_funcionamento').upsert(diasRows, { onConflict: 'empresa_id,dia_semana' })
+  savingHorarios.value = false
+  savedHorariosFeedback.value = true
+  setTimeout(() => { savedHorariosFeedback.value = false }, 2500)
+}
+
+function toggleDia(d: number) {
+  const i = horarios.dias.indexOf(d)
+  i === -1 ? horarios.dias.push(d) : horarios.dias.splice(i, 1)
+}
 
 const editando = ref<AgendamentoRow | null>(null)
 const adicionando = ref(false)
@@ -514,6 +1014,17 @@ const deleteError = ref<string | null>(null)
 
 const filtroAberto = ref(false)
 const filtro = reactive({ busca: '', status: [] as string[], data: '' })
+
+// ── Link público ──────────────────────────────────────────────
+const linkCopiado = ref(false)
+function copiarLinkPublico() {
+  if (!empresaId.value) return
+  const url = `${window.location.origin}/agendar/${empresaId.value}`
+  navigator.clipboard.writeText(url).then(() => {
+    linkCopiado.value = true
+    setTimeout(() => { linkCopiado.value = false }, 2500)
+  })
+}
 
 // ── Cadastro rápido de cliente ────────────────────────────────
 const quickClienteAberto = ref(false)
@@ -631,6 +1142,7 @@ function kanbanDragEnd() {
 async function kanbanDrop(targetDate: string) {
   kanbanDragOver.value = null
   if (!_draggingAg) return
+  if (_draggingAg.status === 'solicitado') { kanbanDragging.value = null; _draggingAg = null; return }
   const ag = _draggingAg
   kanbanDragging.value = null
   _draggingAg = null
@@ -660,7 +1172,7 @@ async function kanbanDrop(targetDate: string) {
 
 const agendamentosFiltrados = computed(() =>
   agendamentos.value.filter(ag => {
-    if (filtro.busca && !(ag.cliente_nome ?? '').toLowerCase().includes(filtro.busca.toLowerCase())) return false
+    if (filtro.busca && !((ag.cliente_nome ?? ag.nome_solicitante ?? '').toLowerCase().includes(filtro.busca.toLowerCase()))) return false
     if (filtro.status.length > 0 && !filtro.status.includes(ag.status)) return false
     if (filtro.data && !ag.data_hora.startsWith(filtro.data)) return false
     return true
@@ -671,6 +1183,7 @@ const stats = computed(() => {
   const all = agendamentos.value
   return [
     { label: 'Total', value: all.length, color: 'text-white' },
+    { label: 'Solicitado', value: all.filter(a => a.status === 'solicitado').length, color: 'text-yellow-200' },
     { label: 'Agendado', value: all.filter(a => a.status === 'agendado').length, color: 'text-white' },
     { label: 'Confirmado', value: all.filter(a => a.status === 'confirmado').length, color: 'text-white' },
     { label: 'Concluído', value: all.filter(a => a.status === 'concluido').length, color: 'text-white' },
@@ -703,15 +1216,16 @@ function formatHora(iso: string) {
 }
 
 function statusLabel(s: string) {
-  return { agendado: 'Agendado', confirmado: 'Confirmado', concluido: 'Concluído', cancelado: 'Cancelado', faltou: 'Faltou' }[s] ?? s
+  return { solicitado: 'Solicitado', agendado: 'Agendado', confirmado: 'Confirmado', concluido: 'Concluído', cancelado: 'Cancelado', faltou: 'Faltou' }[s] ?? s
 }
 
 function statusCor(s: string) {
-  return { agendado: 'bg-blue-400', confirmado: 'bg-green-400', concluido: 'bg-violet-500', cancelado: 'bg-red-400', faltou: 'bg-orange-400' }[s] ?? 'bg-gray-300'
+  return { solicitado: 'bg-amber-400', agendado: 'bg-blue-400', confirmado: 'bg-green-400', concluido: 'bg-violet-500', cancelado: 'bg-red-400', faltou: 'bg-orange-400' }[s] ?? 'bg-gray-300'
 }
 
 function statusBadge(s: string) {
   return {
+    solicitado: 'bg-amber-100 text-amber-700',
     agendado: 'bg-blue-100 text-blue-700',
     confirmado: 'bg-green-100 text-green-700',
     concluido: 'bg-violet-100 text-violet-700',
@@ -724,7 +1238,7 @@ function statusBadge(s: string) {
 
 onMounted(async () => {
   await loadEmpresa()
-  await Promise.all([fetchAgendamentos(), fetchClientes(), fetchFuncionarios(), fetchServicos()])
+  await Promise.all([fetchAgendamentos(), fetchClientes(), fetchFuncionarios(), fetchServicos(), loadHorarios()])
 })
 
 async function fetchAgendamentos() {
@@ -733,7 +1247,7 @@ async function fetchAgendamentos() {
   // Fetch agendamentos
   const { data: rows, error: fetchError } = await supabase
     .from('agendamentos')
-    .select('*, clientes(nome), profiles(nome, email)')
+    .select('*, clientes(nome, telefone), profiles(nome, email)')
     .eq('empresa_id', empresaId.value!)
     .order('data_hora', { ascending: false })
 
@@ -757,8 +1271,11 @@ async function fetchAgendamentos() {
   agendamentos.value = (rows ?? []).map((r: any) => ({
     ...r,
     cliente_nome: r.clientes?.nome ?? null,
+    cliente_telefone: r.clientes?.telefone ?? null,
     funcionario_nome: r.profiles?.nome ?? r.profiles?.email ?? null,
     servicos_nomes: (servicosMap[r.id] ?? []).join(', ') || null,
+    nome_solicitante: r.nome_solicitante ?? null,
+    telefone_solicitante: r.telefone_solicitante ?? null,
   }))
 
   loading.value = false
@@ -776,9 +1293,10 @@ async function fetchClientes() {
 
 async function fetchFuncionarios() {
   const { data } = await supabase
-    .from('profiles')
+    .from('funcionarios')
     .select('id, nome, email')
     .eq('empresa_id', empresaId.value!)
+    .eq('ativo', true)
     .order('nome')
   funcionarios.value = (data ?? []) as FuncionarioOption[]
 }
@@ -845,7 +1363,7 @@ function editAgendamento(ag: AgendamentoRow) {
 function validateForm(): boolean {
   formErrors.cliente_id = ''; formErrors.data = ''; formErrors.hora = ''
   let ok = true
-  if (!form.cliente_id) { formErrors.cliente_id = 'Selecione o cliente.'; ok = false }
+  if (!form.cliente_id && form.status !== 'solicitado') { formErrors.cliente_id = 'Selecione o cliente.'; ok = false }
   if (!form.data) { formErrors.data = 'Informe a data.'; ok = false }
   if (!form.hora) { formErrors.hora = 'Informe a hora.'; ok = false }
   return ok
@@ -885,7 +1403,7 @@ async function salvarEdicao() {
   const { error: updateError } = await supabase
     .from('agendamentos')
     .update({
-      cliente_id: form.cliente_id!,
+      cliente_id: form.cliente_id ?? null,
       funcionario_id: form.funcionario_id,
       data_hora: buildDataHora(),
       status: form.status,
@@ -910,7 +1428,7 @@ async function salvarAdicao() {
   const { data, error: insertError } = await supabase
     .from('agendamentos')
     .insert({
-      cliente_id: form.cliente_id!,
+      cliente_id: form.cliente_id ?? null,
       funcionario_id: form.funcionario_id,
       data_hora: buildDataHora(),
       status: form.status,
@@ -931,6 +1449,45 @@ async function salvarAdicao() {
 function confirmarExclusao(ag: AgendamentoRow) {
   excluindo.value = ag
   deleteError.value = null
+}
+
+async function aprovarSolicitacao(ag: AgendamentoRow) {
+  confirmandoSolicitacao.value = ag
+}
+
+async function confirmarSolicitacaoEWhatsApp() {
+  const ag = confirmandoSolicitacao.value
+  if (!ag) return
+  confirmandoLoading.value = true
+  const { error: err } = await supabase
+    .from('agendamentos')
+    .update({ status: 'confirmado' })
+    .eq('id', ag.id)
+  confirmandoLoading.value = false
+  if (err) return
+  await fetchAgendamentos()
+
+  // Monta mensagem WhatsApp
+  const tel = (ag.cliente_telefone ?? ag.telefone_solicitante ?? '').replace(/\D/g, '')
+  const nome = ag.cliente_nome ?? ag.nome_solicitante ?? ''
+  const [aY, aM, aD] = ag.data_hora.slice(0, 10).split('-').map(Number)
+  const dataObj = new Date(aY, aM - 1, aD)
+  const data = dataObj.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })
+  const hora = formatHora(ag.data_hora)
+  const svcs = ag.servicos_nomes ? '\n* *Servi\u00E7os:* ' + ag.servicos_nomes : ''
+  const msg = 'Ol\u00E1, ' + nome + '!\n\nSeu agendamento foi *confirmado*!\n\n* *Data:* ' + data + '\n* *Hora:* ' + hora + svcs + '\n\nQualquer d\u00FAvida \u00E9 s\u00F3 chamar!'
+  confirmandoSolicitacao.value = null
+  if (tel) {
+    window.open(`https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer')
+  }
+}
+
+async function recusarSolicitacao(ag: AgendamentoRow) {
+  const { error: err } = await supabase
+    .from('agendamentos')
+    .update({ status: 'cancelado' })
+    .eq('id', ag.id)
+  if (!err) await fetchAgendamentos()
 }
 
 async function executarExclusao() {
@@ -959,3 +1516,4 @@ async function executarExclusao() {
 .quick-card-leave-active { transition: all 0.15s ease-in; }
 .quick-card-enter-from, .quick-card-leave-to { opacity: 0; transform: scale(0.93) translateY(10px); }
 </style>
+

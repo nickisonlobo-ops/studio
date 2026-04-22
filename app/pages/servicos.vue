@@ -200,12 +200,16 @@
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Categoria <span class="text-red-500">*</span></label>
-                <input
+                <select
                   v-model="form.categoria"
-                  type="text"
-                  placeholder="Nome da Categoria"
                   class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary,#6b7280)] focus:border-[var(--color-primary,#6b7280)]"
-                />
+                >
+                  <option value="" disabled>Selecione</option>
+                  <option value="cilios">Cílios</option>
+                  <option value="unhas">Unhas</option>
+                  <option value="combo">Combo</option>
+                  <option value="outro">Outro</option>
+                </select>
               </div>
               <div>
                 <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Duração (min) <span class="text-red-500">*</span></label>

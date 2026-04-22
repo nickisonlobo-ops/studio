@@ -31,7 +31,8 @@ const { config: tema, loadPersonalizacaoPublic } = usePersonalizacao()
 const nomeEmpresa = computed(() => tema.value.nome_empresa || '')
 
 onMounted(async () => {
-  const eId = Number(route.query.e ?? 0)
+  // Suporta ?e=1 (loja/catálogo) e /agendar/[empresa_id] (parâmetro de rota)
+  const eId = Number(route.params.empresa_id ?? route.query.e ?? 0)
   if (eId) {
     await loadPersonalizacaoPublic(eId)
   }

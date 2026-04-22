@@ -220,12 +220,12 @@
                   {{ cli.ativo !== false ? 'Ativo' : 'Inativo' }}
                 </span>
               </td>
-              <td class="px-7 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-pink-50/40 transition-colors">
+              <td class="px-7 py-4 text-right sm:sticky sm:right-0 group-hover:bg-pink-50/40 transition-colors">
                 <div class="flex items-center justify-end gap-1">
                   <button
                     v-if="isAdminOrGerente"
                     type="button"
-                    class="w-8 h-8 flex items-center justify-center rounded-xl text-[#ff46a2] hover:text-pink-700 hover:bg-pink-100 transition-colors"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm text-[#ff46a2] hover:bg-pink-100 transition-colors"
                     title="Editar"
                     @click="editCliente(cli)"
                   >
@@ -234,7 +234,7 @@
                   <button
                     v-if="isAdminOrGerente"
                     type="button"
-                    class="w-8 h-8 flex items-center justify-center rounded-xl text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm text-red-400 hover:bg-red-50 transition-colors"
                     title="Excluir"
                     @click="confirmarExclusao(cli)"
                   >

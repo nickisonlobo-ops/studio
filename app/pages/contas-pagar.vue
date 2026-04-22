@@ -344,13 +344,13 @@
                 <span class="text-gray-400 text-xs max-w-[150px] block truncate" :title="conta.observacao ?? ''">{{ conta.observacao ?? '-' }}</span>
               </td>
               <td class="px-5 py-4 text-gray-400 text-xs tabular-nums">{{ formatDateTime(conta.created_at) }}</td>
-              <td class="px-4 py-3 text-right sm:sticky sm:right-0 bg-white group-hover:bg-pink-50/60 transition-colors">
+              <td class="px-4 py-3 text-right sm:sticky sm:right-0 group-hover:bg-pink-50/60 transition-colors">
                 <div class="flex items-center justify-end gap-1">
                   <button
                     v-if="isAdminOrGerente"
                     type="button"
                     title="Editar"
-                    class="p-1.5 rounded-lg text-[#ff46a2] hover:bg-pink-50 transition-colors"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm text-[#ff46a2] hover:bg-pink-100 transition-colors"
                     @click="editConta(conta)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2.414a2 2 0 01.586-1.414z"/></svg>
@@ -359,7 +359,7 @@
                     v-if="isAdmin"
                     type="button"
                     title="Excluir"
-                    class="p-1.5 rounded-lg text-red-400 hover:bg-red-50 transition-colors"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm text-red-400 hover:bg-red-50 transition-colors"
                     @click="confirmarExclusao(conta)"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0a1 1 0 01-1-1V5a1 1 0 011-1h8a1 1 0 011 1v1a1 1 0 01-1 1H9z"/></svg>

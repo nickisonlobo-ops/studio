@@ -175,12 +175,12 @@
                   {{ p.ativo ? 'Ativo' : 'Inativo' }}
                 </span>
               </td>
-              <td class="px-7 py-3 text-right sm:sticky sm:right-0 bg-white group-hover:bg-pink-50/40 transition-colors">
+              <td class="px-7 py-3 text-right sm:sticky sm:right-0 group-hover:bg-pink-50/40 transition-colors">
                 <div class="flex items-center justify-end gap-1">
                   <button
                     v-if="isAdminOrGerente"
                     type="button"
-                    class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl text-gray-600 hover:bg-pink-50 hover:text-[#ff46a2] border border-gray-200 hover:border-pink-200 transition-colors"
+                    class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-white shadow-sm text-gray-600 hover:text-[#ff46a2] border border-gray-200 hover:border-pink-200 transition-colors"
                     @click="abrirMovimento(p)"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
@@ -189,7 +189,7 @@
                   <button
                     v-if="isAdminOrGerente"
                     type="button"
-                    class="w-8 h-8 flex items-center justify-center rounded-xl text-[#ff46a2] hover:text-pink-700 hover:bg-pink-100 transition-colors"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm text-[#ff46a2] hover:bg-pink-100 transition-colors"
                     title="Editar"
                     @click="editProduto(p)"
                   >

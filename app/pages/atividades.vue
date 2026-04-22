@@ -308,12 +308,12 @@
               </td>
 
               <!-- Ações -->
-              <td class="px-6 py-4 text-right sm:sticky sm:right-0 bg-white group-hover:bg-indigo-50/30 transition-colors">
+              <td class="px-6 py-4 text-right sm:sticky sm:right-0 group-hover:bg-indigo-50/30 transition-colors">
                 <div class="flex items-center justify-end gap-1">
-                  <button v-if="isAdminOrGerente" type="button" class="w-8 h-8 flex items-center justify-center rounded-xl text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100 transition-colors" title="Editar" @click="editAtividade(at)">
+                  <button v-if="isAdminOrGerente" type="button" class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm text-indigo-500 hover:bg-indigo-100 transition-colors" title="Editar" @click="editAtividade(at)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 7.125L18 8.625"/></svg>
                   </button>
-                  <button v-if="isAdmin" type="button" class="w-8 h-8 flex items-center justify-center rounded-xl text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Excluir" @click="confirmarExclusao(at)">
+                  <button v-if="isAdmin" type="button" class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm text-red-400 hover:bg-red-50 transition-colors" title="Excluir" @click="confirmarExclusao(at)">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-7 0a1 1 0 01-1-1V5a1 1 0 011-1h8a1 1 0 011 1v1a1 1 0 01-1 1H9z"/></svg>
                   </button>
                 </div>

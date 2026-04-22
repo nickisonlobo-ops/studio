@@ -301,6 +301,130 @@
         </div>
       </section>
 
+      <!-- Horários de Agendamento -->
+      <section class="bg-white rounded-2xl border border-pink-100 shadow-sm p-6 space-y-5">
+        <div>
+          <h2 class="text-base font-bold text-gray-800">Horários de Agendamento</h2>
+          <p class="text-xs text-gray-400 mt-0.5">Configure os dias e horários que sua empresa recebe agendamentos pelo link público.</p>
+        </div>
+
+        <div v-if="horarioError" class="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700">{{ horarioError }}</div>
+
+        <!-- Dias da semana -->
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-gray-700">Dias de atendimento</label>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="dia in DIAS_SEMANA"
+              :key="dia.value"
+              type="button"
+              class="px-3 py-1.5 rounded-xl text-sm font-bold border-2 transition-colors"
+              :class="horarios.dias.includes(dia.value)
+                ? 'border-transparent text-white'
+                : 'border-gray-200 text-gray-400 bg-white hover:border-gray-300'"
+              :style="horarios.dias.includes(dia.value) ? { background: form.cor_primaria, color: form.cor_primaria_texto } : {}"
+              @click="toggleDia(dia.value)"
+            >
+              {{ dia.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Horários -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label class="text-sm font-semibold text-gray-700">Abertura</label>
+            <input
+              v-model="horarios.abertura"
+              type="time"
+              class="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-200"
+            />
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-sm font-semibold text-gray-700">Fechamento</label>
+            <input
+              v-model="horarios.fechamento"
+              type="time"
+              class="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-200"
+            />
+          </div>
+        </div>
+
+        <!-- Pausa / Almoço -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-sm font-semibold text-gray-700">Pausa / Almoço</label>
+            <button
+              type="button"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors border-2"
+              :class="horarios.almoco_ativo ? 'border-transparent' : 'bg-gray-200 border-gray-200'"
+              :style="horarios.almoco_ativo ? { background: form.cor_primaria } : {}"
+              @click="horarios.almoco_ativo = !horarios.almoco_ativo"
+            >
+              <span
+                class="inline-block h-4 w-4 rounded-full bg-white shadow transition-transform"
+                :class="horarios.almoco_ativo ? 'translate-x-5' : 'translate-x-0.5'"
+              />
+            </button>
+          </div>
+          <div v-if="horarios.almoco_ativo" class="grid grid-cols-2 gap-4">
+            <div class="space-y-1.5">
+              <label class="text-sm font-semibold text-gray-700">Início</label>
+              <input
+                v-model="horarios.almoco_inicio"
+                type="time"
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-200"
+              />
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-sm font-semibold text-gray-700">Fim</label>
+              <input
+                v-model="horarios.almoco_fim"
+                type="time"
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-200"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Intervalo -->
+        <div class="space-y-1.5">
+          <label class="text-sm font-semibold text-gray-700">Intervalo entre agendamentos</label>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="min in [15, 20, 30, 45, 60, 90]" :key="min"
+              type="button"
+              class="px-3 py-1.5 rounded-xl text-sm font-bold border-2 transition-colors"
+              :class="horarios.intervalo === min
+                ? 'border-transparent text-white'
+                : 'border-gray-200 text-gray-400 bg-white hover:border-gray-300'"
+              :style="horarios.intervalo === min ? { background: form.cor_primaria, color: form.cor_primaria_texto } : {}"
+              @click="horarios.intervalo = min"
+            >
+              {{ min }}min
+            </button>
+          </div>
+        </div>
+
+        <!-- Ações -->
+        <div class="flex items-center justify-end gap-3 pt-1">
+          <span v-if="savedHorariosFeedback" class="text-sm text-green-600 font-medium">✓ Salvo!</span>
+          <button
+            type="button"
+            :disabled="savingHorarios"
+            class="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-bold transition-colors disabled:opacity-60"
+            :style="{ background: form.cor_primaria, color: form.cor_primaria_texto }"
+            @click="saveHorarios"
+          >
+            <svg v-if="savingHorarios" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+            </svg>
+            {{ savingHorarios ? 'Salvando…' : 'Salvar horários' }}
+          </button>
+        </div>
+      </section>
+
       <!-- Preview -->
       <section class="bg-white rounded-2xl border border-pink-100 shadow-sm p-6 space-y-4">
         <h2 class="text-base font-bold text-gray-800">Preview</h2>
@@ -379,8 +503,13 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
 import { usePersonalizacao, type PersonalizacaoConfig } from '~/composables/usePersonalizacao'
+import { createSupabaseClient } from '~/lib/supabase'
+import { useEmpresa } from '~/composables/useEmpresa'
 
 defineOptions({ name: 'ConfiguracoesPage' })
+
+const supabase = createSupabaseClient()
+const { empresaId, loadEmpresa } = useEmpresa()
 
 const { config, loading, saving, uploadingLogo, error, loadPersonalizacao, savePersonalizacao, uploadLogo, applyTheme, DEFAULTS } = usePersonalizacao()
 
@@ -394,6 +523,109 @@ function hexToRgba(hex: string, alpha: number): string {
 
 const savedFeedback = ref(false)
 const formLoaded = ref(false)
+
+// ── Horários de agendamento ──────────────────────────────────────────
+const DIAS_SEMANA = [
+  { value: 0, label: 'Dom' },
+  { value: 1, label: 'Seg' },
+  { value: 2, label: 'Ter' },
+  { value: 3, label: 'Qua' },
+  { value: 4, label: 'Qui' },
+  { value: 5, label: 'Sex' },
+  { value: 6, label: 'Sáb' },
+]
+const horarios = reactive({
+  abertura:      '08:00',
+  fechamento:    '18:00',
+  intervalo:     30,
+  dias:          [1, 2, 3, 4, 5] as number[],
+  almoco_ativo:  false,
+  almoco_inicio: '12:00',
+  almoco_fim:    '13:00',
+})
+const savingHorarios = ref(false)
+const savedHorariosFeedback = ref(false)
+const horarioError = ref<string | null>(null)
+
+async function loadHorarios() {
+  await loadEmpresa()
+  if (!empresaId.value) return
+
+  const [configRes, diasRes] = await Promise.all([
+    supabase
+      .from('empresa_personalizacao')
+      .select('horario_abertura, horario_fechamento, intervalo_min, almoco_inicio, almoco_fim')
+      .eq('empresa_id', empresaId.value)
+      .maybeSingle(),
+    supabase
+      .from('empresa_dias_funcionamento')
+      .select('dia_semana, ativo')
+      .eq('empresa_id', empresaId.value),
+  ])
+
+  if (configRes.data) {
+    const d = configRes.data as { horario_abertura?: string | null; horario_fechamento?: string | null; intervalo_min?: number | null; almoco_inicio?: string | null; almoco_fim?: string | null }
+    horarios.abertura      = d.horario_abertura   ?? '08:00'
+    horarios.fechamento    = d.horario_fechamento ?? '18:00'
+    horarios.intervalo     = d.intervalo_min      ?? 30
+    horarios.almoco_inicio = d.almoco_inicio      ?? '12:00'
+    horarios.almoco_fim    = d.almoco_fim         ?? '13:00'
+    horarios.almoco_ativo  = !!d.almoco_inicio
+  }
+
+  if (diasRes.data && diasRes.data.length > 0) {
+    horarios.dias = diasRes.data.filter((r: { dia_semana: number; ativo: boolean }) => r.ativo).map((r: { dia_semana: number; ativo: boolean }) => r.dia_semana)
+  }
+}
+
+async function saveHorarios() {
+  await loadEmpresa()
+  if (!empresaId.value) return
+  savingHorarios.value = true
+  horarioError.value = null
+
+  const { error: updateErr } = await supabase
+    .from('empresa_personalizacao')
+    .update({
+      horario_abertura:   horarios.abertura,
+      horario_fechamento: horarios.fechamento,
+      intervalo_min:      horarios.intervalo,
+      almoco_inicio:      horarios.almoco_ativo ? horarios.almoco_inicio : null,
+      almoco_fim:         horarios.almoco_ativo ? horarios.almoco_fim    : null,
+    })
+    .eq('empresa_id', empresaId.value)
+
+  if (updateErr) {
+    horarioError.value = 'Erro ao salvar horários: ' + updateErr.message
+    savingHorarios.value = false
+    return
+  }
+
+  // Upsert todos os 7 dias
+  const diasRows = DIAS_SEMANA.map(d => ({
+    empresa_id: empresaId.value as number,
+    dia_semana: d.value,
+    ativo:      horarios.dias.includes(d.value),
+  }))
+  const { error: diasErr } = await supabase
+    .from('empresa_dias_funcionamento')
+    .upsert(diasRows, { onConflict: 'empresa_id,dia_semana' })
+
+  savingHorarios.value = false
+  if (diasErr) {
+    horarioError.value = 'Erro ao salvar dias: ' + diasErr.message
+    return
+  }
+
+  savedHorariosFeedback.value = true
+  setTimeout(() => { savedHorariosFeedback.value = false }, 2500)
+}
+
+function toggleDia(dia: number) {
+  const idx = horarios.dias.indexOf(dia)
+  if (idx === -1) horarios.dias.push(dia)
+  else horarios.dias.splice(idx, 1)
+}
 
 const form = reactive<PersonalizacaoConfig>({ ...DEFAULTS })
 
@@ -472,7 +704,7 @@ const temasProntos = [
 
 onMounted(async () => {
   loading.value = true
-  await loadPersonalizacao(false)
+  await Promise.all([loadPersonalizacao(false), loadHorarios()])
   loading.value = false
   Object.assign(form, config.value)
   // Inicializa toggles com base nos dados salvos
