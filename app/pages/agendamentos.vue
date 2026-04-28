@@ -500,79 +500,162 @@
               <p v-if="formErrors.cliente_id" class="text-xs text-red-500 mt-1">{{ formErrors.cliente_id }}</p>
             </div>
 
-            <!-- Data e hora -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Data <span class="text-red-500">*</span></label>
-                <input
-                  v-model="form.data"
-                  type="date"
-                  class="w-full rounded-xl border px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
-                  :class="formErrors.data ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50'"
-                />
-                <p v-if="formErrors.data" class="text-xs text-red-500 mt-1">{{ formErrors.data }}</p>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Hora <span class="text-red-500">*</span></label>
-                <select
-                  v-model="form.hora"
-                  class="w-full rounded-xl border px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
-                  :class="formErrors.hora ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50'"
-                >
-                  <option value="">Selecione</option>
-                  <option v-for="h in horasOpcoes" :key="h" :value="h">{{ h }}</option>
-                </select>
-                <p v-if="formErrors.hora" class="text-xs text-red-500 mt-1">{{ formErrors.hora }}</p>
-              </div>
-            </div>
-
-            <!-- Status e Profissional -->
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Status</label>
-                <select v-model="form.status" class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400">
-                  <option value="agendado">Agendado</option>
-                  <option value="confirmado">Confirmado</option>
-                  <option value="concluido">Concluído</option>
-                  <option value="cancelado">Cancelado</option>
-                  <option value="faltou">Faltou</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Profissional</label>
-                <select v-model="form.funcionario_bigint_id" class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400">
-                  <option :value="null">Não atribuído</option>
-                  <option v-for="f in funcionarios" :key="f.id" :value="f.id">{{ f.nome ?? f.email }}</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Serviço -->
+            <!-- Serviços — campo clicável que abre modal -->
             <div>
-              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Serviço</label>
-              <div class="flex flex-col gap-2 max-h-40 overflow-y-auto border border-gray-200 rounded-xl p-2 bg-gray-50">
-                <label
-                  v-for="s in servicosAtivos"
-                  :key="s.id"
-                  class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white cursor-pointer transition-colors"
-                  :class="form.servico_id === s.id ? 'bg-violet-50 border border-violet-200' : ''"
-                >
-                  <input
-                    type="radio"
-                    name="servico_agendamento"
-                    :value="s.id"
-                    v-model="form.servico_id"
-                    class="accent-violet-500 focus:ring-violet-400"
-                  />
-                  <span class="flex-1 text-sm font-medium text-gray-800">{{ s.nome }}</span>
-                  <span class="text-xs text-gray-500">{{ formatPreco(s.preco) }}</span>
-                  <span class="text-xs text-gray-400">{{ s.duracao_min }}min</span>
-                </label>
-                <p v-if="!servicosAtivos.length" class="text-xs text-gray-400 text-center py-2">Nenhum serviço ativo cadastrado</p>
-              </div>
-              <p v-if="form.servico_id" class="text-xs text-violet-600 font-semibold mt-1.5">
+              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-2">Serviços <span class="text-red-500">*</span></label>
+
+              <!-- Chips dos serviços selecionados + botão para abrir modal -->
+              <button
+                type="button"
+                class="w-full rounded-xl border-2 px-4 py-3 text-left transition-all hover:shadow-md focus:outline-none"
+                :class="formErrors.slots ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50 hover:border-pink-300'"
+                @click="modalServicosAberto = true"
+              >
+                <div v-if="!form.servicosSelecionados.length" class="flex items-center justify-between gap-2 text-sm text-gray-400 font-semibold">
+                  <span>Selecione os serviços...</span>
+                  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+                </div>
+                <div v-else class="flex flex-wrap gap-1.5 items-center">
+                  <span
+                    v-for="id in form.servicosSelecionados"
+                    :key="id"
+                    class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full text-white"
+                    style="background:#ec4899"
+                  >
+                    {{ servicosAtivos.find(s => s.id === id)?.nome }}
+                  </span>
+                  <span class="text-xs text-gray-400 ml-auto">editar →</span>
+                </div>
+              </button>
+              <p v-if="formErrors.slots" class="text-xs text-red-500 mt-1.5">{{ formErrors.slots }}</p>
+              <p v-if="form.servicosSelecionados.length" class="text-xs font-bold mt-1.5" style="color:#ec4899">
                 Total estimado: {{ formatPreco(totalSelecionado) }}
               </p>
+            </div>
+
+            <!-- Cards de data + horário por serviço -->
+            <div
+              v-for="(item, idx) in slotsPerServicoInterno"
+              :key="item.servico.id"
+              class="flex flex-col gap-3 rounded-2xl border-2 p-4 transition-all"
+              :style="item.data && !item.diaFechado && item.horario
+                ? { borderColor: '#ec4899' }
+                : { borderColor: '#e5e7eb' }"
+            >
+              <!-- Cabeçalho -->
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black text-white shrink-0" style="background:#ec4899">{{ idx + 1 }}</div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-bold text-gray-900">{{ item.servico.nome }}</p>
+                  <!-- Profissional: dropdown se há mais de um, texto fixo se só um -->
+                  <div v-if="item.servico.servico_funcionarios?.length > 1" class="flex flex-wrap gap-1 mt-1">
+                    <button
+                      v-for="sf in item.servico.servico_funcionarios"
+                      :key="sf.funcionarios?.id"
+                      type="button"
+                      class="text-[11px] font-bold px-2 py-0.5 rounded-full border transition-all"
+                      :class="item.funcionarioBigintId === sf.funcionarios?.id
+                        ? 'text-white border-transparent'
+                        : 'border-gray-200 text-gray-400 bg-white hover:border-gray-300'"
+                      :style="item.funcionarioBigintId === sf.funcionarios?.id
+                        ? { background: '#ec4899', borderColor: '#ec4899' }
+                        : {}"
+                      @click="item.funcionarioBigintId = sf.funcionarios?.id ?? null; onFuncionarioChangeItem(item)"
+                    >{{ sf.funcionarios?.nome }}</button>
+                  </div>
+                  <p v-else-if="item.servico.servico_funcionarios?.length === 1" class="text-xs font-semibold mt-0.5" style="color:#ec4899">
+                    {{ item.servico.servico_funcionarios[0]!.funcionarios?.nome }}
+                  </p>
+                </div>
+                <span v-if="item.data && !item.diaFechado && item.horario" class="text-xs font-black px-2 py-1 rounded-full bg-green-100 text-green-700 shrink-0">
+                  ✓ {{ formatHoraSlot(item.horario) }}
+                </span>
+              </div>
+
+              <!-- Badge simultâneo: se há parceiro anterior na lista, oculta seleção e mostra aviso -->
+              <template v-if="getSimultaneoAnterior(item)">
+                <div class="flex items-center gap-2.5 p-3 rounded-xl border border-pink-200 bg-pink-50">
+                  <svg class="w-4 h-4 text-pink-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+                  </svg>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-xs font-bold text-pink-700">Simultâneo com {{ getSimultaneoAnterior(item)!.servico.nome }}</p>
+                    <p class="text-xs text-pink-500 mt-0.5">
+                      {{ item.horario ? `Agendado às ${formatHoraSlot(item.horario)} — mesmo horário` : 'Aguardando seleção de horário acima…' }}
+                    </p>
+                  </div>
+                </div>
+              </template>
+
+              <!-- Data + Slots (oculto quando simultâneo com item anterior) -->
+              <template v-else>
+
+              <!-- Data -->
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Data</label>
+                <input
+                  v-model="item.data"
+                  type="date"
+                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  @change="onDataChangeItemInterno(item)"
+                />
+                <div v-if="item.diaFechado" class="flex items-center gap-2 p-2.5 bg-orange-50 border border-orange-200 rounded-xl mt-1">
+                  <svg class="w-4 h-4 text-orange-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+                  </svg>
+                  <p class="text-xs text-orange-600 font-semibold">Não atendemos neste dia.</p>
+                </div>
+              </div>
+
+              <!-- Slots -->
+              <template v-if="item.data && !item.diaFechado">
+                <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Horário</label>
+
+                <div v-if="item.loading" class="flex items-center gap-2 py-3 justify-center">
+                  <div class="w-4 h-4 rounded-full border-2 border-gray-200 animate-spin" style="border-top-color:#ec4899" />
+                  <p class="text-xs text-gray-400">Verificando disponibilidade...</p>
+                </div>
+
+                <div v-else-if="item.error" class="bg-red-50 border border-red-200 rounded-xl px-3 py-2.5 text-xs text-red-600 flex items-center justify-between">
+                  <span>{{ item.error }}</span>
+                  <button type="button" class="underline ml-2 font-semibold shrink-0" @click="carregarSlotsItemInterno(item)">Tentar novamente</button>
+                </div>
+
+                <div v-else-if="!item.slots.length" class="bg-orange-50 border border-orange-200 rounded-xl px-3 py-2.5 text-xs text-orange-600 font-semibold text-center">
+                  Nenhum horário disponível neste dia.
+                </div>
+
+                <div v-else class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  <button
+                    v-for="slot in item.slots"
+                    :key="slot.getTime()"
+                    type="button"
+                    :disabled="isSlotTakenInterno(slot, item)"
+                    class="py-2 rounded-xl border-2 text-sm font-bold transition-all"
+                    :class="item.horario?.getTime() === slot.getTime()
+                      ? 'shadow-md scale-[1.04] border-transparent text-white'
+                      : isSlotTakenInterno(slot, item)
+                        ? 'border-gray-100 bg-gray-50 text-gray-300 cursor-not-allowed line-through'
+                        : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300 hover:scale-[1.02]'"
+                    :style="item.horario?.getTime() === slot.getTime() ? { background: temaGrad, color: '#fff' } : {}"
+                    @click="!isSlotTakenInterno(slot, item) && (item.horario = slot)"
+                  >{{ formatHoraSlot(slot) }}</button>
+                </div>
+              </template>
+
+              </template><!-- /v-else simultâneo -->
+            </div>
+
+            <!-- Status -->
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Status</label>
+              <select v-model="form.status" class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400">
+                <option value="agendado">Agendado</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="concluido">Concluído</option>
+                <option value="cancelado">Cancelado</option>
+                <option value="faltou">Faltou</option>
+              </select>
             </div>
 
             <!-- Observações -->
@@ -892,6 +975,109 @@
       </Transition>
     </Teleport>
 
+    <!-- MODAL SELEÇÃO DE SERVIÇOS -->
+    <Teleport to="body">
+      <Transition name="fade">
+        <div v-if="modalServicosAberto" class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="modalServicosAberto = false" />
+          <div class="relative bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
+              <div>
+                <h2 class="text-base font-black text-gray-900">Escolha os serviços</h2>
+                <p v-if="form.servicosSelecionados.length" class="text-xs font-bold mt-0.5" style="color:#ec4899">
+                  {{ form.servicosSelecionados.length }} selecionado{{ form.servicosSelecionados.length > 1 ? 's' : '' }} · {{ formatPreco(totalSelecionado) }}
+                </p>
+              </div>
+              <button type="button" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors" @click="modalServicosAberto = false">
+                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <!-- Lista de serviços com foto -->
+            <div class="overflow-y-auto flex-1 px-4 pb-2">
+              <div class="grid grid-cols-1 gap-3 py-2">
+                <button
+                  v-for="s in servicosAtivos"
+                  :key="s.id"
+                  type="button"
+                  class="group relative rounded-2xl border-2 transition-all duration-200 text-left w-full overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5"
+                  :class="form.servicosSelecionados.includes(s.id) ? '' : 'border-gray-200 bg-white'"
+                  :style="form.servicosSelecionados.includes(s.id) ? { borderColor: '#ec4899', background: '#fff' } : {}"
+                  @click="form.servicosSelecionados.includes(s.id)
+                    ? form.servicosSelecionados.splice(form.servicosSelecionados.indexOf(s.id), 1)
+                    : form.servicosSelecionados.push(s.id)"
+                >
+                  <!-- Foto -->
+                  <div class="relative h-28 w-full overflow-hidden">
+                    <img
+                      v-if="s.foto_url"
+                      :src="s.foto_url"
+                      :alt="s.nome"
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div
+                      v-else
+                      class="w-full h-full flex items-center justify-center"
+                      style="background: linear-gradient(135deg, #fce7f3, #f5d0fe)"
+                    >
+                      <svg class="w-8 h-8 text-pink-200" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    <!-- Preço sobre a foto -->
+                    <div class="absolute bottom-2 right-3">
+                      <span class="text-sm font-black text-white drop-shadow">{{ formatPreco(s.preco) }}</span>
+                    </div>
+                    <!-- Check badge -->
+                    <div
+                      v-if="form.servicosSelecionados.includes(s.id)"
+                      class="absolute top-2 right-3 w-6 h-6 rounded-full flex items-center justify-center shadow-lg"
+                      style="background:#ec4899"
+                    >
+                      <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                    </div>
+                    <div v-else class="absolute top-2 right-3 w-6 h-6 rounded-full border-2 border-white/70 bg-white/20 backdrop-blur-sm" />
+                  </div>
+                  <!-- Conteúdo -->
+                  <div class="px-3 py-2.5">
+                    <p class="text-sm font-black text-gray-900 leading-tight">{{ s.nome }}</p>
+                    <div class="flex items-center gap-3 mt-1.5">
+                      <span class="inline-flex items-center gap-1 text-[11px] text-gray-400 font-semibold">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                        {{ s.duracao_min }}min
+                      </span>
+                      <span
+                        v-if="s.servico_funcionarios?.[0]?.funcionarios?.nome"
+                        class="inline-flex items-center gap-1 text-[11px] font-semibold"
+                        style="color:#ec4899"
+                      >
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                        {{ s.servico_funcionarios[0]!.funcionarios?.nome }}
+                      </span>
+                    </div>
+                  </div>
+                  <!-- Barra colorida quando selecionado -->
+                  <div v-if="form.servicosSelecionados.includes(s.id)" class="h-1 w-full" style="background:linear-gradient(90deg,#ec4899,#c026d3)" />
+                </button>
+                <p v-if="!servicosAtivos.length" class="text-xs text-gray-400 text-center py-6 bg-gray-50 rounded-2xl">Nenhum serviço ativo cadastrado</p>
+              </div>
+            </div>
+            <!-- Rodapé -->
+            <div class="px-4 py-4 shrink-0 border-t border-gray-100">
+              <button
+                type="button"
+                :disabled="!form.servicosSelecionados.length"
+                class="w-full py-3 rounded-2xl text-sm font-black transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-lg text-white"
+                style="background:linear-gradient(135deg,#ec4899,#f43f5e)"
+                @click="modalServicosAberto = false"
+              >
+                {{ form.servicosSelecionados.length ? `Confirmar ${form.servicosSelecionados.length} serviço${form.servicosSelecionados.length > 1 ? 's' : ''}` : 'Selecione ao menos um serviço' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
     <!-- MODAL EXCLUIR -->
     <Teleport to="body">
       <div v-if="excluindo" class="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -916,7 +1102,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
 import { createSupabaseClient } from '~/lib/supabase'
 import { useEmpresa } from '~/composables/useEmpresa'
 import { useAdmin } from '~/composables/useAdmin'
@@ -949,7 +1135,19 @@ interface AgendamentoRow {
 
 interface ClienteOption { id: number; nome: string }
 interface FuncionarioOption { id: number; nome: string | null; email: string | null; profile_id: string | null }
-interface ServicoOption { id: number; nome: string; preco: number; duracao_min: number; funcionario_id: number | null; funcionario_profile_id: string | null }
+interface ServicoOption { id: number; nome: string; preco: number; duracao_min: number; comissao_percentual: number | null; funcionario_id: number | null; funcionario_profile_id: string | null; foto_url: string | null; servico_funcionarios: { funcionarios: { id: number; nome: string | null } }[] }
+
+interface SlotItemInterno {
+  servico: ServicoOption
+  data: string
+  diaFechado: boolean
+  slots: Date[]
+  loading: boolean
+  error: string | null
+  horario: Date | null
+  funcionarioBigintId: number | null
+  funcionarioUuid: string | null
+}
 
 const supabase = createSupabaseClient()
 const { empresaId, loadEmpresa } = useEmpresa()
@@ -1030,6 +1228,7 @@ const editando = ref<AgendamentoRow | null>(null)
 const adicionando = ref(false)
 const saving = ref(false)
 const modalError = ref<string | null>(null)
+const modalServicosAberto = ref(false)
 
 const excluindo = ref<AgendamentoRow | null>(null)
 const deleting = ref(false)
@@ -1094,18 +1293,66 @@ async function saveQuickCliente() {
 
 const form = reactive({
   cliente_id:           null as number | null,
-  funcionario_id:       null as string | null,  // uuid para salvar no DB
-  funcionario_bigint_id: null as number | null, // bigint para o dropdown
-  data:         '',
-  hora:         '',
-  status:       'agendado',
-  observacoes:  '',
-  servico_id:   null as number | null,
+  status:               'agendado',
+  observacoes:          '',
+  servicosSelecionados: [] as number[],
 })
 
-const formErrors = reactive({ cliente_id: '', data: '', hora: '' })
+const formErrors = reactive({ cliente_id: '', slots: '' })
+const slotsPerServicoInterno = ref<SlotItemInterno[]>([])
 
-// ── Kanban semanal ────────────────────────────────────────────
+// ── Serviços simultâneos ──────────────────────────────────────
+// Armazena pares "idA-idB" que podem ser feitos ao mesmo tempo
+const simultaneosPares = ref<Set<string>>(new Set())
+
+function isSimultaneo(idA: number, idB: number): boolean {
+  return simultaneosPares.value.has(`${idA}-${idB}`) || simultaneosPares.value.has(`${idB}-${idA}`)
+}
+
+async function carregarSimultaneos(ids: number[]) {
+  if (ids.length < 2) { simultaneosPares.value = new Set(); return }
+  const { data } = await supabase
+    .from('servico_simultaneos')
+    .select('servico_id, servico_par_id')
+    .in('servico_id', ids)
+    .in('servico_par_id', ids)
+  const pares = new Set<string>()
+  for (const row of (data ?? []) as { servico_id: number; servico_par_id: number }[])
+    pares.add(`${row.servico_id}-${row.servico_par_id}`)
+  simultaneosPares.value = pares
+}
+
+// Se item tem um parceiro simultâneo que aparece ANTES dele na lista → modo "simultâneo"
+function getSimultaneoAnterior(item: SlotItemInterno): SlotItemInterno | null {
+  const idx = slotsPerServicoInterno.value.indexOf(item)
+  return slotsPerServicoInterno.value.slice(0, idx).find(
+    other => isSimultaneo(other.servico.id, item.servico.id)
+  ) ?? null
+}
+
+// Auto-sincroniza data + horário para pares simultâneos.
+// Depende TAMBÉM de simultaneosPares para re-executar quando os pares chegam do servidor.
+watch(
+  [    () => slotsPerServicoInterno.value.map(i => ({ id: i.servico.id, data: i.data, ts: i.horario?.getTime() ?? null })),
+    simultaneosPares,
+  ],
+  () => {
+    for (const item of slotsPerServicoInterno.value) {
+      if (!item.horario || !item.data) continue
+      for (const other of slotsPerServicoInterno.value) {
+        if (other.servico.id === item.servico.id) continue
+        if (!isSimultaneo(item.servico.id, other.servico.id)) continue
+        if (other.horario?.getTime() !== item.horario.getTime() || other.data !== item.data) {
+          other.data    = item.data
+          other.horario = item.horario
+        }
+      }
+    }
+  },
+  { deep: true }
+)
+
+
 
 function getMondayOfWeek(date: Date): Date {
   const d = new Date(date)
@@ -1122,7 +1369,7 @@ const kanbanDias = computed(() =>
   Array.from({ length: 7 }, (_, i) => {
     const d = new Date(kanbanInicioSemana.value)
     d.setDate(d.getDate() + i)
-    const iso = d.toISOString().split('T')[0]
+    const iso = d.toISOString().split('T')[0] as string
     return {
       iso,
       diaSemana: d.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '').toUpperCase(),
@@ -1134,8 +1381,8 @@ const kanbanDias = computed(() =>
 
 const kanbanMesLabel = computed(() => {
   const dias = kanbanDias.value
-  const inicio = new Date(dias[0].iso + 'T12:00:00')
-  const fim = new Date(dias[6].iso + 'T12:00:00')
+  const inicio = new Date((dias[0]?.iso ?? '') + 'T12:00:00')
+  const fim = new Date((dias[6]?.iso ?? '') + 'T12:00:00')
   if (inicio.getMonth() === fim.getMonth())
     return inicio.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
   return `${inicio.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '')} – ${fim.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' }).replace('.', '')}`
@@ -1148,7 +1395,7 @@ const kanbanPorDia = computed(() => {
     const key = ag.data_hora.slice(0, 10)
     if (map[key]) map[key].push(ag)
   })
-  Object.keys(map).forEach(k => map[k].sort((a, b) => a.data_hora.localeCompare(b.data_hora)))
+  Object.keys(map).forEach(k => map[k]?.sort((a, b) => a.data_hora.localeCompare(b.data_hora)))
   return map
 })
 
@@ -1199,7 +1446,7 @@ async function kanbanDrop(targetDate: string) {
 
   // Optimistic update
   const idx = agendamentos.value.findIndex(a => a.id === ag.id)
-  if (idx !== -1) agendamentos.value[idx] = { ...agendamentos.value[idx], data_hora: newDataHora }
+  if (idx !== -1) agendamentos.value[idx] = { ...agendamentos.value[idx], data_hora: newDataHora } as AgendamentoRow
 
   const { error: err } = await supabase
     .from('agendamentos')
@@ -1208,7 +1455,7 @@ async function kanbanDrop(targetDate: string) {
 
   if (err) {
     // Revert on error
-    if (idx !== -1) agendamentos.value[idx] = { ...agendamentos.value[idx], data_hora: ag.data_hora }
+    if (idx !== -1) agendamentos.value[idx] = { ...agendamentos.value[idx], data_hora: ag.data_hora } as AgendamentoRow
   }
 }
 
@@ -1235,28 +1482,82 @@ const stats = computed(() => {
   ]
 })
 
-const totalSelecionado = computed(() => {
-  if (!form.servico_id) return 0
-  return servicosAtivos.value.find(s => s.id === form.servico_id)?.preco ?? 0
-})
+const totalSelecionado = computed(() =>
+  slotsPerServicoInterno.value.reduce((sum, item) => sum + item.servico.preco, 0)
+)
 
-// Ao selecionar um serviço, preenche profissional vinculado no dropdown e uuid para salvar
-watch(() => form.servico_id, (newId) => {
-  if (newId != null) {
-    const svc = servicosAtivos.value.find(s => s.id === newId)
-    if (svc?.funcionario_id != null) {
-      form.funcionario_bigint_id  = svc.funcionario_id
-      form.funcionario_id         = svc.funcionario_profile_id ?? null
+// Ao alterar serviços selecionados, reconstrói a lista de slot items e recarrega simultâneos
+watch(() => [...form.servicosSelecionados], async (ids, idsAnterior) => {
+  const anterior = new Map(slotsPerServicoInterno.value.map(i => [i.servico.id, i]))
+
+  // Captura pares simultâneos ANTES de atualizar (para saber quem precisa recarregar)
+  const paresAntes = new Set(simultaneosPares.value)
+  const removidos = new Set((idsAnterior ?? []).filter(id => !ids.includes(id)))
+
+  slotsPerServicoInterno.value = ids.map(id => {
+    const exist = anterior.get(id)
+    if (exist) return exist
+    const svc = servicosAtivos.value.find(s => s.id === id)!
+    const firstFunc = svc.servico_funcionarios?.[0]?.funcionarios
+    const funcBigint = firstFunc
+      ? (funcionarios.value.find(f => f.id === firstFunc.id)?.id ?? svc.funcionario_id)
+      : svc.funcionario_id
+    const funcUuid = firstFunc
+      ? (funcionarios.value.find(f => f.id === firstFunc.id)?.profile_id ?? svc.funcionario_profile_id)
+      : svc.funcionario_profile_id
+    return {
+      servico:            svc,
+      data:               '',
+      diaFechado:         false,
+      slots:              [],
+      loading:            false,
+      error:              null,
+      horario:            null,
+      funcionarioBigintId: funcBigint,
+      funcionarioUuid:    funcUuid,
+    } as SlotItemInterno
+  })
+  // Garante que simultaneosParés está atualizado para os serviços selecionados antes de renderizar
+  await carregarSimultaneos(ids)
+
+  // Recarrega slots de itens que eram parceiros dos serviços removidos
+  // Usa paresAntes (antes da atualização) para identificar os parceiros corretos
+  if (removidos.size > 0) {
+    for (const item of slotsPerServicoInterno.value) {
+      const eraSimultaneoComRemovido = [...removidos].some(rid =>
+        paresAntes.has(`${item.servico.id}-${rid}`) || paresAntes.has(`${rid}-${item.servico.id}`)
+      )
+      if (eraSimultaneoComRemovido && item.data) {
+        item.horario = null
+        await carregarSlotsItemInterno(item)
+      }
+    }
+  }
+
+  // Recarrega slots de itens existentes que são parceiros dos serviços adicionados
+  // Usa simultaneosPares já atualizado para identificar os novos pares
+  const adicionados = new Set(ids.filter(id => !(idsAnterior ?? []).includes(id)))
+  if (adicionados.size > 0) {
+    for (const item of slotsPerServicoInterno.value) {
+      // Apenas itens que já existiam (não os recém-criados, que têm slots vazios)
+      if (!anterior.has(item.servico.id)) continue
+      const ehParceiroDaNovidade = [...adicionados].some(aid =>
+        simultaneosPares.value.has(`${item.servico.id}-${aid}`) || simultaneosPares.value.has(`${aid}-${item.servico.id}`)
+      )
+      if (ehParceiroDaNovidade && item.data) {
+        item.horario = null
+        await carregarSlotsItemInterno(item)
+      }
     }
   }
 })
 
-// Ao trocar o dropdown manualmente, atualiza o uuid correspondente
-watch(() => form.funcionario_bigint_id, (bigintId) => {
-  if (bigintId == null) { form.funcionario_id = null; return }
-  const func = funcionarios.value.find(f => f.id === bigintId)
-  form.funcionario_id = func?.profile_id ?? null
-})
+// Ao trocar funcionario num item, recarrega slots daquele item
+function onFuncionarioChangeItem(item: SlotItemInterno) {
+  const func = funcionarios.value.find(f => f.id === item.funcionarioBigintId)
+  item.funcionarioUuid = func?.profile_id ?? null
+  if (item.data) onDataChangeItemInterno(item)
+}
 
 // ── Helpers ───────────────────────────────────────────────────
 
@@ -1332,7 +1633,7 @@ async function fetchAgendamentos() {
 
     ;(agSvcs ?? []).forEach((row: any) => {
       if (!servicosMap[row.agendamento_id]) servicosMap[row.agendamento_id] = []
-      if (row.servicos?.nome) servicosMap[row.agendamento_id].push(row.servicos.nome)
+      if (row.servicos?.nome) servicosMap[row.agendamento_id]!.push(row.servicos.nome)
     })
   }
 
@@ -1364,7 +1665,7 @@ async function fetchClientes() {
 async function fetchFuncionarios() {
   const { data, error: funcErr } = await supabase
     .from('funcionarios')
-    .select('id, nome, email')
+    .select('id, nome, email, profile_id')
     .eq('empresa_id', empresaId.value!)
     .eq('ativo', true)
     .order('nome')
@@ -1374,7 +1675,7 @@ async function fetchFuncionarios() {
     id:         f.id,
     nome:       f.nome,
     email:      f.email,
-    profile_id: null, // resolvido sob demanda se necessário
+    profile_id: f.profile_id ?? null,
   })) as FuncionarioOption[]
 }
 
@@ -1382,7 +1683,7 @@ async function fetchServicos() {
   // IMPORTANTE: chamar após fetchFuncionarios para que funcionarios.value esteja populado
   const { data, error: err } = await supabase
     .from('servicos')
-    .select('id, nome, preco, duracao_min')
+    .select('id, nome, preco, duracao_min, comissao_percentual, foto_url, servico_funcionarios(funcionarios(id, nome))')
     .eq('empresa_id', empresaId.value!)
     .eq('ativo', true)
     .order('categoria')
@@ -1414,20 +1715,26 @@ async function fetchServicos() {
       nome:                   s.nome,
       preco:                  s.preco,
       duracao_min:            s.duracao_min,
+      comissao_percentual:    s.comissao_percentual ?? null,
       funcionario_id:         funcBigintId,
       funcionario_profile_id: func?.profile_id ?? null,
+      foto_url:               s.foto_url ?? null,
+      servico_funcionarios:   (s.servico_funcionarios ?? []),
     }
   }) as ServicoOption[]
+
+  // Pré-carrega pares simultâneos para todos os serviços ativos agora que a lista está pronta
+  await carregarSimultaneos(servicosAtivos.value.map(s => s.id))
 }
 
 
 // ── CRUD ──────────────────────────────────────────────────────
 
 function resetForm() {
-  form.cliente_id = null; form.funcionario_id = null; form.funcionario_bigint_id = null
-  form.data = ''; form.hora = ''; form.status = 'agendado'
-  form.observacoes = ''; form.servico_id = null
-  formErrors.cliente_id = ''; formErrors.data = ''; formErrors.hora = ''
+  form.cliente_id = null; form.status = 'agendado'
+  form.observacoes = ''; form.servicosSelecionados = []
+  formErrors.cliente_id = ''; formErrors.slots = ''
+  slotsPerServicoInterno.value = []
 }
 
 function abrirAdicionar() {
@@ -1450,61 +1757,289 @@ function editAgendamento(ag: AgendamentoRow) {
   editando.value = ag
   adicionando.value = false
   modalError.value = null
-  formErrors.cliente_id = ''; formErrors.data = ''; formErrors.hora = ''
+  formErrors.cliente_id = ''; formErrors.slots = ''
   form.cliente_id = ag.cliente_id
-  form.funcionario_id = ag.funcionario_id
-  // Reverse-lookup: achar o bigint id a partir do profile_id salvo
-  form.funcionario_bigint_id = funcionarios.value.find(f => f.profile_id === ag.funcionario_id)?.id ?? null
-  const _dtSP = new Date(ag.data_hora)
-  form.data = _dtSP.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' })
-  form.hora = _dtSP.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Sao_Paulo' })
   form.status = ag.status
   form.observacoes = ag.observacoes ?? ''
-  form.servico_ids = []
+  form.servicosSelecionados = []
+  slotsPerServicoInterno.value = []
 
-  // Load linked service
+  // Carrega serviço vinculado e monta o slot item pré-populado
   supabase
     .from('agendamento_servicos')
-    .select('servico_id')
+    .select('servico_id, funcionario_id')
     .eq('agendamento_id', ag.id)
     .then(({ data }) => {
-      form.servico_id = data?.[0]?.servico_id ?? null
+      const row = data?.[0]
+      const servicoId = row?.servico_id ?? null
+      if (!servicoId) return
+      form.servicosSelecionados = [servicoId]
+      // Após o watch criar o item, preenche data/hora e carrega slots
+      nextTick(() => {
+        const item = slotsPerServicoInterno.value[0]
+        if (!item) return
+        // Usa o funcionário gravado em agendamento_servicos (bigint direto, sem UUID)
+        if (row?.funcionario_id != null) {
+          item.funcionarioBigintId = row.funcionario_id
+          item.funcionarioUuid     = funcionarios.value.find(f => Number(f.id) === Number(row.funcionario_id))?.profile_id ?? ag.funcionario_id
+        } else {
+          item.funcionarioUuid = ag.funcionario_id
+        }
+        const _dtSP = new Date(ag.data_hora)
+        item.data = _dtSP.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' })
+        carregarSlotsItemInterno(item).then(() => {
+          // Compara por timestamp (evita diferenças de formato do toLocaleTimeString)
+          const targetMs = new Date(ag.data_hora).getTime()
+          let match = item.slots.find(s => s.getTime() === targetMs)
+          if (!match) {
+            // Slot bloqueado pelo próprio agendamento — injeta de volta para exibir a hora atual
+            const forceSlot = new Date(ag.data_hora)
+            const insertIdx = item.slots.findIndex(s => s.getTime() > targetMs)
+            if (insertIdx === -1) item.slots.push(forceSlot)
+            else item.slots.splice(insertIdx, 0, forceSlot)
+            match = forceSlot
+          }
+          item.horario = match
+        })
+      })
     })
 }
 
 function validateForm(): boolean {
-  formErrors.cliente_id = ''; formErrors.data = ''; formErrors.hora = ''
+  formErrors.cliente_id = ''; formErrors.slots = ''
   let ok = true
-  if (!form.cliente_id && form.status !== 'solicitado') { formErrors.cliente_id = 'Selecione o cliente.'; ok = false }
-  if (!form.data) { formErrors.data = 'Informe a data.'; ok = false }
-  if (!form.hora) { formErrors.hora = 'Informe a hora.'; ok = false }
+  if (!form.cliente_id) { formErrors.cliente_id = 'Selecione o cliente.'; ok = false }
+  if (!form.servicosSelecionados.length) { formErrors.slots = 'Selecione ao menos um serviço.'; ok = false }
+  if (slotsPerServicoInterno.value.some(i => !i.horario || !i.data)) { formErrors.slots = 'Selecione data e horário para todos os serviços.'; ok = false }
   return ok
 }
 
-function buildDataHora() {
-  // Salva com offset SP explícito para o Supabase não interpretar como UTC
-  return `${form.data}T${form.hora}:00-03:00`
+// ── Slot-picker interno (modal de adicionar/editar) ─────────────
+
+function formatHoraSlot(d: Date) {
+  return d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Sao_Paulo' })
 }
 
-const horasOpcoes = (() => {
-  const opts: string[] = []
-  for (let h = 5; h <= 22; h++) {
-    opts.push(`${String(h).padStart(2, '0')}:00`)
-    if (h < 22) opts.push(`${String(h).padStart(2, '0')}:30`)
-  }
-  return opts
-})()
+function calcularSlotsInterno(
+  dataISO: string,
+  duracao: number,
+  ocupados: { inicio: string; fim: string }[],
+): Date[] {
+  const result: Date[] = []
+  const [abH, abM] = horarios.abertura.split(':').map(Number) as [number, number]
+  const [fhH, fhM] = horarios.fechamento.split(':').map(Number) as [number, number]
 
-async function syncServicos(agendamentoId: number) {
+  const SP_OFFSET_MS = 3 * 60 * 60 * 1000
+  const spMidnight   = new Date(dataISO + 'T00:00:00Z').getTime() + SP_OFFSET_MS
+
+  const isToday      = dataISO === hoje
+  const minMinutesSP = isToday ? Math.floor((Date.now() - spMidnight) / 60_000) : 0
+
+  let almocoInicioMs: number | null = null
+  let almocoFimMs:    number | null = null
+  if (horarios.almoco_ativo && horarios.almoco_inicio && horarios.almoco_fim) {
+    const [alH, alM] = horarios.almoco_inicio.split(':').map(Number) as [number, number]
+    const [afH, afM] = horarios.almoco_fim.split(':').map(Number) as [number, number]
+    almocoInicioMs = spMidnight + (alH * 60 + alM) * 60_000
+    almocoFimMs    = spMidnight + (afH * 60 + afM) * 60_000
+  }
+
+  let cursorMin = abH * 60 + abM
+  const endMin  = fhH * 60 + fhM
+
+  while (cursorMin + duracao <= endMin) {
+    if (!isToday || cursorMin >= minMinutesSP) {
+      const slotStart = spMidnight + cursorMin * 60_000
+      const slotEnd   = slotStart + duracao * 60_000
+
+      const bloqueadoAlmoco = almocoInicioMs !== null && almocoFimMs !== null
+        && slotStart < almocoFimMs && slotEnd > almocoInicioMs
+
+      const disponivel = !bloqueadoAlmoco && !ocupados.some(oc => {
+        const ocStart = new Date(oc.inicio).getTime()
+        const ocEnd   = new Date(oc.fim).getTime()
+        return slotStart < ocEnd && slotEnd > ocStart
+      })
+      if (disponivel) result.push(new Date(slotStart))
+    }
+    cursorMin += horarios.intervalo
+  }
+  return result
+}
+
+async function carregarSlotsItemInterno(item: SlotItemInterno) {
+  item.slots  = []
+  item.error  = null
+  if (!item.data) return
+
+  const d = new Date(item.data + 'T00:00:00')
+  item.diaFechado = !horarios.dias.includes(d.getDay())
+  if (item.diaFechado) return
+
+  item.loading = true
+  const { data, error: rpcError } = await supabase.rpc('get_horarios_ocupados_funcionario', {
+    p_empresa_id:     empresaId.value,
+    p_data:           item.data,
+    p_servico_id:     item.servico.id,
+    p_funcionario_id: item.funcionarioBigintId ?? null,
+  })
+
+  if (rpcError) { item.error = 'Não foi possível verificar a disponibilidade.'; item.loading = false; return }
+
+  let slots = calcularSlotsInterno(item.data, item.servico.duracao_min ?? 60, (data ?? []) as { inicio: string; fim: string }[])
+
+  // Se este item é o PRIMÁRIO de pares simultâneos (não tem anterior),
+  // filtra os slots para a intersecção onde TODOS os parceiros também estão livres.
+  // Cada parceiro verifica o seu próprio funcionário pela SUA própria duração.
+  if (!getSimultaneoAnterior(item)) {
+    const parceiros = slotsPerServicoInterno.value.filter(
+      other => other.servico.id !== item.servico.id && isSimultaneo(item.servico.id, other.servico.id)
+    )
+
+    // Pré-calcula o timestamp de fechamento para filtrar duração dos parceiros
+    const [fhH, fhM] = horarios.fechamento.split(':').map(Number) as [number, number]
+    const SP_OFFSET_MS = 3 * 60 * 60 * 1000
+    const spMidnight = new Date(item.data + 'T00:00:00Z').getTime() + SP_OFFSET_MS
+    const fechamentoMs = spMidnight + (fhH * 60 + fhM) * 60_000
+
+    for (const par of parceiros) {
+      const durParMs = (par.servico.duracao_min ?? 60) * 60_000
+
+      // Remove slots onde o parceiro (com duração maior) ultrapassaria o fechamento
+      slots = slots.filter(slot => slot.getTime() + durParMs <= fechamentoMs)
+
+      const { data: parOcupados, error: parErr } = await supabase.rpc('get_horarios_ocupados_funcionario', {
+        p_empresa_id:     empresaId.value,
+        p_data:           item.data,
+        p_servico_id:     par.servico.id,
+        p_funcionario_id: par.funcionarioBigintId ?? null,
+      })
+      if (parErr) continue
+      const ocupadosPar = (parOcupados ?? []) as { inicio: string; fim: string }[]
+      slots = slots.filter(slot => {
+        const s = slot.getTime()
+        const e = s + durParMs
+        return !ocupadosPar.some(oc => {
+          const os = new Date(oc.inicio).getTime()
+          const oe = new Date(oc.fim).getTime()
+          return s < oe && e > os
+        })
+      })
+    }
+  }
+
+  item.slots   = slots
+  item.loading = false
+}
+
+async function onDataChangeItemInterno(item: SlotItemInterno) {
+  item.horario = null
+  await carregarSlotsItemInterno(item)
+}
+
+// Bloqueia slots que conflitam por duração com outro serviço já selecionado no mesmo funcionário.
+// Serviços simultâneos não se bloqueiam entre si (por definição podem sobrepor).
+function isSlotTakenInterno(slot: Date, currentItem: SlotItemInterno): boolean {
+  const slotStart = slot.getTime()
+  const slotEnd   = slotStart + (currentItem.servico.duracao_min ?? 60) * 60_000
+  return slotsPerServicoInterno.value.some(item => {
+    if (item.servico.id === currentItem.servico.id) return false
+    if (!item.horario || item.data !== currentItem.data) return false
+    if (isSimultaneo(currentItem.servico.id, item.servico.id)) return false
+    // Só bloqueia se for o mesmo funcionário (calendarios independentes não se conflitam)
+    if (item.funcionarioBigintId !== currentItem.funcionarioBigintId) return false
+    const otherStart = item.horario.getTime()
+    const otherEnd   = otherStart + (item.servico.duracao_min ?? 60) * 60_000
+    return slotStart < otherEnd && slotEnd > otherStart
+  })
+}
+
+async function syncServicos(agendamentoId: number, servicoId: number, preco: number, funcionarioId: number | null) {
   await supabase.from('agendamento_servicos').delete().eq('agendamento_id', agendamentoId)
-  if (form.servico_id) {
-    const svc = servicosAtivos.value.find(s => s.id === form.servico_id)
-    await supabase.from('agendamento_servicos').insert({
+  await supabase.from('agendamento_servicos').insert({
+    agendamento_id: agendamentoId,
+    servico_id:     servicoId,
+    preco_cobrado:  preco,
+    funcionario_id: funcionarioId ?? null,
+  })
+}
+
+async function gerarComissoes(
+  agendamentoId: number,
+  dataHora: string,
+  funcBigintId: number | null,
+  funcNome: string | null,
+): Promise<string | null> {
+  // Idempotência: se já existe comissão para este agendamento, não lança de novo
+  const { data: jaExiste } = await supabase
+    .from('comissoes')
+    .select('id')
+    .eq('agendamento_id', agendamentoId)
+    .limit(1)
+  if (jaExiste?.length) return null
+
+  const { data: agServicos, error: agErr } = await supabase
+    .from('agendamento_servicos')
+    .select('servico_id, preco_cobrado')
+    .eq('agendamento_id', agendamentoId)
+
+  if (agErr) return `Erro ao buscar serviços do agendamento: ${agErr.message}`
+  if (!agServicos?.length) return null
+
+  const comissaoRows: any[] = []
+  const dataISO = dataHora.slice(0, 10)
+
+  for (const as of agServicos) {
+    const svc = servicosAtivos.value.find(s => s.id === Number(as.servico_id))
+    if (!svc?.comissao_percentual) continue
+
+    const valorServico = Number(as.preco_cobrado ?? svc.preco)
+    const valorComissao = +(valorServico * svc.comissao_percentual / 100).toFixed(2)
+
+    comissaoRows.push({
+      empresa_id:     empresaId.value!,
       agendamento_id: agendamentoId,
-      servico_id: form.servico_id,
-      preco_cobrado: svc?.preco ?? 0,
+      funcionario_id: funcBigintId,
+      servico_id:     svc.id,
+      servico_nome:   svc.nome,
+      valor_servico:  valorServico,
+      percentual:     svc.comissao_percentual,
+      valor_comissao: valorComissao,
+      data:           dataISO,
     })
   }
+
+  if (!comissaoRows.length) return null
+
+  // 1) Upsert na tabela comissoes
+  const { data: comissoesSalvas, error: comErr } = await supabase
+    .from('comissoes')
+    .upsert(comissaoRows, { onConflict: 'agendamento_id,servico_id' })
+    .select('id, servico_nome, valor_comissao, servico_id')
+
+  if (comErr) return `Erro ao salvar comissões: ${comErr.message}`
+
+  const funcNomeLabel = funcNome ? ` — ${funcNome}` : ''
+
+  // 2) Lança cada comissão em contas_pagar (INSERT, ignora duplicata 23505)
+  for (const salva of (comissoesSalvas ?? [])) {
+    const { error: cpErr } = await supabase
+      .from('contas_pagar')
+      .insert({
+        empresa_id:      empresaId.value!,
+        descricao:       `Comissão: ${salva.servico_nome}${funcNomeLabel}`,
+        valor:           salva.valor_comissao,
+        data_vencimento: dataISO,
+        status:          'pendente',
+        categoria:       'Comissão',
+        origem:          'comissao',
+        comissao_id:     salva.id,
+      })
+    if (cpErr && cpErr.code !== '23505') {
+      return `Erro ao lançar comissão em contas a pagar: ${cpErr.message}`
+    }
+  }
+  return null
 }
 
 async function salvarEdicao() {
@@ -1512,21 +2047,41 @@ async function salvarEdicao() {
   saving.value = true
   modalError.value = null
 
+  const item = slotsPerServicoInterno.value[0]
+  if (!item) { saving.value = false; return }
+  const hora = item.horario ? formatHoraSlot(item.horario) : ''
+  const dataHora = `${item?.data}T${hora}:00-03:00`
+
+  const statusAnterior = editando.value.status
+
   const { error: updateError } = await supabase
     .from('agendamentos')
     .update({
-      cliente_id: form.cliente_id ?? null,
-      funcionario_id: form.funcionario_id,
-      data_hora: buildDataHora(),
-      status: form.status,
-      observacoes: form.observacoes.trim() || null,
-      empresa_id: empresaId.value!,
+      cliente_id:     form.cliente_id ?? null,
+      funcionario_id: item?.funcionarioUuid ?? null,
+      data_hora:      dataHora,
+      status:         form.status,
+      observacoes:    form.observacoes.trim() || null,
+      empresa_id:     empresaId.value!,
     })
     .eq('id', editando.value.id)
 
   if (updateError) { modalError.value = updateError.message; saving.value = false; return }
 
-  await syncServicos(editando.value.id)
+  await syncServicos(editando.value.id, item.servico.id, item.servico.preco, item?.funcionarioBigintId ?? null)
+
+  // Gera comissões ao concluir (apenas quando o status muda para concluido)
+  // Resolve funcionário via profile_id (UUID) que já está no item
+  // funcionarios.value tem profile_id preenchido desde fetchFuncionarios
+  if (form.status === 'concluido' && statusAnterior !== 'concluido') {
+    const funcId   = item?.funcionarioBigintId ?? null
+    const funcNome = funcId != null
+      ? (funcionarios.value.find(f => Number(f.id) === Number(funcId))?.nome ?? null)
+      : null
+    const comissaoErr = await gerarComissoes(editando.value.id, dataHora, funcId, funcNome)
+    if (comissaoErr) { modalError.value = comissaoErr; saving.value = false; return }
+  }
+
   saving.value = false
   editando.value = null
   await fetchAgendamentos()
@@ -1537,22 +2092,34 @@ async function salvarAdicao() {
   saving.value = true
   modalError.value = null
 
-  const { data, error: insertError } = await supabase
-    .from('agendamentos')
-    .insert({
-      cliente_id: form.cliente_id ?? null,
-      funcionario_id: form.funcionario_id,
-      data_hora: buildDataHora(),
-      status: form.status,
-      observacoes: form.observacoes.trim() || null,
-      empresa_id: empresaId.value!,
-    })
-    .select('id')
-    .single()
+  try {
+    for (const item of slotsPerServicoInterno.value) {
+      if (!item.horario || !item.data) continue
+      const hora      = formatHoraSlot(item.horario)
+      const dataHora  = `${item.data}T${hora}:00-03:00`
 
-  if (insertError) { modalError.value = insertError.message; saving.value = false; return }
+      const { data, error: insertError } = await supabase
+        .from('agendamentos')
+        .insert({
+          cliente_id:     form.cliente_id ?? null,
+          funcionario_id: item.funcionarioUuid ?? null,
+          data_hora:      dataHora,
+          status:         form.status,
+          observacoes:    form.observacoes.trim() || null,
+          empresa_id:     empresaId.value!,
+        })
+        .select('id')
+        .single()
 
-  await syncServicos(data.id)
+      if (insertError) throw insertError
+      await syncServicos(data.id, item.servico.id, item.servico.preco, item.funcionarioBigintId ?? null)
+    }
+  } catch (e: any) {
+    modalError.value = e?.message ?? 'Erro ao salvar agendamento.'
+    saving.value = false
+    return
+  }
+
   saving.value = false
   adicionando.value = false
   await fetchAgendamentos()
@@ -1582,7 +2149,7 @@ async function confirmarSolicitacaoEWhatsApp() {
   // Monta mensagem WhatsApp
   const tel = (ag.cliente_telefone ?? ag.telefone_solicitante ?? '').replace(/\D/g, '')
   const nome = ag.cliente_nome ?? ag.nome_solicitante ?? ''
-  const [aY, aM, aD] = ag.data_hora.slice(0, 10).split('-').map(Number)
+  const [aY = 0, aM = 1, aD = 1] = ag.data_hora.slice(0, 10).split('-').map(Number)
   const dataObj = new Date(aY, aM - 1, aD)
   const data = dataObj.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })
   const hora = formatHora(ag.data_hora)

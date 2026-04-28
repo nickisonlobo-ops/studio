@@ -170,6 +170,14 @@
             </span>
           </div>
 
+          <!-- Comissão -->
+          <div v-if="s.comissao_percentual" class="mt-2.5">
+            <span class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">
+              <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Comissão {{ s.comissao_percentual }}%
+            </span>
+          </div>
+
           <div v-if="isAdminOrGerente" class="flex gap-2 mt-4 pt-4 border-t border-gray-100">
             <button
               type="button"
@@ -313,6 +321,27 @@
               </div>
             </div>
 
+            <!-- Comissão -->
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1.5">Comissão do funcionário (%)</label>
+              <div class="relative">
+                <input
+                  v-model.number="form.comissao_percentual"
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.5"
+                  placeholder="0"
+                  class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 pr-10"
+                />
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-400">%</span>
+              </div>
+              <p class="text-[10px] text-gray-400 mt-1">
+                Ao concluir o agendamento, o sistema registra automaticamente a comissão para o funcionário.
+                {{ form.comissao_percentual && form.preco ? `Exemplo: ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(form.preco * form.comissao_percentual / 100)} por serviço.` : '' }}
+              </p>
+            </div>
+
             <!-- Funcionários -->
             <div>
               <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-2">Funcionários que realizam este serviço</label>
@@ -326,6 +355,28 @@
                 >
                   <input type="checkbox" :value="func.id" v-model="form.funcionarioIds" class="accent-pink-500 w-3.5 h-3.5 shrink-0" />
                   <span class="truncate">{{ func.nome }}</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Simultâneos -->
+            <div>
+              <label class="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-1">
+                Pode ser feito junto com
+                <span class="text-[10px] font-normal text-gray-400 normal-case tracking-normal ml-1">(simultâneo)</span>
+              </label>
+              <p class="text-xs text-gray-400 mb-2">Marque serviços que podem ser realizados ao mesmo tempo que este — ex: cabelo + unhas.</p>
+              <div v-if="outrosServicos.length === 0" class="text-xs text-gray-400 py-2">Nenhum outro serviço ativo cadastrado.</div>
+              <div v-else class="flex flex-col gap-1.5 max-h-36 overflow-y-auto pr-1">
+                <label
+                  v-for="s in outrosServicos"
+                  :key="s.id"
+                  class="flex items-center gap-2.5 text-sm cursor-pointer select-none px-3 py-2 rounded-xl border transition-colors"
+                  :class="form.simultaneosIds.includes(s.id) ? 'border-pink-300 bg-pink-50 text-pink-700 font-semibold' : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100'"
+                >
+                  <input type="checkbox" :value="s.id" v-model="form.simultaneosIds" class="accent-pink-500 w-3.5 h-3.5 shrink-0" />
+                  <span class="flex-1 truncate">{{ s.nome }}</span>
+                  <span class="text-xs text-gray-400 shrink-0">{{ s.duracao_min }}min</span>
                 </label>
               </div>
             </div>
@@ -396,6 +447,7 @@ interface Servico {
   categoria: string
   duracao_min: number
   preco: number
+  comissao_percentual: number | null
   ativo: boolean
   foto_url: string | null
   created_at: string | null
@@ -432,10 +484,16 @@ const form = reactive({
   categoria: '',
   duracao_min: 60,
   preco: 0,
+  comissao_percentual: null as number | null,
   ativo: true,
   foto_url: null as string | null,
   funcionarioIds: [] as number[],
+  simultaneosIds: [] as number[],
 })
+
+const outrosServicos = computed(() =>
+  servicos.value.filter(s => s.ativo && s.id !== editando.value?.id)
+)
 
 const formErrors = reactive({ nome: '', duracao_min: '', preco: '' })
 
@@ -518,9 +576,10 @@ async function fetchFuncionarios() {
 
 function resetForm() {
   form.nome = ''; form.descricao = ''; form.categoria = ''
-  form.duracao_min = 60; form.preco = 0; form.ativo = true
+  form.duracao_min = 60; form.preco = 0; form.comissao_percentual = null; form.ativo = true
   form.foto_url = null
   form.funcionarioIds = []
+  form.simultaneosIds = []
   fotoFile.value = null
   fotoPreview.value = null
   formErrors.nome = ''; formErrors.duracao_min = ''; formErrors.preco = ''
@@ -538,7 +597,7 @@ function fecharModal() {
   adicionando.value = false
 }
 
-function editServico(s: Servico) {
+async function editServico(s: Servico) {
   editando.value = s
   adicionando.value = false
   modalError.value = null
@@ -548,11 +607,17 @@ function editServico(s: Servico) {
   form.categoria = s.categoria
   form.duracao_min = s.duracao_min
   form.preco = s.preco
+  form.comissao_percentual = s.comissao_percentual ?? null
   form.ativo = s.ativo
   form.foto_url = s.foto_url ?? null
   fotoFile.value = null
   fotoPreview.value = s.foto_url ?? null
   form.funcionarioIds = (s.servico_funcionarios ?? []).map(sf => sf.funcionario_id)
+  const { data: simData } = await supabase
+    .from('servico_simultaneos')
+    .select('servico_par_id')
+    .eq('servico_id', s.id)
+  form.simultaneosIds = (simData ?? []).map((r: any) => Number(r.servico_par_id))
 }
 
 function validateForm(): boolean {
@@ -571,6 +636,7 @@ function buildPayload() {
     categoria: form.categoria,
     duracao_min: form.duracao_min,
     preco: form.preco,
+    comissao_percentual: form.comissao_percentual ?? null,
     ativo: form.ativo,
     foto_url: form.foto_url,
     empresa_id: empresaId.value!,
@@ -614,6 +680,26 @@ async function syncFuncionarios(servicoId: number) {
   }
 }
 
+async function syncSimultaneos(servicoId: number) {
+  const [delA, delB] = await Promise.all([
+    supabase.from('servico_simultaneos').delete().eq('servico_id', servicoId),
+    supabase.from('servico_simultaneos').delete().eq('servico_par_id', servicoId),
+  ])
+  if (delA.error) throw new Error('Erro ao remover simultâneos (A): ' + delA.error.message)
+  if (delB.error) throw new Error('Erro ao remover simultâneos (B): ' + delB.error.message)
+
+  if (form.simultaneosIds.length > 0) {
+    const rows = form.simultaneosIds.flatMap(parId => [
+      { servico_id: servicoId, servico_par_id: parId },
+      { servico_id: parId, servico_par_id: servicoId },
+    ])
+    const { error: upsertErr } = await supabase
+      .from('servico_simultaneos')
+      .upsert(rows, { onConflict: 'servico_id,servico_par_id' })
+    if (upsertErr) throw new Error('Erro ao salvar simultâneos: ' + upsertErr.message)
+  }
+}
+
 async function salvarEdicao() {
   if (!editando.value || !validateForm()) return
   saving.value = true
@@ -635,6 +721,11 @@ async function salvarEdicao() {
   if (updateError) { saving.value = false; modalError.value = updateError.message; return }
 
   await syncFuncionarios(editando.value.id)
+  try {
+    await syncSimultaneos(editando.value.id)
+  } catch (e: any) {
+    saving.value = false; modalError.value = e.message; return
+  }
 
   saving.value = false
   editando.value = null
@@ -664,6 +755,11 @@ async function salvarAdicao() {
   }
 
   await syncFuncionarios(inserted.id)
+  try {
+    await syncSimultaneos(inserted.id)
+  } catch (e: any) {
+    saving.value = false; modalError.value = e.message; return
+  }
   saving.value = false
   adicionando.value = false
   await fetchServicos()

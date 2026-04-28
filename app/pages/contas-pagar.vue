@@ -208,6 +208,27 @@
                 {{ p }}
               </button>
             </div>
+            <div class="flex items-center gap-2.5">
+              <span class="text-xs font-bold text-gray-500 uppercase tracking-widest">Origem</span>
+              <button
+                type="button"
+                class="text-xs font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-150"
+                :class="filtros.origem === '' ? 'bg-gray-800 border-gray-800 text-white' : 'bg-white border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-700'"
+                @click="filtros.origem = ''"
+              >Todas</button>
+              <button
+                type="button"
+                class="text-xs font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-150"
+                :class="filtros.origem === 'manual' ? 'bg-blue-100 border-blue-400 text-blue-700' : 'bg-white border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-700'"
+                @click="filtros.origem = filtros.origem === 'manual' ? '' : 'manual'"
+              >Manual</button>
+              <button
+                type="button"
+                class="text-xs font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-150"
+                :class="filtros.origem === 'comissao' ? 'bg-amber-100 border-amber-400 text-amber-700' : 'bg-white border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-700'"
+                @click="filtros.origem = filtros.origem === 'comissao' ? '' : 'comissao'"
+              >Comissões</button>
+            </div>
           </div>
         </div>
       </div>
@@ -275,8 +296,14 @@
                   {{ conta.id }}
                 </span>
               </td>
-              <td class="px-5 py-4">
-                <span class="font-semibold text-gray-800 max-w-[200px] block truncate">{{ conta.descricao }}</span>
+              <td class="px-5 py-4 whitespace-normal">
+                <div class="flex flex-col gap-1">
+                  <span class="font-semibold text-gray-800 break-words">{{ conta.descricao }}</span>
+                  <span v-if="conta.origem === 'comissao'" class="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100 w-fit">
+                    <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Comissão
+                  </span>
+                </div>
               </td>
               <td class="px-5 py-4">
                 <span class="font-black text-gray-900 tabular-nums">{{ formatCurrency(conta.valor) }}</span>
@@ -507,8 +534,9 @@ interface ContaPagar {
   categoria: string | null
   forma_pagamento: string | null
   observacao: string | null
-
   periodicidade: string | null
+  origem: string | null
+  comissao_id: number | null
   created_at: string | null
 }
 
@@ -552,6 +580,7 @@ const filtros = reactive({
   categoria: '',
   formaPagamento: '',
   presetAtivo: '',
+  origem: '',   // '' | 'manual' | 'comissao'
 })
 
 const statusOpcoes = [
@@ -572,6 +601,7 @@ const filtrosAtivos = computed(() => {
   if (filtros.valorMax !== '') count++
   if (filtros.categoria) count++
   if (filtros.formaPagamento) count++
+  if (filtros.origem) count++
   return count
 })
 
@@ -593,6 +623,7 @@ const contasFiltradas = computed(() => {
     if (filtros.valorMax !== '' && conta.valor > Number(filtros.valorMax)) return false
     if (filtros.categoria && !(conta.categoria ?? '').toLowerCase().includes(filtros.categoria.toLowerCase())) return false
     if (filtros.formaPagamento && !(conta.forma_pagamento ?? '').toLowerCase().includes(filtros.formaPagamento.toLowerCase())) return false
+    if (filtros.origem && (conta.origem ?? 'manual') !== filtros.origem) return false
     return true
   })
 })
@@ -672,6 +703,7 @@ function limparFiltros() {
   filtros.categoria = ''
   filtros.formaPagamento = ''
   filtros.presetAtivo = ''
+  filtros.origem = ''
 }
 
 const columns = [
@@ -790,7 +822,7 @@ function validarForm(): boolean {
 const mesesRestantes = computed(() => {
   if (!form.data_vencimento) return 0
   const ano = new Date().getFullYear()
-  const [y, m] = form.data_vencimento.split('-').map(Number)
+  const [y = 0, m = 1] = form.data_vencimento.split('-').map(Number)
   if (y > ano) return 0
   const mesInicio = y === ano ? m : 1
   return Math.max(0, 12 - mesInicio + 1)
@@ -817,7 +849,7 @@ async function salvarAdicao() {
 
   if (form.periodicidade === 'mensal' && form.data_vencimento) {
     const ano = new Date().getFullYear()
-    const [startY, startM, startD] = form.data_vencimento.split('-').map(Number)
+    const [startY = 0, startM = 1, startD = 1] = form.data_vencimento.split('-').map(Number)
     const parcelas = []
     let y = startY, m = startM
     while (y < ano || (y === ano && m <= 12)) {

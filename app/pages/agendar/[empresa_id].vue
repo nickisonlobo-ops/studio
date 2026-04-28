@@ -238,6 +238,23 @@
             </div>
 
             <!-- Seleção de data -->
+            <template v-if="getSimultaneoAnterior(item)">
+              <!-- Badge simultâneo -->
+              <div class="flex items-center gap-2.5 p-3 rounded-xl border" :style="{ borderColor: 'var(--color-primary, #ec4899)', background: 'color-mix(in srgb, var(--color-primary, #ec4899) 8%, #fff)' }">
+                <svg class="w-4 h-4 shrink-0" :style="{ color: 'var(--color-primary, #ec4899)' }" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+                </svg>
+                <div>
+                  <p class="text-xs font-bold" :style="{ color: 'var(--color-primary, #ec4899)' }">Simultâneo com {{ getSimultaneoAnterior(item)!.servico.nome }}</p>
+                  <p class="text-xs text-gray-500 mt-0.5">
+                    {{ item.horario ? `Agendado às ${formatHora(item.horario)} — mesmo horário` : 'Aguardando seleção de horário acima…' }}
+                  </p>
+                </div>
+              </div>
+            </template>
+
+            <template v-else>
+            <!-- Seleção de data (só para o card primário) -->
             <div class="flex flex-col gap-1.5">
               <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Data</label>
               <input
@@ -297,6 +314,7 @@
                 >{{ formatHora(slot) }}</button>
               </div>
             </template>
+            </template><!-- /v-else simultâneo -->
           </div>
 
           <div class="flex gap-3">
@@ -464,7 +482,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { createSupabaseClient } from '~/lib/supabase'
 import { usePersonalizacao } from '~/composables/usePersonalizacao'
@@ -521,7 +539,52 @@ const horariosConf = ref({ abertura: '08:00', fechamento: '18:00', intervalo: 30
 // ── Seleções do wizard ──────────────────────────────────────────
 const servicosSelecionados = ref<number[]>([])
 const slotsPerServico      = ref<SlotItem[]>([])
+// ── Serviços simultâneos ────────────────────────────────────────────
+const simultaneosPares = ref<Set<string>>(new Set())
 
+function isSimultaneo(idA: number, idB: number): boolean {
+  return simultaneosPares.value.has(`${idA}-${idB}`) || simultaneosPares.value.has(`${idB}-${idA}`)
+}
+
+async function carregarSimultaneos(ids: number[]) {
+  if (ids.length < 2) { simultaneosPares.value = new Set(); return }
+  const { data } = await supabase
+    .from('servico_simultaneos')
+    .select('servico_id, servico_par_id')
+    .in('servico_id', ids)
+    .in('servico_par_id', ids)
+  const pares = new Set<string>()
+  for (const row of (data ?? []) as { servico_id: number; servico_par_id: number }[])
+    pares.add(`${row.servico_id}-${row.servico_par_id}`)
+  simultaneosPares.value = pares
+}
+
+function getSimultaneoAnterior(item: SlotItem): SlotItem | null {
+  const idx = slotsPerServico.value.indexOf(item)
+  return slotsPerServico.value.slice(0, idx).find(
+    other => isSimultaneo(other.servico.id, item.servico.id)
+  ) ?? null
+}
+
+// Auto-sincroniza data + horário para pares simultâneos
+watch(
+  [() => slotsPerServico.value.map(i => ({ id: i.servico.id, data: i.data, ts: i.horario?.getTime() ?? null })),
+   simultaneosPares],
+  () => {
+    for (const item of slotsPerServico.value) {
+      if (!item.horario || !item.data) continue
+      for (const other of slotsPerServico.value) {
+        if (other.servico.id === item.servico.id) continue
+        if (!isSimultaneo(item.servico.id, other.servico.id)) continue
+        if (other.horario?.getTime() !== item.horario.getTime() || other.data !== item.data) {
+          other.data    = item.data
+          other.horario = item.horario
+        }
+      }
+    }
+  },
+  { deep: true }
+)
 // ── Formulário de dados pessoais ────────────────────────────────
 const form        = reactive({ nome: '', telefone: '', email: '', observacoes: '' })
 const formErrors  = reactive({ nome: '', telefone: '' })
@@ -598,7 +661,7 @@ async function carregarSlotsServico(item: SlotItem) {
     return
   }
 
-  item.slots = calcularSlots(
+  let slots = calcularSlots(
     item.data,
     horariosConf.value.abertura,
     horariosConf.value.fechamento,
@@ -608,6 +671,35 @@ async function carregarSlotsServico(item: SlotItem) {
     horariosConf.value.almoco_inicio,
     horariosConf.value.almoco_fim,
   )
+
+  // Se este item é primário de pares simultâneos, filtra pela agenda dos parceiros também
+  if (!getSimultaneoAnterior(item)) {
+    const parceiros = slotsPerServico.value.filter(
+      other => other.servico.id !== item.servico.id && isSimultaneo(item.servico.id, other.servico.id)
+    )
+    for (const par of parceiros) {
+      const { data: parOcupados, error: parErr } = await supabase.rpc('get_horarios_ocupados_funcionario', {
+        p_empresa_id:     empresaId.value,
+        p_data:           item.data,
+        p_servico_id:     par.servico.id,
+        p_funcionario_id: par.funcionarioSelecionado?.id ?? null,
+      })
+      if (parErr) continue
+      const ocupadosPar = (parOcupados ?? []) as HorarioOcupado[]
+      const durParMs = (par.servico.duracao_min ?? 60) * 60_000
+      slots = slots.filter(slot => {
+        const s = slot.getTime()
+        const e = s + durParMs
+        return !ocupadosPar.some(oc => {
+          const os = new Date(oc.inicio).getTime()
+          const oe = new Date(oc.fim).getTime()
+          return s < oe && e > os
+        })
+      })
+    }
+  }
+
+  item.slots   = slots
   item.loading = false
 }
 
@@ -643,17 +735,26 @@ function irParaAgenda() {
       funcionarioSelecionado: func ? { id: func.id, nome: func.nome } : null,
     }
   })
-  step.value = 2
+  // Garante que pares simultâneos estão carregados antes do step 2
+  carregarSimultaneos(servicosSelecionados.value).then(() => { step.value = 2 })
 }
 
-// Retorna true se o slot já foi escolhido por outro serviço na mesma data
+// Bloqueia slots que conflitam (por duração) com outro serviço já selecionado no mesmo funcionário.
+// Pares simultâneos não se bloqueiam entre si.
 function isSlotTaken(slot: Date, currentItem: SlotItem): boolean {
-  return slotsPerServico.value.some(
-    item =>
-      item.servico.id !== currentItem.servico.id &&
-      item.data === currentItem.data &&
-      item.horario?.getTime() === slot.getTime()
-  )
+  const slotStart = slot.getTime()
+  const slotEnd   = slotStart + (currentItem.servico.duracao_min ?? 60) * 60_000
+  return slotsPerServico.value.some(item => {
+    if (item.servico.id === currentItem.servico.id) return false
+    if (!item.horario || item.data !== currentItem.data) return false
+    if (isSimultaneo(currentItem.servico.id, item.servico.id)) return false
+    const sameFunc =
+      (item.funcionarioSelecionado?.id ?? null) === (currentItem.funcionarioSelecionado?.id ?? null)
+    if (!sameFunc) return false
+    const otherStart = item.horario.getTime()
+    const otherEnd   = otherStart + (item.servico.duracao_min ?? 60) * 60_000
+    return slotStart < otherEnd && slotEnd > otherStart
+  })
 }
 
 /**
