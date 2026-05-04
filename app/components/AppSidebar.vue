@@ -95,6 +95,7 @@ const allNavSections = [
   {
     title: 'Financeiro',
     items: [
+      { to: '/financeiro', icon: 'wallet', label: 'Dashboard Financeiro', minPerfil: 'manager' },
       { to: '/contas-pagar', icon: 'wallet', label: 'Contas a Pagar', minPerfil: 'manager' },
     ],
   },

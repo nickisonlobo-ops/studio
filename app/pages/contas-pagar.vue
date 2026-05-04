@@ -663,6 +663,36 @@ function toISODate(d: Date): string {
   return d.toISOString().split('T')[0]!
 }
 
+function isOverdue(conta: ContaPagar): boolean {
+  const status = conta.status ?? 'pendente'
+  if (status === 'pago' || status === 'cancelado' || status === 'vencido') return false
+  const dueDate = new Date(conta.data_vencimento + 'T23:59:59')
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return dueDate < today
+}
+
+async function atualizarContasVencidas(contasList: ContaPagar[]) {
+  const overdueIds = contasList
+    .filter(isOverdue)
+    .map(conta => conta.id)
+
+  if (overdueIds.length === 0) return
+
+  const { error: updateError } = await supabase
+    .from('contas_pagar')
+    .update({ status: 'vencido' })
+    .in('id', overdueIds)
+
+  if (!updateError) {
+    contasList.forEach(conta => {
+      if (overdueIds.includes(conta.id)) {
+        conta.status = 'vencido'
+      }
+    })
+  }
+}
+
 const presetsDePeriodo = [
   { label: 'Hoje',        days: 0  },
   { label: 'Esta semana', days: 6  },
@@ -732,7 +762,9 @@ async function fetchContas() {
 
   loading.value = false
   if (fetchError) { error.value = fetchError.message; return }
+
   contas.value = (data ?? []) as ContaPagar[]
+  await atualizarContasVencidas(contas.value)
 }
 
 async function mudarStatus(conta: ContaPagar, novoStatus: string) {
