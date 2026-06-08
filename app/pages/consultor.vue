@@ -1,190 +1,199 @@
-<template>
-  <div class="min-h-full p-3 sm:p-6 lg:p-8" style="background: #f4f6f9">
+﻿<template>
+  <div class="min-h-full" style="background: var(--color-bg, #f4f6f9)">
 
-    <!-- ══════════════════════ CABEÇALHO -->
-    <div class="relative rounded-2xl overflow-hidden mb-6 shadow-lg">
-      <div class="absolute inset-0" :style="{ background: 'var(--color-primary-bg, linear-gradient(135deg, #4f46e5, #7c3aed))' }"></div>
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.08),transparent_55%)]"></div>
-      <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-white/[0.02] pointer-events-none"></div>
-
-      <div class="relative px-5 sm:px-8 py-6">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <div class="w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0 shadow-md">
-              <svg class="w-5 sm:w-7 h-5 sm:h-7 text-white" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-0.5">Inteligência Artificial</p>
-              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none">Consultor de Negócios IA</h1>
-              <p class="text-xs text-white/50 mt-1 hidden sm:block">Análises e recomendações geradas com base nos dados reais do ERP</p>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            class="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-xl bg-white/10 text-white hover:bg-white/18 border border-white/15 transition-all duration-150 shrink-0"
-            @click="fetchAll"
-          >
-            <svg class="w-3.5 h-3.5" :class="loading ? 'animate-spin' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-            </svg>
-            <span class="hidden sm:inline uppercase tracking-widest">Atualizar</span>
-          </button>
+    <!-- ══════════════════════ HERO HEADER -->
+    <div class="px-5 sm:px-8 pt-7 pb-6" style="background: var(--color-bg, #f4f6f9)">
+      <div class="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p class="text-xs mb-1 text-gray-400">Bem-vindo de volta!</p>
+          <h1 class="text-2xl sm:text-3xl font-black tracking-tight leading-none text-gray-900">
+            Consultor de Negócios <span :style="{ color: 'var(--color-primary, #6366f1)' }">IA</span>
+          </h1>
+          <p class="text-sm mt-1.5 text-gray-500">Análises automáticas com base nos dados reais da sua empresa</p>
         </div>
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-xl transition-all duration-200 shrink-0"
+          :style="{ background: 'var(--color-btn, var(--color-primary, #6366f1))', color: 'var(--color-btn-text, #fff)', border: '1px solid rgba(0,0,0,0.08)' }"
+          @click="fetchAll"
+        >
+          <svg class="w-3.5 h-3.5" :class="loading ? 'animate-spin' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+          </svg>
+          Atualizar Dados
+        </button>
       </div>
     </div>
 
     <!-- Loading -->
-    <div v-if="loading" class="flex flex-col items-center justify-center gap-3 py-28">
-      <div class="relative w-12 h-12">
-        <span class="absolute inset-0 rounded-full border-[3px] border-indigo-100"></span>
-        <span class="absolute inset-0 rounded-full border-[3px] border-t-indigo-500 animate-spin"></span>
+    <div v-if="loading" class="flex flex-col items-center justify-center gap-4 py-32">
+      <div class="relative w-14 h-14">
+        <svg class="w-14 h-14 -rotate-90" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(99,102,241,0.2)" stroke-width="4"/>
+          <circle cx="28" cy="28" r="24" fill="none" stroke="#6366f1" stroke-width="4" stroke-dasharray="150.796" stroke-dashoffset="75" stroke-linecap="round" class="animate-spin origin-center"/>
+        </svg>
       </div>
-      <p class="text-sm text-gray-400 font-medium">Analisando dados da sua empresa…</p>
+      <p class="text-sm font-semibold text-gray-400">Analisando dados da sua empresa…</p>
     </div>
 
     <template v-else>
+      <div class="p-4 sm:p-6 lg:p-8 space-y-4">
 
-      <!-- ══════════════════════ SCORE GERAL -->
-      <div class="mb-5 rounded-2xl overflow-hidden shadow-sm border border-white/60" style="background:#fff">
+        <!-- ══════════════════════ SCORE GERAL — CARD PREMIUM -->
+        <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm" style="border-left: 4px solid var(--color-primary, #6366f1)">
+          <div class="px-6 sm:px-10 py-7 sm:py-8">
+            <div class="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10">
 
-        <!-- Faixa de score -->
-        <div
-          class="relative px-6 py-5 overflow-hidden"
-          :class="{
-            'bg-gradient-to-r from-emerald-500 to-teal-500': scoreGeral.geral >= 80,
-            'bg-gradient-to-r from-amber-400 to-orange-400': scoreGeral.geral >= 60 && scoreGeral.geral < 80,
-            'bg-gradient-to-r from-red-500 to-rose-500':     scoreGeral.geral < 60,
-          }"
-        >
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_right,rgba(255,255,255,0.1),transparent_50%)]"></div>
-          <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <p class="text-[10px] font-black text-white/60 uppercase tracking-[0.18em] mb-1">Score Geral da Empresa</p>
-              <p class="text-sm text-white/80">Índice de saúde baseado em todos os módulos do ERP</p>
-            </div>
-            <div class="flex items-end gap-2 shrink-0">
-              <p class="text-5xl font-black text-white leading-none tracking-tight">{{ scoreGeral.geral }}</p>
-              <div class="pb-0.5">
-                <p class="text-base font-bold text-white/50 leading-none">/100</p>
-                <p class="text-[11px] font-black uppercase tracking-widest mt-1.5 text-white/80">
-                  {{ scoreGeral.geral >= 80 ? '● Saudável' : scoreGeral.geral >= 60 ? '● Atenção' : '● Crítico' }}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="relative mt-4 h-1.5 bg-white/20 rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-white/80 transition-all duration-700" :style="{ width: scoreGeral.geral + '%' }"></div>
-          </div>
-        </div>
-
-        <!-- Cards de módulos -->
-        <div class="px-4 py-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
-          <div
-            v-for="item in scoreGeral.modulos"
-            :key="item.nome"
-            class="rounded-xl border p-3 flex flex-col gap-2.5 transition-shadow hover:shadow-sm"
-            :class="{
-              'bg-emerald-50/70 border-emerald-100': item.score >= 80,
-              'bg-amber-50/70 border-amber-100':     item.score >= 60 && item.score < 80,
-              'bg-red-50/70 border-red-100':          item.score < 60,
-            }"
-          >
-            <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0"
-                :class="{ 'bg-emerald-100': item.score >= 80, 'bg-amber-100': item.score >= 60 && item.score < 80, 'bg-red-100': item.score < 60 }">
-                <svg class="w-3 h-3" :class="{ 'text-emerald-600': item.score >= 80, 'text-amber-600': item.score >= 60 && item.score < 80, 'text-red-600': item.score < 60 }" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" :d="item.iconPath" />
+              <!-- Gauge circular SVG -->
+              <div class="relative shrink-0 flex items-center justify-center mx-auto lg:mx-0">
+                <svg width="180" height="180" viewBox="0 0 160 160">
+                  <!-- Trilha -->
+                  <circle cx="80" cy="80" r="64" fill="none" stroke="#e5e7eb" stroke-width="12" stroke-linecap="round"/>
+                  <!-- Progresso colorido -->
+                  <circle
+                    cx="80" cy="80" r="64"
+                    fill="none"
+                    :stroke="scoreGeral.geral >= 80 ? '#10b981' : scoreGeral.geral >= 60 ? '#f59e0b' : '#ef4444'"
+                    stroke-width="12"
+                    stroke-linecap="round"
+                    :stroke-dasharray="402.124"
+                    :stroke-dashoffset="402.124 - (402.124 * scoreGeral.geral / 100)"
+                    transform="rotate(-90 80 80)"
+                    style="transition: stroke-dashoffset 1s ease"
+                  />
+                  <!-- Valor central -->
+                  <text x="80" y="72" text-anchor="middle" fill="#111827" font-size="36" font-weight="900" font-family="Inter, sans-serif">{{ scoreGeral.geral }}</text>
+                  <text x="80" y="90" text-anchor="middle" fill="#9ca3af" font-size="12" font-weight="700" font-family="Inter, sans-serif">/100</text>
+                  <text x="80" y="110" text-anchor="middle" :fill="scoreGeral.geral >= 80 ? '#059669' : scoreGeral.geral >= 60 ? '#d97706' : '#dc2626'" font-size="10" font-weight="800" font-family="Inter, sans-serif" letter-spacing="2">{{ scoreGeral.geral >= 80 ? 'SAUDÁVEL' : scoreGeral.geral >= 60 ? 'ATENÇÃO' : 'CRÍTICO' }}</text>
                 </svg>
               </div>
-              <p class="text-[11px] font-bold text-gray-600 leading-tight">{{ item.nome }}</p>
-            </div>
-            <div>
-              <div class="flex items-baseline justify-between mb-1">
-                <span class="text-xl font-black leading-none"
-                  :class="{ 'text-emerald-600': item.score >= 80, 'text-amber-500': item.score >= 60 && item.score < 80, 'text-red-500': item.score < 60 }">
-                  {{ item.score }}
-                </span>
-                <span class="text-[10px] font-semibold text-gray-300">/100</span>
+
+              <!-- Info + módulos -->
+              <div class="flex-1 min-w-0">
+                <div class="mb-4">
+                  <p class="text-[10px] font-black uppercase tracking-[0.2em] mb-1" style="color: var(--color-primary, #6366f1)">Score Geral da Empresa</p>
+                  <p class="text-gray-500 text-sm leading-relaxed">Índice calculado cruzando receita, clientes, estoque, operação e crescimento</p>
+                </div>
+
+                <!-- Grid de módulos -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+                  <div
+                    v-for="item in scoreGeral.modulos"
+                    :key="item.nome"
+                    class="rounded-xl px-4 py-3.5 border border-gray-100 bg-gray-50/80 flex flex-col gap-2"
+                  >
+                    <div class="flex items-center justify-between">
+                      <p class="text-[11px] font-bold text-gray-500 truncate">{{ item.nome }}</p>
+                      <span
+                        class="text-[9px] font-black px-1.5 py-0.5 rounded-full"
+                        :style="{
+                          background: item.score >= 80 ? 'rgba(16,185,129,0.15)' : item.score >= 60 ? 'rgba(245,158,11,0.15)' : 'rgba(239,68,68,0.15)',
+                          color: item.score >= 80 ? '#059669' : item.score >= 60 ? '#d97706' : '#dc2626'
+                        }"
+                      >{{ item.score }}</span>
+                    </div>
+                    <!-- Mini barra -->
+                    <div class="h-1 rounded-full bg-gray-100">
+                      <div
+                        class="h-full rounded-full transition-all duration-700"
+                        :style="{
+                          width: item.score + '%',
+                          background: item.score >= 80 ? '#10b981' : item.score >= 60 ? '#f59e0b' : '#ef4444'
+                        }"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="h-1 rounded-full overflow-hidden" :class="{ 'bg-emerald-100': item.score >= 80, 'bg-amber-100': item.score >= 60 && item.score < 80, 'bg-red-100': item.score < 60 }">
-                <div class="h-full rounded-full transition-all duration-700"
-                  :class="{ 'bg-emerald-500': item.score >= 80, 'bg-amber-400': item.score >= 60 && item.score < 80, 'bg-red-500': item.score < 60 }"
-                  :style="{ width: item.score + '%' }"></div>
-              </div>
             </div>
+          </div>
+
+          <!-- Rodapé do card -->
+          <div class="px-6 sm:px-8 py-3 border-t border-gray-100 flex items-center gap-2">
+            <svg class="w-3 h-3 text-gray-300 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+            <p class="text-[10px] text-gray-400">Score ponderado: Financeiro 30% · Vendas 20% · Clientes 20% · Operação 15% · Estoque 15%</p>
           </div>
         </div>
 
-        <div class="px-5 pb-3 border-t border-gray-50">
-          <p class="text-[10px] text-gray-300 pt-2.5">Score calculado com base em margem de lucro, inadimplência, clientes ativos, giro de estoque, crescimento e cancelamentos.</p>
-        </div>
-      </div>
-
-      <!-- ══════════════════════ MÓDULO FINANCEIRO -->
-      <div class="mb-3 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <button type="button" class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50/70 transition-colors" @click="openFinanceiro = !openFinanceiro">
-          <div class="flex items-center gap-3.5">
-            <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <!-- ══════════════════════ MÓDULO FINANCEIRO -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+          <button type="button" class="w-full flex items-center justify-between px-5 py-4 transition-colors" @click="openFinanceiro = !openFinanceiro">
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg,#d1fae5,#a7f3d0)">
+                <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </div>
+              <div class="text-left min-w-0">
+                <p class="text-sm font-bold text-gray-800 leading-none">Módulo Financeiro</p>
+                <p class="text-[11px] text-gray-400 mt-0.5">Receita · Despesas · Lucro · Fluxo · Inadimplência · Ticket</p>
+              </div>
+              <span class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                :class="diagnosticosFinanceiros.length > 0 ? 'bg-red-50 text-red-500 border-red-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'">
+                {{ diagnosticosFinanceiros.length > 0 ? diagnosticosFinanceiros.length + ' alertas' : '✓ Saudável' }}
+              </span>
             </div>
-            <div class="text-left min-w-0">
-              <p class="text-sm font-bold text-gray-900">Módulo Financeiro</p>
-              <p class="text-xs text-gray-400 mt-0.5 truncate">Receita · Despesas · Lucro · Fluxo · Inadimplência · Ticket</p>
+            <div class="flex items-center gap-2 ml-4 shrink-0">
+              <span class="text-[11px] text-gray-300 hidden sm:block">{{ openFinanceiro ? 'Recolher' : 'Ver análise' }}</span>
+              <svg class="w-4 h-4 text-gray-400 transition-transform duration-300" :class="openFinanceiro ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
             </div>
-            <span class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full border"
-              :class="diagnosticosFinanceiros.length > 0 ? 'bg-red-50 text-red-600 border-red-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'">
-              {{ diagnosticosFinanceiros.length > 0 ? diagnosticosFinanceiros.length + ' alertas' : 'Saudável' }}
-            </span>
-          </div>
-          <div class="flex items-center gap-2 shrink-0 ml-3">
-            <span class="text-[11px] text-gray-300 font-medium hidden sm:block">{{ openFinanceiro ? 'Fechar' : 'Ver análise' }}</span>
-            <svg class="w-4 h-4 text-gray-300 transition-transform duration-200" :class="openFinanceiro ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
-          </div>
-        </button>
+          </button>
 
         <!-- Conteúdo expansível -->
-        <div v-show="openFinanceiro" class="border-t border-gray-100 px-5 py-5">
+        <div v-show="openFinanceiro" class="px-5 py-5 border-t border-gray-100">
 
-          <!-- KPI Cards -->
+          <!-- KPI Cards Financeiro — premium com tema -->
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Receita (mês)</p>
-              <p class="text-lg font-black text-gray-900 leading-tight truncate">{{ formatCurrency(fin.receitaMes) }}</p>
-              <div class="flex items-center gap-1 mt-1">
-                <span :class="fin.crescimentoMoM >= 0 ? 'text-emerald-600' : 'text-red-500'" class="text-xs font-bold">
-                  {{ fin.crescimentoMoM >= 0 ? '▲' : '▼' }} {{ Math.abs(fin.crescimentoMoM).toFixed(1) }}%
-                </span>
-                <span class="text-[10px] text-gray-400">vs mês ant.</span>
+
+            <div class="relative rounded-xl overflow-hidden p-4 border border-white/60 shadow-sm" :style="{ background: 'var(--color-primary-bg, linear-gradient(135deg,#059669,#0d9488))' }">
+              <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.1),transparent_70%)]"></div>
+              <div class="relative">
+                <p class="text-[9px] font-black uppercase tracking-[0.18em] text-white/60 mb-1.5">Receita (mês)</p>
+                <p class="text-lg font-black text-white leading-tight truncate">{{ formatCurrency(fin.receitaMes) }}</p>
+                <div class="flex items-center gap-1 mt-1.5">
+                  <span class="text-[10px] font-black" :class="fin.crescimentoMoM >= 0 ? 'text-white' : 'text-red-200'">
+                    {{ fin.crescimentoMoM >= 0 ? '▲' : '▼' }} {{ Math.abs(fin.crescimentoMoM).toFixed(1) }}%
+                  </span>
+                  <span class="text-[9px] text-white/40">vs ant.</span>
+                </div>
               </div>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Despesas (mês)</p>
-              <p class="text-lg font-black text-gray-900 leading-tight truncate">{{ formatCurrency(fin.despesasMes) }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">{{ fin.propDespesas.toFixed(0) }}% da receita</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Despesas</p>
+              <p class="text-lg font-black text-gray-900 leading-tight truncate pl-2">{{ formatCurrency(fin.despesasMes) }}</p>
+              <p class="text-[10px] text-gray-400 mt-1 pl-2">
+                <span :class="fin.propDespesas > 70 ? 'text-red-500 font-bold' : 'text-gray-400'">{{ fin.propDespesas.toFixed(0) }}%</span> da receita
+              </p>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Lucro Bruto</p>
-              <p class="text-lg font-black leading-tight truncate" :class="fin.lucro >= 0 ? 'text-emerald-600' : 'text-red-500'">{{ formatCurrency(fin.lucro) }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">Margem {{ fin.margem.toFixed(1) }}%</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :class="fin.lucro >= 0 ? 'bg-emerald-400' : 'bg-red-400'"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Lucro Bruto</p>
+              <p class="text-lg font-black leading-tight truncate pl-2" :class="fin.lucro >= 0 ? 'text-emerald-600' : 'text-red-500'">{{ formatCurrency(fin.lucro) }}</p>
+              <p class="text-[10px] text-gray-400 mt-1 pl-2">Margem <span :class="fin.margem < 15 ? 'text-amber-500 font-bold' : 'text-gray-400'">{{ fin.margem.toFixed(1) }}%</span></p>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Ticket Médio</p>
-              <p class="text-lg font-black text-gray-900 leading-tight truncate">{{ formatCurrency(fin.ticketMedio) }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">{{ fin.totalAtendimentos }} atend.</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Ticket Médio</p>
+              <p class="text-lg font-black text-gray-900 leading-tight truncate pl-2">{{ formatCurrency(fin.ticketMedio) }}</p>
+              <p class="text-[10px] text-gray-400 mt-1 pl-2">{{ fin.totalAtendimentos }} atend.</p>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Inadimplência</p>
-              <p class="text-lg font-black text-red-500 leading-tight truncate">{{ formatCurrency(fin.inadimplencia) }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">{{ fin.qtdVencidas }} vencida(s)</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :class="fin.inadimplencia > 0 ? 'bg-red-400' : 'bg-emerald-400'"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Inadimplência</p>
+              <p class="text-lg font-black leading-tight truncate pl-2" :class="fin.inadimplencia > 0 ? 'text-red-500' : 'text-emerald-600'">{{ formatCurrency(fin.inadimplencia) }}</p>
+              <p class="text-[10px] text-gray-400 mt-1 pl-2">{{ fin.qtdVencidas }} vencida(s)</p>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Fluxo de Caixa</p>
-              <p class="text-lg font-black leading-tight truncate" :class="fin.fluxoCaixa >= 0 ? 'text-emerald-600' : 'text-red-500'">{{ formatCurrency(fin.fluxoCaixa) }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">Receita − desp. pagas</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :class="fin.fluxoCaixa >= 0 ? 'bg-emerald-400' : 'bg-red-400'"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Fluxo de Caixa</p>
+              <p class="text-lg font-black leading-tight truncate pl-2" :class="fin.fluxoCaixa >= 0 ? 'text-emerald-600' : 'text-red-500'">{{ formatCurrency(fin.fluxoCaixa) }}</p>
+              <p class="text-[10px] text-gray-400 mt-1 pl-2">Receita − desp. pagas</p>
             </div>
+
           </div>
 
           <!-- Diagnósticos -->
@@ -202,9 +211,9 @@
               <div
                 class="px-4 py-3 flex items-start gap-3"
                 :class="{
-                  'bg-red-50':   diag.prioridade === 'Alta',
-                  'bg-amber-50': diag.prioridade === 'Média',
-                  'bg-blue-50':  diag.prioridade === 'Baixa',
+                  'bg-red-900/30':   diag.prioridade === 'Alta',
+                  'bg-amber-900/30': diag.prioridade === 'Média',
+                  'bg-blue-900/30':  diag.prioridade === 'Baixa',
                 }"
               >
                 <div
@@ -234,20 +243,26 @@
                   <p class="text-sm font-semibold text-gray-800 leading-snug">{{ diag.diagnostico }}</p>
                 </div>
               </div>
-              <div class="px-4 py-3 grid sm:grid-cols-2 gap-4 bg-white">
+              <div class="px-4 py-4 grid sm:grid-cols-2 gap-4 bg-white">
                 <div>
-                  <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">💡 Impacto Estimado</p>
-                  <p class="text-sm text-gray-700 leading-relaxed">{{ diag.impacto }}</p>
-                  <p v-if="diag.valorImpacto" class="text-base font-black text-emerald-600 mt-1">
-                    {{ formatCurrency(diag.valorImpacto) }}<span class="text-xs font-semibold text-gray-400">/mês</span>
+                  <div class="flex items-center gap-1.5 mb-2">
+                    <div class="w-1 h-4 rounded-full" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
+                    <p class="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">Impacto Estimado</p>
+                  </div>
+                  <p class="text-sm text-gray-600 leading-relaxed">{{ diag.impacto }}</p>
+                  <p v-if="diag.valorImpacto" class="text-lg font-black text-emerald-600 mt-2">
+                    +{{ formatCurrency(diag.valorImpacto) }}<span class="text-xs font-semibold text-gray-400">/mês</span>
                   </p>
                 </div>
                 <div>
-                  <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1.5">✅ Ações Recomendadas</p>
-                  <ul class="flex flex-col gap-1.5">
-                    <li v-for="(acao, j) in diag.acoes" :key="j" class="flex items-start gap-2">
-                      <span class="mt-0.5 w-4 h-4 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 text-[9px] font-black">{{ j + 1 }}</span>
-                      <span class="text-sm text-gray-700">{{ acao }}</span>
+                  <div class="flex items-center gap-1.5 mb-2">
+                    <div class="w-1 h-4 rounded-full" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
+                    <p class="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">Ações Recomendadas</p>
+                  </div>
+                  <ul class="flex flex-col gap-2">
+                    <li v-for="(acao, j) in diag.acoes" :key="j" class="flex items-start gap-2.5">
+                      <span class="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-[9px] font-black text-white" :style="{ background: 'var(--color-primary, #6366f1)' }">{{ j + 1 }}</span>
+                      <span class="text-sm text-gray-600 leading-snug">{{ acao }}</span>
                     </li>
                   </ul>
                 </div>
@@ -261,73 +276,185 @@
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════ MÓDULO CLIENTES -->
-      <!-- ══════════════════════ MÓDULO CLIENTES -->
-      <div class="mb-3 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <button type="button" class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50/70 transition-colors" @click="openClientes = !openClientes">
-          <div class="flex items-center gap-3.5">
-            <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+        <!-- MÓDULO VENDAS -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+          <button type="button" class="w-full flex items-center justify-between px-5 py-4 transition-colors" @click="openVendas = !openVendas">
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg,#fef3c7,#fde68a)">
+                <svg class="w-4 h-4 text-amber-700" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+              </div>
+              <div class="text-left min-w-0">
+                <p class="text-sm font-bold text-gray-800 leading-none">Módulo Vendas</p>
+                <p class="text-[11px] text-gray-400 mt-0.5">Volume · Conversão · Ticket · Produtos mais vendidos · Evolução</p>
+              </div>
+              <span class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                :class="fin.crescimentoMoM >= 0 ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-red-50 text-red-500 border border-red-100'">
+                {{ fin.crescimentoMoM >= 0 ? '▲ ' + fin.crescimentoMoM.toFixed(0) + '%' : '▼ ' + Math.abs(fin.crescimentoMoM).toFixed(0) + '%' }}
+              </span>
             </div>
-            <div class="text-left min-w-0">
-              <p class="text-sm font-bold text-gray-900">Módulo Clientes</p>
-              <p class="text-xs text-gray-400 mt-0.5 truncate">Ativos · Inativos · Frequência · Tempo sem comprar · Valor</p>
+            <div class="flex items-center gap-2 ml-4 shrink-0">
+              <span class="text-[11px] hidden sm:block" :style="{ color: 'var(--color-primary, #6366f1)' }">{{ openVendas ? 'Recolher' : 'Ver detalhes' }}</span>
+              <svg class="w-4 h-4 text-gray-400 transition-transform duration-300" :class="openVendas ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
             </div>
-            <span class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full border"
-              :class="cli.inativosMais60 > 0 ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'">
-              {{ cli.inativosMais60 > 0 ? cli.inativosMais60 + ' inativos' : 'Base ativa' }}
-            </span>
+          </button>
+
+          <div v-show="openVendas" class="px-5 py-5 border-t border-gray-100">
+
+            <!-- KPI Cards Vendas -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5">
+
+              <div class="relative rounded-xl overflow-hidden p-4 border border-white/60 shadow-sm" :style="{ background: 'var(--color-primary-bg, linear-gradient(135deg,#6366f1,#8b5cf6))' }">
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.1),transparent_70%)]"></div>
+                <div class="relative">
+                  <p class="text-[9px] font-black uppercase tracking-[0.18em] text-white/60 mb-1.5">Vendas no Mês</p>
+                  <p class="text-3xl font-black text-white leading-none">{{ fin.totalAtendimentos }}</p>
+                  <p class="text-[10px] text-white/50 mt-1.5">atendimentos concluídos</p>
+                </div>
+              </div>
+
+              <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+                <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :class="fin.crescimentoMoM >= 0 ? 'bg-emerald-400' : 'bg-red-400'"></div>
+                <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Crescimento</p>
+                <p class="text-2xl font-black text-gray-900 leading-none pl-2" :class="fin.crescimentoMoM >= 0 ? 'text-emerald-400' : 'text-red-400'">{{ fin.crescimentoMoM >= 0 ? '+' : '' }}{{ fin.crescimentoMoM.toFixed(1) }}%</p>
+                <p class="text-[10px] text-gray-400 mt-1.5 pl-2">vs mês anterior</p>
+              </div>
+
+              <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+                <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
+                <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Ticket Médio</p>
+                <p class="text-xl font-black text-gray-900 leading-none pl-2">{{ formatCurrency(fin.ticketMedio) }}</p>
+                <p class="text-[10px] text-gray-400 mt-1.5 pl-2">por atendimento</p>
+              </div>
+
+              <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+                <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
+                <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Receita Mês</p>
+                <p class="text-xl font-black text-gray-900 leading-none pl-2 truncate">{{ formatCurrency(fin.receitaMes) }}</p>
+                <p class="text-[10px] text-gray-400 mt-1.5 pl-2">faturamento total</p>
+              </div>
+
+              <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+                <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
+                <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Mês Anterior</p>
+                <p class="text-xl font-black text-gray-900 leading-none pl-2 truncate">{{ formatCurrency(fin.receitaPrev) }}</p>
+                <p class="text-[10px] text-gray-400 mt-1.5 pl-2">receita anterior</p>
+              </div>
+
+            </div>
+
+            <!-- Insights de vendas -->
+            <div class="flex flex-col gap-3">
+
+              <div v-if="fin.crescimentoMoM < -5" class="rounded-xl border border-red-200 overflow-hidden">
+                <div class="px-4 py-3 bg-red-50 flex items-start gap-3">
+                  <div class="mt-0.5 w-7 h-7 rounded-lg bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-semibold text-gray-800">Queda de {{ Math.abs(fin.crescimentoMoM).toFixed(1) }}% no faturamento vs. mês anterior</p>
+                    <p class="text-xs text-gray-500 mt-1">Receita caiu de {{ formatCurrency(fin.receitaPrev) }} para {{ formatCurrency(fin.receitaMes) }}. Ações comerciais urgentes são necessárias.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="fin.ticketMedio > 0 && fin.ticketMedio < 80" class="rounded-xl border border-amber-200 overflow-hidden">
+                <div class="px-4 py-3 bg-amber-50 flex items-start gap-3">
+                  <div class="mt-0.5 w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-semibold text-gray-800">Ticket médio baixo: {{ formatCurrency(fin.ticketMedio) }}</p>
+                    <p class="text-xs text-gray-500 mt-1">Aumente em R$ 20 por atendimento para gerar +{{ formatCurrency(20 * fin.totalAtendimentos) }}/mês com o mesmo volume.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="fin.crescimentoMoM >= 0 && fin.totalAtendimentos > 0" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-center">
+                <p class="text-sm font-bold text-emerald-700">✓ Vendas em alta! Crescimento de {{ fin.crescimentoMoM.toFixed(1) }}% com {{ fin.totalAtendimentos }} atendimentos.</p>
+              </div>
+
+              <div v-if="fin.totalAtendimentos === 0" class="rounded-xl border border-red-200 bg-red-50 p-4 text-center">
+                <p class="text-sm font-bold text-red-600">Nenhuma venda registrada este mês. Verifique se os agendamentos estão sendo concluídos.</p>
+              </div>
+
+            </div>
           </div>
-          <div class="flex items-center gap-2 shrink-0 ml-3">
-            <span class="text-[11px] text-gray-300 font-medium hidden sm:block">{{ openClientes ? 'Fechar' : 'Ver análise' }}</span>
-            <svg class="w-4 h-4 text-gray-300 transition-transform duration-200" :class="openClientes ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
-          </div>
-        </button>
+        </div>
+
+        <!-- MÓDULO CLIENTES -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+          <button type="button" class="w-full flex items-center justify-between px-5 py-4 transition-colors" @click="openClientes = !openClientes">
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg,#dbeafe,#bfdbfe)">
+                <svg class="w-4 h-4 text-blue-700" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+              </div>
+              <div class="text-left min-w-0">
+                <p class="text-sm font-bold text-gray-800 leading-none">Módulo Clientes</p>
+                <p class="text-[11px] text-gray-400 mt-0.5">Ativos · Inativos · Frequência · Tempo sem comprar · Valor</p>
+              </div>
+              <span class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                :class="cli.inativosMais60 > 0 ? 'bg-amber-50 text-amber-500 border-amber-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'">
+                {{ cli.inativosMais60 > 0 ? cli.inativosMais60 + ' inativos' : '✓ Base ativa' }}
+              </span>
+            </div>
+            <div class="flex items-center gap-2 ml-4 shrink-0">
+              <span class="text-[11px] text-gray-300 hidden sm:block">{{ openClientes ? 'Recolher' : 'Ver análise' }}</span>
+              <svg class="w-4 h-4 text-gray-400 transition-transform duration-300" :class="openClientes ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+            </div>
+          </button>
 
         <!-- Conteúdo expansível -->
-        <div v-show="openClientes" class="border-t border-gray-100 px-5 py-5">
+        <div v-show="openClientes" class="px-5 py-5 border-t border-gray-100">
 
           <!-- KPI Cards clientes -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Total de Clientes</p>
-              <p class="text-2xl font-black text-gray-900 leading-tight">{{ cli.total }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">cadastrados</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 border border-white/60 shadow-sm" :style="{ background: 'var(--color-primary-bg, linear-gradient(135deg,#3b82f6,#6366f1))' }">
+              <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.1),transparent_70%)]"></div>
+              <div class="relative">
+                <p class="text-[9px] font-black uppercase tracking-[0.18em] text-white/60 mb-1.5">Total de Clientes</p>
+                <p class="text-3xl font-black text-white leading-none">{{ cli.total }}</p>
+                <p class="text-[10px] text-white/50 mt-1.5">cadastrados</p>
+              </div>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Ativos (90 dias)</p>
-              <p class="text-2xl font-black text-emerald-600 leading-tight">{{ cli.ativos90 }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">compraram recente</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl bg-emerald-400"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Ativos (90d)</p>
+              <p class="text-3xl font-black text-emerald-600 leading-none pl-2">{{ cli.ativos90 }}</p>
+              <p class="text-[10px] text-gray-400 mt-1.5 pl-2">compraram recente</p>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Inativos +60 dias</p>
-              <p class="text-2xl font-black leading-tight" :class="cli.inativosMais60 > 0 ? 'text-amber-500' : 'text-gray-900'">{{ cli.inativosMais60 }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">sem comprar</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :class="cli.inativosMais60 > 0 ? 'bg-amber-400' : 'bg-emerald-400'"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Inativos +60d</p>
+              <p class="text-3xl font-black leading-none pl-2" :class="cli.inativosMais60 > 0 ? 'text-amber-500' : 'text-gray-900'">{{ cli.inativosMais60 }}</p>
+              <p class="text-[10px] text-gray-400 mt-1.5 pl-2">sem comprar</p>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Ticket Médio/Cliente</p>
-              <p class="text-xl font-black text-gray-900 leading-tight truncate">{{ formatCurrency(cli.ticketMedioCliente) }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">média histórica</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Ticket Médio</p>
+              <p class="text-xl font-black text-gray-900 leading-none pl-2 truncate">{{ formatCurrency(cli.ticketMedioCliente) }}</p>
+              <p class="text-[10px] text-gray-400 mt-1.5 pl-2">média histórica</p>
             </div>
+
           </div>
 
           <!-- Potencial de recuperação -->
-          <div v-if="cli.potencialRecuperacao > 0" class="mb-5 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
-              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
-              </svg>
-            </div>
-            <div class="flex-1">
-              <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-0.5">Potencial de Recuperação Estimado</p>
-              <p class="text-sm text-gray-700">
-                Se {{ cli.inativosMais60 }} clientes inativos voltarem a comprar com o ticket médio histórico,
-                você pode recuperar até
-              </p>
-            </div>
-            <div class="shrink-0 text-right">
-              <p class="text-2xl font-black text-blue-700">{{ formatCurrency(cli.potencialRecuperacao) }}</p>
-              <p class="text-xs text-blue-500 font-semibold">em receita</p>
+          <div v-if="cli.potencialRecuperacao > 0" class="mb-5 rounded-xl overflow-hidden shadow-sm border border-white/20" :style="{ background: 'var(--color-primary-bg, linear-gradient(135deg,#3b82f6,#6366f1))' }">
+            <div class="relative px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3">
+              <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_right,rgba(255,255,255,0.08),transparent_60%)]"></div>
+              <div class="relative flex-1">
+                <p class="text-[9px] font-black uppercase tracking-[0.18em] text-white/60 mb-1">Potencial de Recuperação Estimado</p>
+                <p class="text-sm text-white/80 leading-snug">
+                  Se {{ cli.inativosMais60 }} clientes inativos voltarem a comprar com o ticket médio histórico, você recupera até:
+                </p>
+              </div>
+              <div class="relative shrink-0 text-right">
+                <p class="text-3xl font-black text-white leading-none">{{ formatCurrency(cli.potencialRecuperacao) }}</p>
+                <p class="text-[10px] text-white/50 font-bold uppercase tracking-widest mt-1">em receita</p>
+              </div>
             </div>
           </div>
 
@@ -352,10 +479,10 @@
                   </p>
                 </div>
               </div>
-              <div class="px-4 py-3 bg-white grid sm:grid-cols-2 gap-4">
+              <div class="px-4 py-3 grid sm:grid-cols-2 gap-4 bg-white">
                 <div>
                   <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">💡 Impacto Estimado</p>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-gray-600 leading-relaxed">
                     Recuperar apenas 30% desses clientes pode gerar
                     <span class="font-bold text-emerald-600">{{ formatCurrency(cli.potencialRecuperacao * 0.3) }}</span>
                     adicionais no próximo mês.
@@ -403,7 +530,7 @@
                   </p>
                 </div>
               </div>
-              <div class="px-4 py-3 bg-white grid sm:grid-cols-2 gap-4">
+              <div class="px-4 py-3 grid sm:grid-cols-2 gap-4 bg-white">
                 <div>
                   <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">💡 Impacto Estimado</p>
                   <p class="text-sm text-gray-700">Cada 10 novos clientes com ticket médio de {{ formatCurrency(cli.ticketMedioCliente || 100) }} representam {{ formatCurrency((cli.ticketMedioCliente || 100) * 10) }} em receita potencial.</p>
@@ -444,7 +571,7 @@
                   </p>
                 </div>
               </div>
-              <div class="px-4 py-3 bg-white grid sm:grid-cols-2 gap-4">
+              <div class="px-4 py-3 grid sm:grid-cols-2 gap-4 bg-white">
                 <div>
                   <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">💡 Impacto Estimado</p>
                   <p class="text-sm text-gray-700">Se cada cliente ativo retornar apenas mais 1x por trimestre, você gera {{ formatCurrency(cli.ativos90 * cli.ticketMedioCliente) }} extras.</p>
@@ -492,78 +619,92 @@
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════ MÓDULO ESTOQUE -->
-      <div class="mb-4 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-
-        <!-- Cabeçalho accordion -->
-        <button type="button" class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50/70 transition-colors" @click="openEstoque = !openEstoque">
-          <div class="flex items-center gap-3.5">
-            <div class="w-9 h-9 rounded-xl bg-orange-100 flex items-center justify-center shrink-0">
-              <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
+        <!-- MÓDULO ESTOQUE -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+          <button type="button" class="w-full flex items-center justify-between px-5 py-4 transition-colors" @click="openEstoque = !openEstoque">
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg,#ffedd5,#fed7aa)">
+                <svg class="w-4 h-4 text-orange-700" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
+              </div>
+              <div class="text-left min-w-0">
+                <p class="text-sm font-bold text-gray-800 leading-none">Módulo Estoque</p>
+                <p class="text-[11px] text-gray-400 mt-0.5">Giro · Produtos parados · Ruptura · Curva ABC</p>
+              </div>
+              <span class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                :class="est.alertasTotal > 0 ? 'bg-orange-50 text-orange-500 border-orange-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'">
+                {{ est.alertasTotal > 0 ? est.alertasTotal + ' alertas' : '✓ Saudável' }}
+              </span>
             </div>
-            <div class="text-left min-w-0">
-              <p class="text-sm font-bold text-gray-900">Módulo Estoque</p>
-              <p class="text-xs text-gray-400 mt-0.5">Giro · Produtos parados · Ruptura · Curva ABC</p>
+            <div class="flex items-center gap-2 ml-4 shrink-0">
+              <span class="text-[11px] text-gray-300 hidden sm:block">{{ openEstoque ? 'Recolher' : 'Ver análise' }}</span>
+              <svg class="w-4 h-4 text-gray-400 transition-transform duration-300" :class="openEstoque ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
             </div>
-            <span class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full border"
-              :class="est.alertasTotal > 0 ? 'bg-orange-50 text-orange-600 border-orange-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'">
-              {{ est.alertasTotal > 0 ? est.alertasTotal + ' alertas' : 'Saudável' }}
-            </span>
-          </div>
-          <div class="flex items-center gap-2 shrink-0 ml-3">
-            <span class="text-[11px] text-gray-300 font-medium hidden sm:block">{{ openEstoque ? 'Fechar' : 'Ver análise' }}</span>
-            <svg class="w-4 h-4 text-gray-300 transition-transform duration-200" :class="openEstoque ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
-          </div>
-        </button>
+          </button>
 
         <!-- Conteúdo expansível -->
-        <div v-show="openEstoque" class="border-t border-gray-100 px-5 py-5">
+        <div v-show="openEstoque" class="px-5 py-5 border-t border-gray-100">
 
           <!-- KPI Cards estoque -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Total de Produtos</p>
-              <p class="text-2xl font-black text-gray-900 leading-tight">{{ est.total }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">cadastrados</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 border border-white/60 shadow-sm" :style="{ background: 'var(--color-primary-bg, linear-gradient(135deg,#f97316,#fb923c))' }">
+              <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.1),transparent_70%)]"></div>
+              <div class="relative">
+                <p class="text-[9px] font-black uppercase tracking-[0.18em] text-white/60 mb-1.5">Total Produtos</p>
+                <p class="text-3xl font-black text-white leading-none">{{ est.total }}</p>
+                <p class="text-[10px] text-white/50 mt-1.5">cadastrados</p>
+              </div>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Valor em Estoque</p>
-              <p class="text-lg font-black text-gray-900 leading-tight truncate">{{ formatCurrency(est.valorTotal) }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">capital imobilizado</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Valor Estoque</p>
+              <p class="text-lg font-black text-gray-900 leading-none pl-2 truncate">{{ formatCurrency(est.valorTotal) }}</p>
+              <p class="text-[10px] text-gray-400 mt-1.5 pl-2">capital imobilizado</p>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Parados +90 dias</p>
-              <p class="text-2xl font-black leading-tight" :class="est.parados90 > 0 ? 'text-red-500' : 'text-gray-900'">{{ est.parados90 }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">sem venda</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :class="est.parados90 > 0 ? 'bg-red-400' : 'bg-emerald-400'"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Parados +90d</p>
+              <p class="text-3xl font-black leading-none pl-2" :class="est.parados90 > 0 ? 'text-red-500' : 'text-gray-900'">{{ est.parados90 }}</p>
+              <p class="text-[10px] text-gray-400 mt-1.5 pl-2">sem venda</p>
             </div>
-            <div class="bg-gray-50 rounded-xl border border-gray-100 p-3">
-              <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Ruptura Iminente</p>
-              <p class="text-2xl font-black leading-tight" :class="est.rupturaIminente > 0 ? 'text-amber-500' : 'text-gray-900'">{{ est.rupturaIminente }}</p>
-              <p class="text-[10px] text-gray-400 mt-1">≤ 3 unidades</p>
+
+            <div class="relative rounded-xl overflow-hidden p-4 bg-gray-50 border border-gray-100 shadow-sm">
+              <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl" :class="est.rupturaIminente > 0 ? 'bg-amber-400' : 'bg-emerald-400'"></div>
+              <p class="text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 mb-1.5 pl-2">Ruptura Iminente</p>
+              <p class="text-3xl font-black leading-none pl-2" :class="est.rupturaIminente > 0 ? 'text-amber-500' : 'text-gray-900'">{{ est.rupturaIminente }}</p>
+              <p class="text-[10px] text-gray-400 mt-1.5 pl-2">≤ 3 unidades</p>
             </div>
+
           </div>
 
           <!-- Curva ABC mini visualização -->
-          <div v-if="est.curvaABC.length > 0" class="mb-5 bg-gray-50 rounded-xl border border-gray-100 p-4">
-            <p class="text-xs font-bold text-gray-700 mb-3">📊 Curva ABC — Concentração de Valor no Estoque</p>
-            <div class="flex gap-3 flex-wrap">
-              <div class="flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-gray-100 shadow-sm">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
-                <span class="text-xs font-bold text-gray-700">Curva A</span>
-                <span class="text-xs text-gray-500">{{ est.curvaABC.filter(p => p.curva === 'A').length }} produtos</span>
-                <span class="text-xs font-bold text-emerald-600">{{ formatCurrency(est.curvaABC.filter(p => p.curva === 'A').reduce((s, p) => s + p.valorEstoque, 0)) }}</span>
-              </div>
-              <div class="flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-gray-100 shadow-sm">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
-                <span class="text-xs font-bold text-gray-700">Curva B</span>
-                <span class="text-xs text-gray-500">{{ est.curvaABC.filter(p => p.curva === 'B').length }} produtos</span>
-                <span class="text-xs font-bold text-amber-600">{{ formatCurrency(est.curvaABC.filter(p => p.curva === 'B').reduce((s, p) => s + p.valorEstoque, 0)) }}</span>
-              </div>
-              <div class="flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-gray-100 shadow-sm">
-                <span class="w-2.5 h-2.5 rounded-full bg-gray-400 shrink-0"></span>
-                <span class="text-xs font-bold text-gray-700">Curva C</span>
-                <span class="text-xs text-gray-500">{{ est.curvaABC.filter(p => p.curva === 'C').length }} produtos</span>
-                <span class="text-xs font-bold text-gray-500">{{ formatCurrency(est.curvaABC.filter(p => p.curva === 'C').reduce((s, p) => s + p.valorEstoque, 0)) }}</span>
+          <div v-if="est.curvaABC.length > 0" class="mb-5 rounded-xl overflow-hidden border border-white/20 shadow-sm" :style="{ background: 'var(--color-primary-bg, linear-gradient(135deg,#f97316,#fb923c))' }">
+            <div class="relative px-5 py-4">
+              <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_right,rgba(255,255,255,0.08),transparent_60%)]"></div>
+              <div class="relative">
+                <p class="text-[9px] font-black uppercase tracking-[0.18em] text-white/60 mb-3">Curva ABC — Concentração de Valor no Estoque</p>
+                <div class="flex flex-wrap gap-3">
+                  <div class="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 border border-white/10">
+                    <span class="w-2 h-2 rounded-full bg-emerald-300 shrink-0"></span>
+                    <span class="text-xs font-bold text-white">Curva A</span>
+                    <span class="text-xs text-white/60">{{ est.curvaABC.filter((p) => p.curva === 'A').length }} prod.</span>
+                    <span class="text-xs font-black text-white">{{ formatCurrency(est.curvaABC.filter((p) => p.curva === 'A').reduce((s, p) => s + p.valorEstoque, 0)) }}</span>
+                  </div>
+                  <div class="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 border border-white/10">
+                    <span class="w-2 h-2 rounded-full bg-amber-300 shrink-0"></span>
+                    <span class="text-xs font-bold text-white">Curva B</span>
+                    <span class="text-xs text-white/60">{{ est.curvaABC.filter((p) => p.curva === 'B').length }} prod.</span>
+                    <span class="text-xs font-black text-white">{{ formatCurrency(est.curvaABC.filter((p) => p.curva === 'B').reduce((s, p) => s + p.valorEstoque, 0)) }}</span>
+                  </div>
+                  <div class="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 border border-white/10">
+                    <span class="w-2 h-2 rounded-full bg-white/40 shrink-0"></span>
+                    <span class="text-xs font-bold text-white">Curva C</span>
+                    <span class="text-xs text-white/60">{{ est.curvaABC.filter((p) => p.curva === 'C').length }} prod.</span>
+                    <span class="text-xs font-black text-white">{{ formatCurrency(est.curvaABC.filter((p) => p.curva === 'C').reduce((s, p) => s + p.valorEstoque, 0)) }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -588,10 +729,10 @@
                   </p>
                 </div>
               </div>
-              <div class="px-4 py-3 bg-white grid sm:grid-cols-2 gap-4">
+              <div class="px-4 py-3 grid sm:grid-cols-2 gap-4 bg-white">
                 <div>
                   <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">💡 Impacto Estimado</p>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-gray-600 leading-relaxed">
                     Converter esses produtos em caixa libera
                     <span class="font-bold text-emerald-600">{{ formatCurrency(est.valorParados90 * 0.7) }}</span>
                     (estimado com desconto de 30%) para reinvestimento ou pagamento de despesas.
@@ -654,10 +795,10 @@
                   </p>
                 </div>
               </div>
-              <div class="px-4 py-3 bg-white grid sm:grid-cols-2 gap-4">
+              <div class="px-4 py-3 grid sm:grid-cols-2 gap-4 bg-white">
                 <div>
                   <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">💡 Impacto Estimado</p>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-gray-600 leading-relaxed">
                     A falta desses itens pode gerar perda de vendas e insatisfação de clientes.
                     Reposição imediata garante continuidade da receita.
                   </p>
@@ -724,7 +865,7 @@
                   </p>
                 </div>
               </div>
-              <div class="px-4 py-3 bg-white grid sm:grid-cols-2 gap-4">
+              <div class="px-4 py-3 grid sm:grid-cols-2 gap-4 bg-white">
                 <div>
                   <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">💡 Impacto Estimado</p>
                   <p class="text-sm text-gray-700">Reduzir o estoque da Curva C em 50% libera aproximadamente <span class="font-bold text-emerald-600">{{ formatCurrency(est.capitalCurvaC * 0.5) }}</span> em capital de giro.</p>
@@ -758,58 +899,41 @@
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════ CENTRAL DE OPORTUNIDADES -->
-      <div class="mb-4 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-
-        <!-- Cabeçalho accordion -->
-        <button
-          type="button"
-          class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors"
-          @click="openOportunidades = !openOportunidades"
-        >
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-yellow-100 shrink-0">
-              <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-              </svg>
+        <!-- CENTRAL DE OPORTUNIDADES -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+          <button type="button" class="w-full flex items-center justify-between px-5 py-4 transition-colors" @click="openOportunidades = !openOportunidades">
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg,#fef9c3,#fde68a)">
+                <svg class="w-4 h-4 text-yellow-700" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+              </div>
+              <div class="text-left min-w-0">
+                <p class="text-sm font-bold text-gray-800 leading-none">Central de Oportunidades</p>
+                <p class="text-[11px] text-gray-400 mt-0.5">Maiores ganhos rápidos identificados automaticamente</p>
+              </div>
+              <span v-if="oportunidades.length > 0" class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full border bg-yellow-50 text-yellow-600 border-yellow-100">
+                {{ oportunidades.length }} oportunidade{{ oportunidades.length > 1 ? 's' : '' }}
+              </span>
             </div>
-            <div class="text-left">
-              <p class="text-sm font-bold text-gray-900">Central de Oportunidades</p>
-              <p class="text-xs text-gray-400">Maiores ganhos rápidos identificados automaticamente nos seus dados</p>
+            <div class="flex items-center gap-2 ml-4 shrink-0">
+              <span class="text-[11px] text-gray-300 hidden sm:block">{{ openOportunidades ? 'Recolher' : 'Ver análise' }}</span>
+              <svg class="w-4 h-4 text-gray-400 transition-transform duration-300" :class="openOportunidades ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
             </div>
-            <span
-              v-if="oportunidades.length > 0"
-              class="hidden sm:inline-flex ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700"
-            >
-              {{ oportunidades.length }} oportunidade{{ oportunidades.length > 1 ? 's' : '' }}
-            </span>
-          </div>
-          <svg
-            class="w-5 h-5 text-gray-400 transition-transform duration-200 shrink-0"
-            :class="openOportunidades ? 'rotate-180' : ''"
-            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-          </svg>
-        </button>
+          </button>
 
         <!-- Conteúdo -->
-        <div v-show="openOportunidades" class="border-t border-gray-100 px-5 py-5">
+        <div v-show="openOportunidades" class="px-5 py-5 border-t border-gray-100">
 
           <!-- ── Banner impacto total ── -->
-          <div v-if="totalImpacto > 0" class="relative rounded-2xl overflow-hidden mb-5 shadow-lg">
-            <!-- fundo gradiente escuro premium -->
-            <div class="absolute inset-0" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)"></div>
-            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(139,92,246,0.25),transparent_60%)]"></div>
-            <div class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-white/[0.02] pointer-events-none"></div>
+          <div v-if="totalImpacto > 0" class="relative rounded-2xl overflow-hidden mb-5 shadow-sm" :style="{ background: 'var(--color-primary-bg, linear-gradient(135deg, #6366f1, #8b5cf6))' }">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.12),transparent_60%)]"></div>
 
             <div class="relative px-5 pt-5 pb-4">
               <!-- Topo: label + valor -->
               <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                 <div>
                   <div class="flex items-center gap-2 mb-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></span>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-300">Potencial Total Identificado</p>
+                    <span class="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse"></span>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-white/70">Potencial Total Identificado</p>
                   </div>
                   <p class="text-white/80 text-sm leading-relaxed max-w-md">
                     Executando todas as oportunidades abaixo, sua empresa pode aumentar a receita em:
@@ -817,21 +941,21 @@
                 </div>
                 <div class="shrink-0 sm:text-right">
                   <p class="text-4xl font-black text-white leading-none tracking-tight">+{{ formatCurrency(totalImpacto) }}</p>
-                  <p class="text-indigo-300 text-xs font-bold uppercase tracking-widest mt-1">por mês</p>
+                  <p class="text-white/60 text-xs font-bold uppercase tracking-widest mt-1">por mês</p>
                 </div>
               </div>
 
               <!-- Divisor -->
-              <div class="h-px bg-white/10 mb-4"></div>
+              <div class="h-px bg-white/15 mb-4"></div>
 
               <!-- Mini cards por oportunidade -->
               <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
                 <div
                   v-for="op in oportunidades"
                   :key="'mini-' + op.id"
-                  class="flex items-center gap-2 bg-white/[0.06] rounded-xl px-3 py-2 border border-white/10"
+                  class="flex items-center gap-2 bg-white/10 rounded-xl px-3 py-2 border border-white/10"
                 >
-                  <span class="w-2 h-2 rounded-full shrink-0" :style="{ background: op.cor }"></span>
+                  <span class="w-2 h-2 rounded-full shrink-0 bg-white/80"></span>
                   <div class="min-w-0">
                     <p class="text-[10px] text-white/50 font-semibold truncate">{{ op.categoria }}</p>
                     <p class="text-xs font-black text-white leading-none">+{{ formatCurrency(op.valor) }}</p>
@@ -841,37 +965,31 @@
             </div>
           </div>
 
-          <!-- ── Cards de oportunidades (mesmo padrão dos diagnósticos) ── -->
+          <!-- ── Cards de oportunidades ── -->
           <div v-if="oportunidades.length > 0" class="flex flex-col gap-3">
             <div
               v-for="(op, idx) in oportunidades"
               :key="op.id"
-              class="bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-              :style="{ borderColor: op.cor + '44' }"
+              class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
-              <!-- Cabeçalho colorido — igual padrão Alta/Média/Baixa -->
-              <div
-                class="px-4 py-3 flex items-start gap-3"
-                :style="{ background: op.cor + '10' }"
-              >
-                <!-- Badge ranking -->
+              <!-- Cabeçalho -->
+              <div class="px-4 py-3 flex items-start gap-3 bg-gray-50/50">
+                <!-- Badge ranking com cor do tema -->
                 <div
-                  class="mt-0.5 w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-white text-[11px] font-black"
-                  :style="{ background: op.cor }"
+                  class="mt-0.5 w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-[11px] font-black"
+                  :style="{ background: 'var(--color-primary, #6366f1)', color: 'var(--color-primary-text, #fff)' }"
                 >
                   {{ idx + 1 }}
                 </div>
 
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center gap-2 flex-wrap mb-1">
-                    <!-- badge categoria com cor do módulo -->
                     <span
-                      class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full text-white"
-                      :style="{ background: op.cor }"
+                      class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full"
+                      :style="{ background: 'var(--color-primary, #6366f1)', color: 'var(--color-primary-text, #fff)' }"
                     >
                       {{ op.categoria }}
                     </span>
-                    <!-- prazo -->
                     <span
                       class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full"
                       :class="{
@@ -887,46 +1005,41 @@
                   <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">{{ op.descricao }}</p>
                 </div>
 
-                <!-- Valor potencial — destaque à direita -->
+                <!-- Valor potencial com cor do tema -->
                 <div class="shrink-0 text-right ml-2">
                   <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">Potencial</p>
-                  <p class="text-xl font-black leading-none" :style="{ color: op.cor }">+{{ formatCurrency(op.valor) }}</p>
+                  <p class="text-xl font-black leading-none" :style="{ color: 'var(--color-primary, #6366f1)' }">+{{ formatCurrency(op.valor) }}</p>
                   <p class="text-[10px] text-gray-400 font-semibold">/mês</p>
                 </div>
               </div>
 
-              <!-- Corpo: impacto + ações (mesmo grid 2 colunas dos outros módulos) -->
-              <div class="px-4 py-3 bg-white grid sm:grid-cols-2 gap-4">
-
-                <!-- Impacto estimado -->
+              <!-- Corpo: impacto + ações -->
+              <div class="px-4 py-3 grid sm:grid-cols-2 gap-4 bg-white border-t border-gray-100">
                 <div>
                   <div class="flex items-center gap-1.5 mb-1.5">
-                    <svg class="w-3.5 h-3.5 text-emerald-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+                    <div class="w-1 h-4 rounded-full" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
                     <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Impacto Estimado</p>
                   </div>
-                  <p class="text-sm text-gray-700 leading-relaxed">{{ op.descricao }}</p>
-                  <p class="text-base font-black mt-1.5" :style="{ color: op.cor }">
+                  <p class="text-sm text-gray-600 leading-relaxed">{{ op.descricao }}</p>
+                  <p class="text-base font-black mt-1.5" :style="{ color: 'var(--color-primary, #6366f1)' }">
                     +{{ formatCurrency(op.valor) }}<span class="text-xs font-semibold text-gray-400">/mês</span>
                   </p>
                 </div>
-
-                <!-- Ações recomendadas -->
                 <div>
                   <div class="flex items-center gap-1.5 mb-1.5">
-                    <svg class="w-3.5 h-3.5 text-indigo-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <div class="w-1 h-4 rounded-full" :style="{ background: 'var(--color-primary, #6366f1)' }"></div>
                     <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Ações Recomendadas</p>
                   </div>
                   <ul class="flex flex-col gap-1.5">
                     <li v-for="(acao, j) in op.acoes" :key="j" class="flex items-start gap-2">
                       <span
-                        class="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-[9px] font-black text-white"
-                        :style="{ background: op.cor }"
+                        class="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-[9px] font-black"
+                        :style="{ background: 'var(--color-primary, #6366f1)', color: 'var(--color-primary-text, #fff)' }"
                       >{{ j + 1 }}</span>
                       <span class="text-sm text-gray-700">{{ acao }}</span>
                     </li>
                   </ul>
                 </div>
-
               </div>
             </div>
           </div>
@@ -940,43 +1053,29 @@
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════ PLANO DE AÇÃO INTELIGENTE -->
-      <div class="mb-4 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-
-        <!-- Cabeçalho accordion -->
-        <button
-          type="button"
-          class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors"
-          @click="openPlanoAcao = !openPlanoAcao"
-        >
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-indigo-100 shrink-0">
-              <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-              </svg>
+        <!-- PLANO DE AÇÃO INTELIGENTE -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+          <button type="button" class="w-full flex items-center justify-between px-5 py-4 transition-colors" @click="openPlanoAcao = !openPlanoAcao">
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg,#e0e7ff,#c7d2fe)">
+                <svg class="w-4 h-4 text-indigo-700" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" /></svg>
+              </div>
+              <div class="text-left min-w-0">
+                <p class="text-sm font-bold text-gray-800 leading-none">Plano de Ação Inteligente</p>
+                <p class="text-[11px] text-gray-400 mt-0.5">Tarefas geradas por prioridade e impacto financeiro</p>
+              </div>
+              <span v-if="planoAcao.length > 0" class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full border bg-indigo-50 text-indigo-600 border-indigo-100">
+                {{ planoAcao.length }} tarefa{{ planoAcao.length > 1 ? 's' : '' }}
+              </span>
             </div>
-            <div class="text-left">
-              <p class="text-sm font-bold text-gray-900">Plano de Ação Inteligente</p>
-              <p class="text-xs text-gray-400">Tarefas geradas automaticamente por prioridade e impacto financeiro</p>
+            <div class="flex items-center gap-2 ml-4 shrink-0">
+              <span class="text-[11px] text-gray-300 hidden sm:block">{{ openPlanoAcao ? 'Recolher' : 'Ver plano' }}</span>
+              <svg class="w-4 h-4 text-gray-400 transition-transform duration-300" :class="openPlanoAcao ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
             </div>
-            <span
-              v-if="planoAcao.length > 0"
-              class="hidden sm:inline-flex ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700"
-            >
-              {{ planoAcao.length }} tarefa{{ planoAcao.length > 1 ? 's' : '' }}
-            </span>
-          </div>
-          <svg
-            class="w-5 h-5 text-gray-400 transition-transform duration-200 shrink-0"
-            :class="openPlanoAcao ? 'rotate-180' : ''"
-            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-          </svg>
-        </button>
+          </button>
 
         <!-- Conteúdo -->
-        <div v-show="openPlanoAcao" class="border-t border-gray-100 px-5 py-5">
+        <div v-show="openPlanoAcao" class="px-5 py-5 border-t border-gray-100">
 
           <!-- Agrupamento por semana -->
           <template v-for="grupo in gruposPlano" :key="grupo.semana">
@@ -1080,13 +1179,13 @@
                   </div>
 
                   <!-- Detalhes expandidos: objetivo + prazo -->
-                  <div class="px-4 py-3 bg-white grid sm:grid-cols-2 gap-4">
+                  <div class="px-4 py-3 grid sm:grid-cols-2 gap-4 bg-white">
                     <div>
                       <div class="flex items-center gap-1.5 mb-1.5">
                         <svg class="w-3.5 h-3.5 text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" /></svg>
                         <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Objetivo</p>
                       </div>
-                      <p class="text-sm text-gray-700 leading-relaxed">{{ tarefa.objetivo }}</p>
+                      <p class="text-sm text-gray-600 leading-relaxed">{{ tarefa.objetivo }}</p>
                     </div>
                     <div>
                       <div class="flex items-center gap-1.5 mb-1.5">
@@ -1111,43 +1210,32 @@
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════ IA CONVERSACIONAL -->
-      <div class="mb-8 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-
-        <!-- Cabeçalho accordion -->
-        <button
-          type="button"
-          class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors"
-          @click="openIA = !openIA"
-        >
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg, #6366f1, #8b5cf6)">
-              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
-              </svg>
+        <!-- ASSISTENTE IA -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+          <button type="button" class="w-full flex items-center justify-between px-5 py-4 transition-colors" @click="openIA = !openIA">
+            <div class="flex items-center gap-3.5">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg, #6366f1, #8b5cf6)">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" /></svg>
+              </div>
+              <div class="text-left min-w-0">
+                <p class="text-sm font-bold text-gray-800 leading-none">Assistente IA</p>
+                <p class="text-[11px] text-gray-400 mt-0.5">Pergunte qualquer coisa — responde com dados reais do ERP</p>
+              </div>
+              <span class="hidden sm:inline-flex shrink-0 ml-1 text-[10px] font-bold px-2.5 py-1 rounded-full border bg-indigo-50 text-indigo-600 border-indigo-100">
+                ● Online
+              </span>
             </div>
-            <div class="text-left">
-              <p class="text-sm font-bold text-gray-900">Assistente IA</p>
-              <p class="text-xs text-gray-400">Pergunte qualquer coisa sobre seu negócio — responde com seus dados reais</p>
+            <div class="flex items-center gap-2 ml-4 shrink-0">
+              <span class="text-[11px] text-gray-300 hidden sm:block">{{ openIA ? 'Recolher' : 'Perguntar' }}</span>
+              <svg class="w-4 h-4 text-gray-400 transition-transform duration-300" :class="openIA ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
             </div>
-            <span class="hidden sm:inline-flex ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
-              Online
-            </span>
-          </div>
-          <svg
-            class="w-5 h-5 text-gray-400 transition-transform duration-200 shrink-0"
-            :class="openIA ? 'rotate-180' : ''"
-            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-          </svg>
-        </button>
+          </button>
 
         <!-- Conteúdo do chat -->
         <div v-show="openIA" class="border-t border-gray-100">
 
           <!-- Histórico de mensagens -->
-          <div ref="chatContainer" class="px-5 py-4 flex flex-col gap-4 max-h-[520px] overflow-y-auto scroll-smooth">
+          <div ref="chatContainer" class="px-5 py-4 flex flex-col gap-4 max-h-[520px] overflow-y-auto scroll-smooth bg-gray-50/50">
 
             <!-- Mensagem de boas-vindas da IA (sempre visível) -->
             <div class="flex items-start gap-3">
@@ -1159,7 +1247,7 @@
               <div class="flex-1 max-w-2xl">
                 <div class="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 rounded-2xl rounded-tl-sm px-4 py-3">
                   <p class="text-sm font-semibold text-indigo-900 mb-1">Assistente IA do seu negócio</p>
-                  <p class="text-sm text-gray-700 leading-relaxed">
+                  <p class="text-sm text-gray-600 leading-relaxed">
                     Olá! Estou analisando os dados reais do seu ERP em tempo real. Pode me perguntar sobre lucro, clientes, estoque, despesas, vendas e muito mais. Como posso ajudar?
                   </p>
                 </div>
@@ -1265,6 +1353,8 @@
         </div>
       </div>
 
+      </div><!-- /space-y-4 -->
+
     </template>
   </div>
 </template>
@@ -1282,6 +1372,7 @@ const loading = ref(true)
 
 // ── accordion state ───────────────────────────────────────────
 const openFinanceiro    = ref(false)
+const openVendas        = ref(false)
 const openClientes      = ref(false)
 const openEstoque       = ref(false)
 const openOportunidades = ref(false)
